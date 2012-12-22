@@ -46,6 +46,8 @@
 #include <locale>
 
 
+#include <algorithm>
+
 namespace Poco {
 
 
