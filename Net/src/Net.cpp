@@ -1,7 +1,11 @@
 //
-// MulticastSocketTest.cpp
+// Net.cpp
 //
-// $Id: //poco/1.4/Net/testsuite/src/MulticastSocketTest.cpp#1 $
+// $Id: //poco/1.4/Net/src/Net.cpp#10 $
+//
+// Library: Net
+// Package: NetCore
+// Module:  NetCore
 //
 // Copyright (c) 2005-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
@@ -30,75 +34,84 @@
 //
 
 
-#include "MulticastSocketTest.h"
+#include "Poco/Net/Net.h"
 
 
-#ifdef POCO_NET_HAS_INTERFACE
+#if defined(POCO_OS_FAMILY_WINDOWS)
 
 
-#include "CppUnit/TestCaller.h"
-#include "CppUnit/TestSuite.h"
-#include "MulticastEchoServer.h"
-#include "Poco/Net/MulticastSocket.h"
-#include "Poco/Net/SocketAddress.h"
+#include "Poco/Net/SocketDefs.h"
 #include "Poco/Net/NetException.h"
-#include "Poco/Timespan.h"
-#include "Poco/Stopwatch.h"
 
 
-using Poco::Net::Socket;
-using Poco::Net::MulticastSocket;
-using Poco::Net::SocketAddress;
-using Poco::Net::IPAddress;
-using Poco::Timespan;
-using Poco::Stopwatch;
-using Poco::TimeoutException;
-using Poco::InvalidArgumentException;
-using Poco::IOException;
+namespace Poco {
+namespace Net {
 
 
-MulticastSocketTest::MulticastSocketTest(const std::string& name): CppUnit::TestCase(name)
+void Net_API initializeNetwork()
 {
+	WORD    version = MAKEWORD(2, 2);
+	WSADATA data;
+	if (WSAStartup(version, &data) != 0)
+		throw NetException("Failed to initialize network subsystem");
 }
 
 
-MulticastSocketTest::~MulticastSocketTest()
+void Net_API uninitializeNetwork()
 {
+	WSACleanup();
 }
 
 
-void MulticastSocketTest::testMulticast()
+} } // namespace Poco::Net
+
+
+#if !defined(POCO_NET_NO_WINDOWS_INIT)
+	#if defined (POCO_DLL)
+		BOOL APIENTRY DllMain(HANDLE, DWORD reasonForCall, LPVOID)
+		{
+			switch(reasonForCall)
+			{
+			case DLL_PROCESS_ATTACH:
+				Poco::Net::initializeNetwork();
+				break;
+			case DLL_PROCESS_DETACH:
+				Poco::Net::uninitializeNetwork();
+			}
+			return TRUE;
+		}
+	#else // POCO_STATIC
+		struct NetworkInitializer
+			/// Network initializer for windows statically
+			/// linked library.
+		{
+			NetworkInitializer()
+				/// Calls Poco::Net::initializeNetwork();
+			{
+				Poco::Net::initializeNetwork();
+			}
+
+			~NetworkInitializer()
+				/// Calls Poco::Net::uninitializeNetwork();
+			{
+				Poco::Net::uninitializeNetwork();
+			}
+		};
+
+		const NetworkInitializer pocoNetworkInitializer;
+	#endif // POCO_DLL/POCO_STATIC
+
+#endif // POCO_NET_NO_WINDOWS_INIT
+
+
+#else // POCO_OS_FAMILY_WINDOWS
+
+void Net_API initializeNetwork()
 {
-	MulticastEchoServer echoServer;
-	MulticastSocket ms;
-	int n = ms.sendTo("hello", 5, echoServer.group());
-	assert (n == 5);
-	char buffer[256];
-	n = ms.receiveBytes(buffer, sizeof(buffer));
-	assert (n == 5);
-	assert (std::string(buffer, n) == "hello");
-	ms.close();
 }
 
-
-void MulticastSocketTest::setUp()
+void Net_API uninitializeNetwork()
 {
 }
 
-
-void MulticastSocketTest::tearDown()
-{
-}
-
-
-CppUnit::Test* MulticastSocketTest::suite()
-{
-	CppUnit::TestSuite* pSuite = new CppUnit::TestSuite("MulticastSocketTest");
-
-	CppUnit_addTest(pSuite, MulticastSocketTest, testMulticast);
-
-	return pSuite;
-}
-
-
-#endif // POCO_NET_HAS_INTERFACE
+#endif // POCO_OS_FAMILY_WINDOWS

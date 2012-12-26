@@ -47,6 +47,8 @@
 #include <algorithm>
 
 
+#include <algorithm>
+
 namespace Poco {
 
 
