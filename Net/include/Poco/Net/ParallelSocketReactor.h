@@ -1,15 +1,15 @@
 //
-// Validator.h
+// ParallelSocketReactor.h
 //
-// $Id: //poco/1.4/Util/include/Poco/Util/Validator.h#1 $
+// $Id: //poco/1.4/Net/include/Poco/Net/ParallelSocketReactor.h#1 $
 //
-// Library: Util
-// Package: Options
-// Module:  Validator
+// Library: Net
+// Package: Reactor
+// Module:  ParallelSocketReactor
 //
-// Definition of the Validator class.
+// Definition of the ParallelSocketReactor class.
 //
-// Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
+// Copyright (c) 2005-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
 // Permission is hereby granted, free of charge, to any person or organization
@@ -36,44 +36,70 @@
 //
 
 
-#ifndef Util_Validator_INCLUDED
-#define Util_Validator_INCLUDED
+#ifndef Net_ParallelSocketReactor_INCLUDED
+#define Net_ParallelSocketReactor_INCLUDED
 
 
-#include "Poco/Util/Util.h"
-#include "Poco/RefCountedObject.h"
+#include "Poco/Net/SocketReactor.h"
+#include "Poco/Net/SocketNotification.h"
+#include "Poco/Net/StreamSocket.h"
+#include "Poco/Net/ServerSocket.h"
+#include "Poco/NObserver.h"
+#include "Poco/Thread.h"
+#include "Poco/SharedPtr.h"
+
+
+using Poco::Net::Socket;
+using Poco::Net::SocketReactor;
+using Poco::Net::ReadableNotification;
+using Poco::Net::ShutdownNotification;
+using Poco::Net::ServerSocket;
+using Poco::Net::StreamSocket;
+using Poco::NObserver;
+using Poco::AutoPtr;
+using Poco::Thread;
 
 
 namespace Poco {
-namespace Util {
+namespace Net {
 
 
-class Option;
-
-
-class Util_API Validator: public Poco::RefCountedObject
-	/// Validator specifies the interface for option validators.
-	///
-	/// Option validators provide a simple way for the automatic
-	/// validation of command line argument values.
+template <class SR>
+class ParallelSocketReactor: public SR
 {
 public:
-	virtual void validate(const Option& option, const std::string& value) = 0;
-		/// Validates the value for the given option.
-		/// Does nothing if the value is valid.
-		///
-		/// Throws an OptionException otherwise.
+	typedef Poco::SharedPtr<ParallelSocketReactor> Ptr;
 
+	ParallelSocketReactor()
+	{
+		_thread.start(*this);
+	}
+	
+	ParallelSocketReactor(const Poco::Timespan& timeout):
+		SR(timeout)
+	{
+		_thread.start(*this);
+	}
+	
+	~ParallelSocketReactor()
+	{
+		this->stop();
+		_thread.join();
+	}
+	
 protected:
-	Validator();
-		/// Creates the Validator.
-
-	virtual ~Validator();
-		/// Destroys the Validator.
+	void onIdle()
+	{
+		SR::onIdle();
+		Poco::Thread::yield();
+	}
+	
+private:
+	Poco::Thread _thread;
 };
 
 
-} } // namespace Poco::Util
+} } // namespace Poco::Net
 
 
-#endif // Util_Validator_INCLUDED
+#endif // Net_ParallelSocketReactor_INCLUDED

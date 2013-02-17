@@ -466,13 +466,13 @@ bool SocketImpl::poll(const Poco::Timespan& timeout, int mode)
 	while (rc < 0 && lastError() == POCO_EINTR);
 
 	::close(epollfd);
-        if (rc < 0) error();
-        return rc > 0; 
+	if (rc < 0) error();
+	return rc > 0; 
 
 #elif defined(POCO_HAVE_FD_POLL)
 
 	pollfd pollBuf;
-        
+
 	memset(&pollBuf, 0, sizeof(pollfd));
 	pollBuf.fd = _sockfd;
 	if (mode & SELECT_READ) pollBuf.events |= POLLIN;
@@ -518,7 +518,7 @@ bool SocketImpl::poll(const Poco::Timespan& timeout, int mode)
 		FD_SET(sockfd, &fdExcept);
 	}
 	Poco::Timespan remainingTime(timeout);
-	int errorCode;
+	int errorCode = POCO_ENOERR;
 	int rc;
 	do
 	{
@@ -890,13 +890,12 @@ void SocketImpl::setBlocking(bool flag)
 	int arg = flag ? 0 : 1;
 	ioctl(FIONBIO, arg);
 #else
-    int arg = fcntl(F_GETFL);
-    long flags = arg & ~O_NONBLOCK;
-    if (!flag)
-        flags |= O_NONBLOCK;
-    (void) fcntl(F_SETFL, flags);
+	int arg = fcntl(F_GETFL);
+	long flags = arg & ~O_NONBLOCK;
+	if (!flag) flags |= O_NONBLOCK;
+	(void) fcntl(F_SETFL, flags);
 #endif
-    _blocking = flag;
+	_blocking = flag;
 }
 
 
@@ -999,6 +998,7 @@ void SocketImpl::error(int code, const std::string& arg)
 {
 	switch (code)
 	{
+	case POCO_ENOERR: return;
 	case POCO_ESYSNOTREADY:
 		throw NetException("Net subsystem not ready", code);
 	case POCO_ENOTINIT:

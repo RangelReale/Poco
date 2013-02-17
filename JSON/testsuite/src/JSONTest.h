@@ -46,7 +46,6 @@ public:
 	JSONTest(const std::string& name);
 	~JSONTest();
 
-	void testStringifier();
 	void testNullProperty();
 	void testTrueProperty();
 	void testFalseProperty();
@@ -76,7 +75,8 @@ public:
 	void testInvalidJanssonFiles();
 	void testTemplate();
 	void testItunes();
-	void testUnicode();
+	void testUnicode(); 
+	void testInvalidUnicodeJanssonFiles();
 
 	void setUp();
 	void tearDown();
