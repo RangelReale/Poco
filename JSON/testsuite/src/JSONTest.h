@@ -50,8 +50,10 @@ public:
 	void testTrueProperty();
 	void testFalseProperty();
 	void testNumberProperty();
+	void testUnsignedNumberProperty();
 #if defined(POCO_HAVE_INT64)
 	void testNumber64Property();
+	void testUnsignedNumber64Property();
 #endif
 	void testStringProperty();
 	void testEmptyObject();
@@ -71,6 +73,8 @@ public:
 	void testDoubleElement();
 	void testOptValue();
 	void testQuery();
+	void testStringify();
+
 	void testValidJanssonFiles();
 	void testInvalidJanssonFiles();
 	void testTemplate();

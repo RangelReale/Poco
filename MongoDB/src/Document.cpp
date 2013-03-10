@@ -59,11 +59,11 @@ Document::~Document()
 }
 
 
-Element::Ptr Document::get(const std::string& name)
+Element::Ptr Document::get(const std::string& name) const
 {
 	Element::Ptr element;
 
-	ElementSet::iterator it = std::find_if(_elements.begin(), _elements.end(), ElementFindByName(name));
+	ElementSet::const_iterator it = std::find_if(_elements.begin(), _elements.end(), ElementFindByName(name));
 	if ( it != _elements.end() )
 	{
 		return *it;
@@ -150,46 +150,38 @@ void Document::read(BinaryReader& reader)
 std::string Document::toString(int indent) const
 {
 	std::ostringstream oss;
-	oss << "{" << std::endl;
+
+	oss << '{';
+
+	if ( indent > 0 ) oss << std::endl;
+
+
 	for(ElementSet::const_iterator it = _elements.begin(); it != _elements.end(); ++it)
 	{
 		if ( it != _elements.begin() )
 		{
-			oss << ",";
-			if ( indent > 0 )
-			{
-				oss << std::endl;
-			}
+			oss << ',';
+			if ( indent > 0 ) oss << std::endl;
 		}
-		if ( indent > 0 )
-		{
-			for(int i = 0; i < indent; ++i)
-			{
-				oss << ' ';
-			}
-		}
-		oss << '"' << (*it)->name() << '"' << " : ";
-		if ( indent > 0 )
-		{
-			oss << (*it)->toString(indent + 2);
-		}
-		else
-		{
-			oss << (*it)->toString();
-		}
+
+		for(int i = 0; i < indent; ++i) oss << ' ';
+
+		oss << '"' << (*it)->name() << '"';
+		oss << (( indent > 0 ) ? " : " : ":");
+
+		oss << (*it)->toString(indent > 0 ? indent + 2 : 0);
 	}
 
 	if ( indent > 0 )
 	{
 		oss << std::endl;
-		indent -= 2;
-		for(int i = 0; i < indent; ++i)
-		{
-			oss << ' ';
-		}
+		if ( indent >= 2 ) indent -= 2;
+
+		for(int i = 0; i < indent; ++i) oss << ' ';
 	}
 
-	oss << "}" << std::endl;
+	oss << '}';
+
 	return oss.str();
 }
 
@@ -220,9 +212,5 @@ void Document::write(BinaryWriter& writer)
 	writer << '\0';
 }
 
-void Document::addElement(Element::Ptr element)
-{
-	_elements.insert(element);
-}
 
 }} // Namespace Poco::MongoDB

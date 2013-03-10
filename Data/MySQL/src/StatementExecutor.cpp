@@ -45,6 +45,8 @@ namespace MySQL {
 
 
 StatementExecutor::StatementExecutor(MYSQL* mysql)
+	: _pSessionHandle(mysql)
+	, _affectedRowCount(0)
 {
 	if (!(_pHandle = mysql_stmt_init(mysql)))
 		throw StatementException("mysql_stmt_init error");
@@ -115,6 +117,10 @@ void StatementExecutor::execute()
 		throw StatementException("mysql_stmt_execute error", _pHandle, _query);
 
 	_state = STMT_EXECUTED;
+
+	my_ulonglong affectedRows = mysql_affected_rows(_pSessionHandle);
+	if (affectedRows != ((my_ulonglong) - 1))
+		_affectedRowCount = affectedRows; //Was really a DELETE, UPDATE or INSERT statement
 }
 
 
@@ -147,6 +153,11 @@ bool StatementExecutor::fetchColumn(std::size_t n, MYSQL_BIND *bind)
 	}
 
 	return (res == 0);
+}
+
+std::size_t StatementExecutor::getAffectedRowCount() const
+{
+	return _affectedRowCount;
 }
 
 
