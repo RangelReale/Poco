@@ -341,6 +341,14 @@ public:
 	Poco::Dynamic::Var value(std::size_t index);
 		/// Returns the value in the given column of the current row.
 
+	template <class T>
+	const T& value(const std::string& name) const;
+		/// Returns the value in the named column of the current row.
+
+	template <class T>
+	const T& value(std::size_t index) const;
+		/// Returns the value in the given column of the current row.
+
 	Poco::Dynamic::Var operator [] (const std::string& name);
 		/// Returns the value in the named column of the current row.
 
@@ -559,6 +567,20 @@ inline Poco::Dynamic::Var RecordSet::value(const std::string& name)
 inline Poco::Dynamic::Var RecordSet::value(std::size_t index)
 {
 	return value(index, _currentRow);
+}
+
+
+template <class T>
+const T& RecordSet::value(const std::string& name) const
+{
+	return value<T>(name, _currentRow);
+}
+
+
+template <class T>
+const T& RecordSet::value(std::size_t index) const
+{
+	return value<T>(index, _currentRow);
 }
 
 
