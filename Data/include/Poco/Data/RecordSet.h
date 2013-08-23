@@ -49,6 +49,7 @@
 #include "Poco/Data/LOB.h"
 #include "Poco/String.h"
 #include "Poco/Dynamic/Var.h"
+#include "Poco/Nullable.h"
 #include "Poco/Exception.h"
 #include <ostream>
 #include <limits>
@@ -349,6 +350,14 @@ public:
 	const T& value(std::size_t index) const;
 		/// Returns the value in the given column of the current row.
 
+	template <class T>
+	Poco::Nullable<T> valueNullable(const std::string& name) const;
+		/// Returns the value in the named column of the current row.
+
+	template <class T>
+	Poco::Nullable<T> valueNullable(std::size_t index) const;
+		/// Returns the value in the given column of the current row.
+
 	Poco::Dynamic::Var operator [] (const std::string& name);
 		/// Returns the value in the named column of the current row.
 
@@ -581,6 +590,26 @@ template <class T>
 const T& RecordSet::value(std::size_t index) const
 {
 	return value<T>(index, _currentRow);
+}
+
+
+template <class T>
+Poco::Nullable<T> RecordSet::valueNullable(const std::string& name) const
+{
+	if (isNull(name))
+		return Poco::Nullable<T>();
+	else
+		return Poco::Nullable<T>(value<T>(name, _currentRow));
+}
+
+
+template <class T>
+Poco::Nullable<T> RecordSet::valueNullable(std::size_t index) const
+{
+	if (isNull(index))
+		return Poco::Nullable<T>();
+	else
+		return Poco::Nullable<T>(value<T>(index, _currentRow));
 }
 
 
