@@ -606,7 +606,7 @@ Poco::Nullable<T> RecordSet::valueNullable(const std::string& name) const
 template <class T>
 Poco::Nullable<T> RecordSet::valueNullable(std::size_t index) const
 {
-	if (isNull(index))
+	if (isNull(index, _currentRow))
 		return Poco::Nullable<T>();
 	else
 		return Poco::Nullable<T>(value<T>(index, _currentRow));
