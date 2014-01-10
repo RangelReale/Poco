@@ -66,7 +66,7 @@ NTPClientTest::~NTPClientTest()
 }
 
 
-void NTPClientTest::testSync()
+void NTPClientTest::testTimeSync()
 {
 	assert(_ntpClient.request("pool.ntp.br") > 0);
 }
@@ -98,7 +98,7 @@ CppUnit::Test* NTPClientTest::suite()
 {
 	CppUnit::TestSuite* pSuite = new CppUnit::TestSuite("NTPClientTest");
 
-	CppUnit_addTest(pSuite, NTPClientTest, testSync);
+	CppUnit_addTest(pSuite, NTPClientTest, testTimeSync);
 
 	return pSuite;
 }

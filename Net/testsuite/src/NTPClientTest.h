@@ -48,7 +48,7 @@ public:
 	NTPClientTest(const std::string& name);
 	~NTPClientTest();
 
-	void testSync();
+	void testTimeSync();
 
 	void setUp();
 	void tearDown();
