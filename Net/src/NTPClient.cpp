@@ -68,7 +68,7 @@ int NTPClient::request(const std::string& address) const
 
 int NTPClient::request(SocketAddress& address) const
 {
-	Poco::Net::SocketAddress sa(Poco::Net::IPAddress(), 123);
+	Poco::Net::SocketAddress sa;
 	DatagramSocket ntpSocket(_family);
 	ntpSocket.setReceiveTimeout(_timeout);
 	ntpSocket.bind(sa);
