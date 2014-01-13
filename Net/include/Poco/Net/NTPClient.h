@@ -41,7 +41,6 @@
 
 
 #include "Poco/Net/Net.h"
-#include "Poco/Net/ICMPSocket.h"
 #include "Poco/Net/NTPEventArgs.h"
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/BasicEvent.h"
@@ -53,9 +52,6 @@ namespace Net {
 
 class Net_API NTPClient
 	/// This class provides NTP (Network Time Protocol) client functionality.
-	///
-	/// The events are available when class is instantiated
-	///	and non-static member functions are called.
 {
 public:
 	mutable Poco::BasicEvent<NTPEventArgs> response;
@@ -67,14 +63,14 @@ public:
 		/// Destroys the NTP client.
 
 	int request(SocketAddress& address) const;
-		/// Pings the specified address [repeat] times.
+		/// Request the time from the server at address.
 		/// Notifications are posted for events.
 		/// 
 		/// Returns the number of valid replies.
 
 	int request(const std::string& address) const;
-		/// Calls ICMPClient::ping(SocketAddress&, int) and
-		/// returns the result.
+		/// Request the time from the server at address.
+		/// Notifications are posted for events.
 		/// 
 		/// Returns the number of valid replies.
 

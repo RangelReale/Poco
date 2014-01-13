@@ -89,7 +89,7 @@ int NTPClient::request(SocketAddress& address) const
 		Poco::Net::SocketAddress sender;
 		int n = ntpSocket.receiveFrom(p, sizeof(p)-1, sender);
 
-		if (n < 48)
+		if (n < 48) // NTP packet must have at least 48 bytes
 			throw Poco::Net::NTPException("Invalid response received");
 
 		packet.setPacket(p);

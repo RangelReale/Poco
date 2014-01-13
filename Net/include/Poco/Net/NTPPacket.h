@@ -58,7 +58,7 @@ public:
 	NTPPacket(Poco::UInt8 *packet);
 		/// Creates an NTPPacket.
 		///
-		/// Assumed to have exactly 48 bytes.
+		/// Assumed to have at least 48 bytes.
 
 	~NTPPacket();
 		/// Destroys the NTPPacket.
@@ -66,7 +66,7 @@ public:
 	void packet(Poco::UInt8 *packet) const;
 		/// Returns the NTP packet.
 		///
-		/// Assumed to have exactly 48 bytes.
+		/// Assumed to have at least 48 bytes.
 
 	void setPacket(Poco::UInt8 *packet);
 		/// Returns the NTP packet.
