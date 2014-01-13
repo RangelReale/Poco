@@ -142,6 +142,15 @@
     <Filter Include="WebSocket\Source Files">
       <UniqueIdentifier>{bf80ffd2-d2ca-41bc-b4df-f0f161b92dde}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NTPClient">
+      <UniqueIdentifier>{9c2d236d-22ba-481c-8c49-fca6ca2ea56a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NTPClient\Header Files">
+      <UniqueIdentifier>{e033cd60-2658-4815-be85-75c93a48a66c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NTPClient\Source Files">
+      <UniqueIdentifier>{1dca517f-f2ae-4ec7-a89d-1befe990463b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DNSTest.h">
@@ -308,6 +317,12 @@
     </ClInclude>
     <ClInclude Include="src\WebSocketTestSuite.h">
       <Filter>WebSocket\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NTPClientTest.h">
+      <Filter>NTPClient\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NTPClientTestSuite.h">
+      <Filter>NTPClient\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -478,6 +493,12 @@
     </ClCompile>
     <ClCompile Include="src\WebSocketTestSuite.cpp">
       <Filter>WebSocket\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NTPClientTest.cpp">
+      <Filter>NTPClient\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NTPClientTestSuite.cpp">
+      <Filter>NTPClient\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
