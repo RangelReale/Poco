@@ -35,6 +35,7 @@
 #include "MD5EngineTest.h"
 #include "SHA1EngineTest.h"
 #include "HMACEngineTest.h"
+#include "PBKDF2EngineTest.h"
 #include "DigestStreamTest.h"
 #include "RandomTest.h"
 #include "RandomStreamTest.h"
@@ -48,6 +49,7 @@ CppUnit::Test* CryptTestSuite::suite()
 	pSuite->addTest(MD5EngineTest::suite());
 	pSuite->addTest(SHA1EngineTest::suite());
 	pSuite->addTest(HMACEngineTest::suite());
+	pSuite->addTest(PBKDF2EngineTest::suite());
 	pSuite->addTest(DigestStreamTest::suite());
 	pSuite->addTest(RandomTest::suite());
 	pSuite->addTest(RandomStreamTest::suite());
