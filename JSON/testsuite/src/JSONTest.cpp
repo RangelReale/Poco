@@ -13,7 +13,6 @@
 #include "JSONTest.h"
 #include "CppUnit/TestCaller.h"
 #include "CppUnit/TestSuite.h"
-
 #include "Poco/JSON/Object.h"
 #include "Poco/JSON/Parser.h"
 #include "Poco/JSON/Query.h"
@@ -22,7 +21,6 @@
 #include "Poco/JSON/ParseHandler.h"
 #include "Poco/JSON/PrintHandler.h"
 #include "Poco/JSON/Template.h"
-
 #include "Poco/Path.h"
 #include "Poco/Environment.h"
 #include "Poco/File.h"
@@ -32,10 +30,10 @@
 #include "Poco/Latin1Encoding.h"
 #include "Poco/TextConverter.h"
 #include "Poco/Nullable.h"
-
 #include "Poco/Dynamic/Struct.h"
-
 #include <set>
+#include <iostream>
+
 
 using namespace Poco::JSON;
 using namespace Poco::Dynamic;
@@ -991,6 +989,34 @@ void JSONTest::testDoubleElement()
 }
 
 
+void JSONTest::testSetArrayElement()
+{
+	std::string json = "[]";
+	Parser parser;
+	Var result = parser.parse(json);
+	Poco::JSON::Array::Ptr array = result.extract<Poco::JSON::Array::Ptr>();
+
+	// array[0] = 7
+	array->set(0, 7);
+	assert(array->size() == 1);
+	assert(array->getElement<int>(0) == 7);
+
+	// array[2] = "foo"
+	array->set(2, std::string("foo"));
+	assert(array->size() == 3);
+	assert(array->getElement<int>(0) == 7);
+	assert(array->isNull(1));
+	assert(array->getElement<std::string>(2) == "foo");
+
+	// array[1] = 13
+	array->set(1, 13);
+	assert(array->size() == 3);
+	assert(array->getElement<int>(0) == 7);
+	assert(array->getElement<int>(1) == 13);
+	assert(array->getElement<std::string>(2) == "foo");
+}
+
+
 void JSONTest::testOptValue()
 {
 	std::string json = "{ }";
@@ -1195,13 +1221,32 @@ void JSONTest::testPrintHandler()
 
 void JSONTest::testStringify()
 {
+	std::string str1 = "\r";
+	std::string str2 = "\n";
+	Poco::JSON::Object obj1, obj2;
+	obj1.set("payload", str1);
+	obj2.set("payload", str2);
+	std::ostringstream oss1, oss2;
+	Poco::JSON::Stringifier::stringify(obj1, oss1);
+	Poco::JSON::Stringifier::stringify(obj2, oss2);
+	assert(oss1.str() == "{\"payload\":\"\\r\"}");
+	std::cout << "\"" << oss1.str() << "\"" << std::endl;
+	assert(oss2.str() == "{\"payload\":\"\\n\"}");
+
 	Object jObj(false);
-	jObj.set("foo", 0);
-	jObj.set("bar", 0);
+	jObj.set("foo\\", 0);
+	jObj.set("bar/", 0);
 	jObj.set("baz", 0);
+	jObj.set("q\"uote\"d", 0);
+	jObj.set("backspace", "bs\b");
+	jObj.set("newline", "nl\n");
+	jObj.set("tab", "tb\t");
+
 	std::stringstream ss;
 	jObj.stringify(ss);
-	assert(ss.str() == "{\"bar\":0,\"baz\":0,\"foo\":0}");
+
+	assert(ss.str() == "{\"backspace\":\"bs\\b\",\"bar\\/\":0,\"baz\":0,\"foo\\\\\":0,"
+		"\"newline\":\"nl\\n\",\"q\\\"uote\\\"d\":0,\"tab\":\"tb\\t\"}");
 
 	std::string json = "{ \"Simpsons\" : { \"husband\" : { \"name\" : \"Homer\" , \"age\" : 38 }, \"wife\" : { \"name\" : \"Marge\", \"age\" : 36 }, "
 						"\"children\" : [ \"Bart\", \"Lisa\", \"Maggie\" ], "
@@ -1241,6 +1286,7 @@ void JSONTest::testStringify()
 						"\"wife\":{"
 						"\"age\":36,\"name\":\"Marge\""
 						"}}}";
+
 	assert (ostr.str() == str);
 
 	ostr.str("");
@@ -1625,16 +1671,9 @@ void JSONTest::testUnicode()
 	Parser parser;
 
 	Var result;
-	try
-	{
-		parser.parse(json);
-		result = parser.asVar();
-	}
-	catch(JSONException& jsone)
-	{
-		std::cout << jsone.message() << std::endl;
-		assert(false);
-	}
+	parser.parse(json);
+	result = parser.asVar();
+
 	assert(result.type() == typeid(Object::Ptr));
 
 	Object::Ptr object = result.extract<Object::Ptr>();
@@ -1647,6 +1686,54 @@ void JSONTest::testUnicode()
 	converter.convert(text, original);
 
 	assert(test.convert<std::string>() == original);
+
+	parser.reset();
+	std::ostringstream os;
+	os << '[' << (char) 0x92 << ']';
+	try
+	{
+		parser.parse(os.str());
+		fail("Invalid Unicode sequence, must fail.");
+	}
+	catch (JSONException&) {}
+
+	parser.reset();
+	os.str("");
+	os << '[' << (char)0xC2 << (char)0x92 << ']';
+	result = parser.parse(os.str());
+	assert(result.type() == typeid(Poco::JSON::Array::Ptr));
+
+	parser.reset();
+	os.str("");
+	os << '[' << (char)0xAC << ']';
+	try
+	{
+		parser.parse(os.str());
+		fail("Invalid Unicode sequence, must fail.");
+	}
+	catch (JSONException&) {}
+
+	parser.reset();
+	os.str("");
+	os << '[' << (char)0xE2 << (char)0x82 << (char)0xAC << ']';
+	result = parser.parse(os.str());
+	assert(result.type() == typeid(Poco::JSON::Array::Ptr));
+
+	parser.reset();
+	os.str("");
+	os << '[' << (char)0xA2 << ']';
+	try
+	{
+		parser.parse(os.str());
+		fail("Invalid Unicode sequence, must fail.");
+	}
+	catch (JSONException&){}
+
+	parser.reset();
+	os.str("");
+	os << '[' << (char)0xF0 << (char)0xA4 << (char)0xAD << (char)0xAD << ']';
+	result = parser.parse(os.str());
+	assert(result.type() == typeid(Poco::JSON::Array::Ptr));
 }
 
 
@@ -1717,6 +1804,7 @@ CppUnit::Test* JSONTest::suite()
 	CppUnit_addTest(pSuite, JSONTest, testStringElement);
 	CppUnit_addTest(pSuite, JSONTest, testEmptyObjectElement);
 	CppUnit_addTest(pSuite, JSONTest, testDoubleElement);
+	CppUnit_addTest(pSuite, JSONTest, testSetArrayElement);
 	CppUnit_addTest(pSuite, JSONTest, testOptValue);
 	CppUnit_addTest(pSuite, JSONTest, testQuery);
 	CppUnit_addTest(pSuite, JSONTest, testComment);
