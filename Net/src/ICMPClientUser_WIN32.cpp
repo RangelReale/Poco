@@ -19,6 +19,7 @@
 #include "Poco/Net/NetException.h"
 #include "Poco/Exception.h"
 #include "Poco/Format.h"
+#include "Poco/Buffer.h"
 #include <sstream>
 
 #include <iphlpapi.h>
@@ -49,26 +50,36 @@ int ICMPClientUserImpl::ping(const std::string& address, int repeat) const
 }
 
 
+class ICMPClientUserImpl_ICMPHandle
+{
+public:
+	ICMPClientUserImpl_ICMPHandle(HANDLE hIcmpFile) : _hIcmpFile(hIcmpFile) {}
+	~ICMPClientUserImpl_ICMPHandle() { if (_hIcmpFile != INVALID_HANDLE_VALUE) IcmpCloseHandle(_hIcmpFile); }
+
+	HANDLE hIcmpFile() const { return _hIcmpFile; }
+private:
+	HANDLE _hIcmpFile;
+};
+
+
 int ICMPClientUserImpl::ping(SocketAddress& address, int repeat) const
 {
 	if (repeat <= 0) return 0;
 
     char SendData[] = "Data Buffer";
-	HANDLE hIcmpFile;
     DWORD dwRetVal = 0;
     DWORD dwError = 0;
-    LPVOID ReplyBuffer = NULL;
     DWORD ReplySize = 0;
 
-	ICMPEventArgs eventArgs(address, repeat, sizeof(SendData), 128); //icmpSocket.dataSize(), icmpSocket.ttl());
+	ICMPEventArgs eventArgs(address, repeat, sizeof(SendData), 128);
 	pingBegin.notify(this, eventArgs);
 
 	for (int i = 0; i < repeat; ++i)
 	{
 		++eventArgs;
 
-		hIcmpFile = IcmpCreateFile();
-		if (hIcmpFile == INVALID_HANDLE_VALUE) 
+		ICMPClientUserImpl_ICMPHandle hIcmpFile(IcmpCreateFile());
+		if (hIcmpFile.hIcmpFile() == INVALID_HANDLE_VALUE)
 		{
 			eventArgs.setError(i, Poco::format("IcmpCreatefile returned error: %?d", GetLastError()));
 			continue;
@@ -76,20 +87,28 @@ int ICMPClientUserImpl::ping(SocketAddress& address, int repeat) const
 
 		// Allocate space for at a single reply
 		ReplySize = sizeof (ICMP_ECHO_REPLY) + sizeof (SendData) + 8;
-		ReplyBuffer = (VOID *) malloc(ReplySize);
+		Poco::Buffer<char> ReplyBuffer(0);
+		try
+		{
+			ReplyBuffer.resize(ReplySize);
+		}
+		catch (std::exception &e)
+		{
+			eventArgs.setError(i, Poco::format("Unable to allocate memory for reply buffer: %s", std::string(e.what())));
+			continue;
+		}
 		if (ReplyBuffer == NULL) 
 		{
-			IcmpCloseHandle(hIcmpFile);
 			eventArgs.setError(i, "Unable to allocate memory for reply buffer");
 			continue;
 		}
 
-		dwRetVal = IcmpSendEcho2(hIcmpFile, NULL, NULL, NULL,
+		dwRetVal = IcmpSendEcho2(hIcmpFile.hIcmpFile(), NULL, NULL, NULL,
 				*((IPAddr*)address.host().addr()), SendData, sizeof (SendData), NULL,
-								 ReplyBuffer, ReplySize, 1000);
+								 ReplyBuffer.begin(), ReplySize, 1000);
 		if (dwRetVal != 0) 
 		{
-			PICMP_ECHO_REPLY pEchoReply = (PICMP_ECHO_REPLY) ReplyBuffer;
+			PICMP_ECHO_REPLY pEchoReply = (PICMP_ECHO_REPLY) ReplyBuffer.begin();
 			struct in_addr ReplyAddr;
 			ReplyAddr.S_un.S_addr = pEchoReply->Address;
 
@@ -129,9 +148,6 @@ int ICMPClientUserImpl::ping(SocketAddress& address, int repeat) const
 				break;
 			}
 		}
-
-		IcmpCloseHandle(hIcmpFile);
-		free(ReplyBuffer);
 	}
 
 	pingEnd.notify(this, eventArgs);
