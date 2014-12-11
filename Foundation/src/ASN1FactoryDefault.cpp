@@ -15,6 +15,7 @@
 
 
 #include "Poco/ASN1FactoryDefault.h"
+#include "Poco/ASN1Types.h"
 
 
 namespace Poco {
@@ -22,7 +23,21 @@ namespace Poco {
 
 ASN1::Ptr ASN1FactoryDefault::create(ASN1::Type type)
 {
-	return ASN1::Ptr();
+	switch (type)
+	{
+	case ASN1::None: return new ASN1Types::Null;
+    case ASN1::Boolean: return new ASN1Types::Boolean;
+    case ASN1::Integer: return new ASN1Types::Integer;
+    case ASN1::OctetString: return new ASN1Types::OctetString;
+    case ASN1::Null: return new ASN1Types::Null;
+    case ASN1::ObjectIdentifier: return new ASN1Types::ObjectIdentifier;
+    case ASN1::Sequence: return new ASN1Types::Sequence;
+    default:
+        //assert(false, "factory method", Poco::format("Unknown type: %d", type));
+		return new ASN1Types::Unknown(type);
+    };
+
+    //return NullObject::Instance();
 }
 
 
