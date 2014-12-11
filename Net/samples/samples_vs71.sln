@@ -39,15 +39,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TimeServer", "TimeServer\Ti
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TwitterClient", "TwitterClient\TwitterClient_vs71.vcproj", "{CCDD82BC-680D-39C0-AE25-1FBC5B615F7E}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebSocketServer", "WebSocketServer\WebSocketServer_vs71.vcproj", "{0DC40FE3-6C42-365E-8DAB-899C50ECFB1C}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SMTPLogger", "SMTPLogger\SMTPLogger_vs71.vcproj", "{83E96E4E-A7E8-340B-B6D2-31B4D40D99AF}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ifconfig", "ifconfig\ifconfig_vs71.vcproj", "{BD3A18C6-22B6-3B10-913B-7A84D1845CA3}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -181,18 +181,6 @@ Global
 		{59EDFD20-9968-30F7-9532-44C08DA58C6E}.debug_static_md.Build.0 = debug_static_md|Win32
 		{59EDFD20-9968-30F7-9532-44C08DA58C6E}.release_static_md.ActiveCfg = release_static_md|Win32
 		{59EDFD20-9968-30F7-9532-44C08DA58C6E}.release_static_md.Build.0 = release_static_md|Win32
-		{CCDD82BC-680D-39C0-AE25-1FBC5B615F7E}.debug_shared.ActiveCfg = debug_shared|Win32
-		{CCDD82BC-680D-39C0-AE25-1FBC5B615F7E}.debug_shared.Build.0 = debug_shared|Win32
-		{CCDD82BC-680D-39C0-AE25-1FBC5B615F7E}.release_shared.ActiveCfg = release_shared|Win32
-		{CCDD82BC-680D-39C0-AE25-1FBC5B615F7E}.release_shared.Build.0 = release_shared|Win32
-		{CCDD82BC-680D-39C0-AE25-1FBC5B615F7E}.debug_static_mt.ActiveCfg = debug_static_mt|Win32
-		{CCDD82BC-680D-39C0-AE25-1FBC5B615F7E}.debug_static_mt.Build.0 = debug_static_mt|Win32
-		{CCDD82BC-680D-39C0-AE25-1FBC5B615F7E}.release_static_mt.ActiveCfg = release_static_mt|Win32
-		{CCDD82BC-680D-39C0-AE25-1FBC5B615F7E}.release_static_mt.Build.0 = release_static_mt|Win32
-		{CCDD82BC-680D-39C0-AE25-1FBC5B615F7E}.debug_static_md.ActiveCfg = debug_static_md|Win32
-		{CCDD82BC-680D-39C0-AE25-1FBC5B615F7E}.debug_static_md.Build.0 = debug_static_md|Win32
-		{CCDD82BC-680D-39C0-AE25-1FBC5B615F7E}.release_static_md.ActiveCfg = release_static_md|Win32
-		{CCDD82BC-680D-39C0-AE25-1FBC5B615F7E}.release_static_md.Build.0 = release_static_md|Win32
 		{0DC40FE3-6C42-365E-8DAB-899C50ECFB1C}.debug_shared.ActiveCfg = debug_shared|Win32
 		{0DC40FE3-6C42-365E-8DAB-899C50ECFB1C}.debug_shared.Build.0 = debug_shared|Win32
 		{0DC40FE3-6C42-365E-8DAB-899C50ECFB1C}.release_shared.ActiveCfg = release_shared|Win32
@@ -217,6 +205,18 @@ Global
 		{83E96E4E-A7E8-340B-B6D2-31B4D40D99AF}.debug_static_md.Build.0 = debug_static_md|Win32
 		{83E96E4E-A7E8-340B-B6D2-31B4D40D99AF}.release_static_md.ActiveCfg = release_static_md|Win32
 		{83E96E4E-A7E8-340B-B6D2-31B4D40D99AF}.release_static_md.Build.0 = release_static_md|Win32
+		{BD3A18C6-22B6-3B10-913B-7A84D1845CA3}.debug_shared.ActiveCfg = debug_shared|Win32
+		{BD3A18C6-22B6-3B10-913B-7A84D1845CA3}.debug_shared.Build.0 = debug_shared|Win32
+		{BD3A18C6-22B6-3B10-913B-7A84D1845CA3}.release_shared.ActiveCfg = release_shared|Win32
+		{BD3A18C6-22B6-3B10-913B-7A84D1845CA3}.release_shared.Build.0 = release_shared|Win32
+		{BD3A18C6-22B6-3B10-913B-7A84D1845CA3}.debug_static_mt.ActiveCfg = debug_static_mt|Win32
+		{BD3A18C6-22B6-3B10-913B-7A84D1845CA3}.debug_static_mt.Build.0 = debug_static_mt|Win32
+		{BD3A18C6-22B6-3B10-913B-7A84D1845CA3}.release_static_mt.ActiveCfg = release_static_mt|Win32
+		{BD3A18C6-22B6-3B10-913B-7A84D1845CA3}.release_static_mt.Build.0 = release_static_mt|Win32
+		{BD3A18C6-22B6-3B10-913B-7A84D1845CA3}.debug_static_md.ActiveCfg = debug_static_md|Win32
+		{BD3A18C6-22B6-3B10-913B-7A84D1845CA3}.debug_static_md.Build.0 = debug_static_md|Win32
+		{BD3A18C6-22B6-3B10-913B-7A84D1845CA3}.release_static_md.ActiveCfg = release_static_md|Win32
+		{BD3A18C6-22B6-3B10-913B-7A84D1845CA3}.release_static_md.Build.0 = release_static_md|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
