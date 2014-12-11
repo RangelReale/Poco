@@ -155,20 +155,4 @@ int ICMPClientUserImpl::ping(SocketAddress& address, int repeat) const
 }
 
 
-int ICMPClientUserImpl::pingIPv4(const std::string& address, int repeat)
-{
-	if (repeat <= 0) return 0;
-
-	SocketAddress a(address, 0);
-	return ping(a, IPAddress::IPv4, repeat);
-}
-
-
-int ICMPClientUserImpl::ping(SocketAddress& address, IPAddress::Family family, int repeat)
-{
-	ICMPClientUserImpl client(family);
-	return client.ping(address, repeat);
-}
-
-
 } } // namespace Poco::Net

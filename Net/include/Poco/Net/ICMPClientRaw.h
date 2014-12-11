@@ -1,13 +1,13 @@
 //
-// ICMPClientUser_WIN32.h
+// ICMPClientRaw.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/ICMPClientUser_WIN32.h#1 $
+// $Id: //poco/1.4/Net/include/Poco/Net/ICMPClientRaw.h#1 $
 //
 // Library: Net
 // Package: ICMP
-// Module:  ICMPClientUserImpl
+// Module:  ICMPClientRaw
 //
-// Definition of the ICMPClientUserImpl class.
+// Definition of the ICMPClientRaw class.
 //
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
@@ -16,12 +16,13 @@
 //
 
 
-#ifndef Net_ICMPClientUser_WIN32_INCLUDED
-#define Net_ICMPClientUser_WIN32_INCLUDED
+#ifndef Net_ICMPClientRaw_INCLUDED
+#define Net_ICMPClientRaw_INCLUDED
 
 
 #include "Poco/Net/Net.h"
 #include "Poco/Net/ICMPClientImpl.h"
+#include "Poco/Net/ICMPSocket.h"
 #include "Poco/Net/ICMPEventArgs.h"
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/BasicEvent.h"
@@ -31,13 +32,14 @@ namespace Poco {
 namespace Net {
 
 
-class Net_API ICMPClientUserImpl : public ICMPClientImpl
+class Net_API ICMPClientRaw : public ICMPClientImpl
+	/// This class provides ICMP Ping functionality using raw sockets.
 {
 public:
-	explicit ICMPClientUserImpl(IPAddress::Family family);
+	explicit ICMPClientRaw(IPAddress::Family family);
 		/// Creates an ICMP client.
 
-	~ICMPClientUserImpl();
+	~ICMPClientRaw();
 		/// Destroys the ICMP client.
 
 	int ping(SocketAddress& address, int repeat = 1) const;
@@ -60,4 +62,4 @@ private:
 } } // namespace Poco::Net
 
 
-#endif // Net_ICMPClientUser_WIN32_INCLUDED
+#endif // Net_ICMPClientRaw_INCLUDED

@@ -405,6 +405,12 @@
     <ClInclude Include="include\Poco\Net\ICMPClient.h">
       <Filter>ICMP\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Poco\Net\ICMPClientImpl.h">
+      <Filter>ICMP\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Poco\Net\ICMPClientRaw.h">
+      <Filter>ICMP\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Poco\Net\ICMPEventArgs.h">
       <Filter>ICMP\Header Files</Filter>
     </ClInclude>
@@ -446,9 +452,6 @@
     </ClInclude>
     <ClInclude Include="include\Poco\Net\WebSocketImpl.h">
       <Filter>WebSocket\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Poco\Net\ICMPClientUser.h">
-      <Filter>ICMP\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -701,6 +704,9 @@
     <ClCompile Include="src\ICMPClient.cpp">
       <Filter>ICMP\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ICMPClientRaw.cpp">
+      <Filter>ICMP\Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\ICMPEventArgs.cpp">
       <Filter>ICMP\Source Files</Filter>
     </ClCompile>
@@ -742,9 +748,6 @@
     </ClCompile>
     <ClCompile Include="src\WebSocketImpl.cpp">
       <Filter>WebSocket\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ICMPClientUser.cpp">
-      <Filter>ICMP\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

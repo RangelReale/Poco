@@ -405,7 +405,10 @@
     <ClInclude Include="include\Poco\Net\ICMPClient.h">
       <Filter>ICMP\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Poco\Net\ICMPClientUser.h">
+    <ClInclude Include="include\Poco\Net\ICMPClientImpl.h">
+      <Filter>ICMP\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Poco\Net\ICMPClientRaw.h">
       <Filter>ICMP\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Poco\Net\ICMPEventArgs.h">
@@ -701,7 +704,7 @@
     <ClCompile Include="src\ICMPClient.cpp">
       <Filter>ICMP\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ICMPClientUser.cpp">
+    <ClCompile Include="src\ICMPClientRaw.cpp">
       <Filter>ICMP\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ICMPEventArgs.cpp">

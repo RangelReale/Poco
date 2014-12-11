@@ -1,13 +1,13 @@
 //
-// ICMPClientUser_WIN32.h
+// ICMPClientImpl.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/ICMPClientUser_WIN32.h#1 $
+// $Id: //poco/1.4/Net/include/Poco/Net/ICMPClientImpl.h#1 $
 //
 // Library: Net
 // Package: ICMP
-// Module:  ICMPClientUserImpl
+// Module:  ICMPClientImpl
 //
-// Definition of the ICMPClientUserImpl class.
+// Definition of the ICMPClientImpl class.
 //
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
@@ -16,12 +16,11 @@
 //
 
 
-#ifndef Net_ICMPClientUser_WIN32_INCLUDED
-#define Net_ICMPClientUser_WIN32_INCLUDED
+#ifndef Net_ICMPClientImpl_INCLUDED
+#define Net_ICMPClientImpl_INCLUDED
 
 
 #include "Poco/Net/Net.h"
-#include "Poco/Net/ICMPClientImpl.h"
 #include "Poco/Net/ICMPEventArgs.h"
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/BasicEvent.h"
@@ -31,33 +30,32 @@ namespace Poco {
 namespace Net {
 
 
-class Net_API ICMPClientUserImpl : public ICMPClientImpl
+class Net_API ICMPClientImpl
 {
 public:
-	explicit ICMPClientUserImpl(IPAddress::Family family);
-		/// Creates an ICMP client.
+	mutable Poco::BasicEvent<ICMPEventArgs> pingBegin;
+	mutable Poco::BasicEvent<ICMPEventArgs> pingReply;
+	mutable Poco::BasicEvent<ICMPEventArgs> pingError;
+	mutable Poco::BasicEvent<ICMPEventArgs> pingEnd;
 
-	~ICMPClientUserImpl();
+	virtual ~ICMPClientImpl() {}
 		/// Destroys the ICMP client.
 
-	int ping(SocketAddress& address, int repeat = 1) const;
+	virtual int ping(SocketAddress& address, int repeat = 1) const = 0;
 		/// Pings the specified address [repeat] times.
 		/// Notifications are posted for events.
 		/// 
 		/// Returns the number of valid replies.
 
-	int ping(const std::string& address, int repeat = 1) const;
+	virtual int ping(const std::string& address, int repeat = 1) const = 0;
 		/// Calls ICMPClient::ping(SocketAddress&, int) and
 		/// returns the result.
 		/// 
 		/// Returns the number of valid replies.
-
-private:
-	mutable IPAddress::Family _family;
 };
 
 
 } } // namespace Poco::Net
 
 
-#endif // Net_ICMPClientUser_WIN32_INCLUDED
+#endif // Net_ICMPClientImpl_INCLUDED
