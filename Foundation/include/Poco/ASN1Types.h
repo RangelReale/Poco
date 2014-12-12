@@ -98,6 +98,7 @@ class Foundation_API Integer : public ASN1
 public:
 	Integer();
 	Integer(Poco::UInt32 value);
+	Integer(ASN1::Type type, Poco::UInt32 value);
 
 	Poco::UInt32 getValue() const;
 
@@ -160,6 +161,7 @@ public:
 	Sequence();
 	Sequence(ASN1::Type type);
 	Sequence(const SequenceData &value);
+	Sequence(ASN1::Type type, const SequenceData &value);
 
 	const SequenceData &getSequenceData() const;
 protected:

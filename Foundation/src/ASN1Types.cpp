@@ -217,6 +217,12 @@ Integer::Integer(Poco::UInt32 value) : ASN1(ASN1::Integer), _value(value)
 }
 
 
+Integer::Integer(ASN1::Type type, Poco::UInt32 value) : ASN1(type), _value(value)
+{
+
+}
+
+
 Poco::UInt32 Integer::getValue() const
 {
 	return _value;
@@ -516,6 +522,15 @@ Sequence::Sequence(ASN1::Type type) : ASN1(type)
 
 
 Sequence::Sequence(const SequenceData &value) : ASN1(ASN1::Sequence)
+{
+	for (SequenceData::const_iterator i=value.cbegin(); i!=value.cend(); i++)
+	{
+		_value.push_back(*i);
+	}
+}
+
+
+Sequence::Sequence(ASN1::Type type, const SequenceData &value) : ASN1(type)
 {
 	for (SequenceData::const_iterator i=value.cbegin(); i!=value.cend(); i++)
 	{
