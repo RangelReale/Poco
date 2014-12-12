@@ -73,6 +73,7 @@ private:
 	list_t _list;
 };
 
+
 class Net_API PDU : public Poco::RefCountedObject
 {
 public:
@@ -107,6 +108,8 @@ private:
 class Net_API SNMPMessage : public Poco::RefCountedObject
 {
 public:
+	typedef Poco::AutoPtr<SNMPMessage> Ptr;
+
 	SNMPMessage();
 	SNMPMessage(ASN1::Ptr data);
 
@@ -125,6 +128,7 @@ private:
 	std::string _community;
 	PDU _pdu;
 };
+
 
 } } } // namespace Poco::Net::SNMPTypes
 

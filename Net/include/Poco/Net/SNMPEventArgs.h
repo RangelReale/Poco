@@ -22,7 +22,7 @@
 
 #include "Poco/Net/Net.h"
 #include "Poco/Net/SocketAddress.h"
-#include "Poco/ASN1.h"
+#include "Poco/Net/SNMPClientTypes.h"
 
 
 namespace Poco {
@@ -50,7 +50,7 @@ public:
 	std::string hostAddress() const;
 		/// Returns the target IP address.
 
-	ASN1::Ptr response() const;
+	SNMPTypes::SNMPMessage::Ptr message() const;
 		/// Returns the number of repetitions for the ping operation.
 
 	const std::string &error() const;
@@ -59,15 +59,15 @@ public:
 private:
 	SNMPEventArgs();
 
-	void setResponse(ASN1::Ptr response);
+	void setMessage(SNMPTypes::SNMPMessage::Ptr message);
 	void setError(const std::string &error);
 
 	SocketAddress _address;
 	int _requestid;
-	ASN1::Ptr _response;
+	SNMPTypes::SNMPMessage::Ptr _message;
 	std::string _error;
 
-	friend class SNMPClientRaw;
+	friend class SNMPClient;
 };
 
 

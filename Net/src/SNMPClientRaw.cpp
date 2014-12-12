@@ -38,7 +38,7 @@ namespace Net {
 SNMPClientRaw::SNMPClientRaw() : _socket()
 {
 	Poco::Net::SocketAddress sa;
-	_socket.setReceiveTimeout(1000 * 1000);
+	_socket.setReceiveTimeout(1 * 1000 * 1000);
 	_socket.bind(sa);
 }
 
@@ -46,7 +46,7 @@ SNMPClientRaw::SNMPClientRaw() : _socket()
 SNMPClientRaw::SNMPClientRaw(const SocketAddress& listenAddr) :
 	_socket()
 {
-	_socket.setReceiveTimeout(1000 * 1000);
+	_socket.setReceiveTimeout(1 * 1000 * 1000);
 	_socket.bind(listenAddr);
 }
 

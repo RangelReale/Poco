@@ -16,9 +16,9 @@
 
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/Net/SNMPClient.h"
+#include "Poco/Net/SNMPClientRaw.h"
+#include "Poco/Net/SNMPClientRawTypes.h"
 #include "Poco/Net/NetException.h"
-#include "Poco/ASN1Codec.h"
-#include "Poco/Net/SNMPClientRawFactory.h"
 #include "Poco/Exception.h"
 #include <Poco/Delegate.h>
 
@@ -35,19 +35,8 @@ namespace Poco {
 namespace Net {
 
 
-SNMPClient::SNMPClient() : _socket()
+SNMPClient::SNMPClient()
 {
-	Poco::Net::SocketAddress sa;
-	_socket.setReceiveTimeout(1000 * 1000);
-	_socket.bind(sa);
-}
-
-
-SNMPClient::SNMPClient(const SocketAddress& listenAddr) :
-	_socket()
-{
-	_socket.setReceiveTimeout(1000 * 1000);
-	_socket.bind(listenAddr);
 }
 
 
@@ -56,51 +45,51 @@ SNMPClient::~SNMPClient()
 }
 
 
-ASN1::Ptr SNMPClient::query(const std::string& address, ASN1::Ptr query)
+void SNMPClient::send(const std::string& address, SNMPTypes::SNMPMessage::Ptr message)
 {
 	SocketAddress addr(address, 161);
-	return this->query(addr, query);
+	send(addr, message);
 }
 
 
-ASN1::Ptr SNMPClient::query(SocketAddress& address, ASN1::Ptr query)
+void SNMPClient::send(SocketAddress& address, SNMPTypes::SNMPMessage::Ptr message)
 {
-	std::stringstream data;
-	Poco::SharedPtr<ASN1Factory> factory(new SNMPClientRawFactory);
-	ASN1Codec codec(factory);
-	codec.encode(query, data);
+	SNMPClientRaw snmpClient;
 
-	_socket.sendTo(data.str().data(), data.str().size(), address);
+	SNMPEventArgs eventArgs(address);
+	snmpBegin.notify(this, eventArgs);
 
-	char buffer[1024];
-	Poco::Net::SocketAddress sender;
-	int n = _socket.receiveFrom(buffer, sizeof(buffer)-1, sender);
+	std::string startoid;
 
-	std::stringstream srec(std::string(buffer, n));
-	srec.exceptions(std::istream::failbit | std::istream::badbit | std::istream::eofbit);
+	if (message->pdu().type() == ASN1Types::SNMP_ASN1::GetNextRequestPDU)
+	{
+		if (message->pdu().varBindList().list().size() != 1)
+			throw Poco::IllegalStateException("For SNMP GET NEXT, only one VarBind must be requested");
 
-	ASN1::Ptr response = codec.decode(srec);
+		startoid = message->pdu().varBindList().list().at(0)->oid();
+	}
 
-	return response;
-}
-
-
-void SNMPClient::send(const std::string& address, ASN1::Ptr query)
-{
-	SocketAddress addr(address, 161);
-	send(addr, query);
-}
-
-
-void SNMPClient::send(SocketAddress& address, ASN1::Ptr query)
-{
-	/*
-	SNMPRawEventArgs eventArgs(address);
 	try
 	{
-		ASN1::Ptr response = this->query(address, query);
-		eventArgs.setResponse(response);
-		snmpReply.notify(this, eventArgs);
+		while (true)
+		{
+			Poco::ASN1::Ptr resp = snmpClient.query(address, message->encode());
+			SNMPTypes::SNMPMessage::Ptr sresp(new SNMPTypes::SNMPMessage(resp));
+
+			eventArgs.setMessage(sresp);
+			snmpReply.notify(this, eventArgs);
+
+			if (message->pdu().type() == ASN1Types::SNMP_ASN1::GetNextRequestPDU)
+			{
+				std::string curoid(sresp->pdu().varBindList().list().at(0)->oid());
+				if (curoid.substr(0, startoid.size()) != startoid)
+					break;
+
+				message->pdu().varBindList().list()[0]->setOid(curoid);
+			}
+			else
+				break;
+		}
 	}
 	catch (TimeoutException&)
 	{
@@ -123,7 +112,8 @@ void SNMPClient::send(SocketAddress& address, ASN1::Ptr query)
 		eventArgs.setError(os.str());
 		snmpError.notify(this, eventArgs);
 	}
-	*/
+
+	snmpEnd.notify(this, eventArgs);
 }
 
 

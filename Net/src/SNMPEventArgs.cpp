@@ -34,7 +34,7 @@ namespace Net {
 
 SNMPEventArgs::SNMPEventArgs(const SocketAddress& address):
 	_address(address), 
-	_response()
+	_message()
 {
 }
 
@@ -72,9 +72,9 @@ std::string SNMPEventArgs::hostAddress() const
 }
 
 
-ASN1::Ptr SNMPEventArgs::response() const
+SNMPTypes::SNMPMessage::Ptr SNMPEventArgs::message() const
 {
-	return _response;
+	return _message;
 }
 
 
@@ -84,9 +84,9 @@ const std::string &SNMPEventArgs::error() const
 }
 
 
-void SNMPEventArgs::setResponse(ASN1::Ptr response)
+void SNMPEventArgs::setMessage(SNMPTypes::SNMPMessage::Ptr message)
 {
-	_response = response;
+	_message = message;
 }
 
 
