@@ -56,6 +56,35 @@ SNMPClientRaw::~SNMPClientRaw()
 }
 
 
+ASN1::Ptr SNMPClientRaw::query(const std::string& address, ASN1::Ptr query)
+{
+	SocketAddress addr(address, 161);
+	return this->query(addr, query);
+}
+
+
+ASN1::Ptr SNMPClientRaw::query(SocketAddress& address, ASN1::Ptr query)
+{
+	std::stringstream data;
+	Poco::SharedPtr<ASN1Factory> factory(new SNMPClientRawFactory);
+	ASN1Codec codec(factory);
+	codec.encode(query, data);
+
+	_socket.sendTo(data.str().data(), data.str().size(), address);
+
+	char buffer[1024];
+	Poco::Net::SocketAddress sender;
+	int n = _socket.receiveFrom(buffer, sizeof(buffer)-1, sender);
+
+	std::stringstream srec(std::string(buffer, n));
+	srec.exceptions(std::istream::failbit | std::istream::badbit | std::istream::eofbit);
+
+	ASN1::Ptr response = codec.decode(srec);
+
+	return response;
+}
+
+
 void SNMPClientRaw::send(const std::string& address, ASN1::Ptr query)
 {
 	SocketAddress addr(address, 161);
@@ -66,24 +95,9 @@ void SNMPClientRaw::send(const std::string& address, ASN1::Ptr query)
 void SNMPClientRaw::send(SocketAddress& address, ASN1::Ptr query)
 {
 	SNMPRawEventArgs eventArgs(address);
-
-	std::stringstream data;
-	Poco::SharedPtr<ASN1Factory> factory(new SNMPClientRawFactory);
-	ASN1Codec codec(factory);
-	codec.encode(query, data);
-
-	_socket.sendTo(data.str().data(), data.str().size(), address);
-
-	char buffer[1024];
 	try
 	{
-		Poco::Net::SocketAddress sender;
-		int n = _socket.receiveFrom(buffer, sizeof(buffer)-1, sender);
-
-		std::stringstream srec(std::string(buffer, n));
-		srec.exceptions(std::istream::failbit | std::istream::badbit | std::istream::eofbit);
-
-		ASN1::Ptr response = codec.decode(srec);
+		ASN1::Ptr response = this->query(address, query);
 		eventArgs.setResponse(response);
 		snmpReply.notify(this, eventArgs);
 	}

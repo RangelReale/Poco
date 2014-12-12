@@ -57,6 +57,18 @@ public:
 	~SNMPClientRaw();
 		/// Destroys the ICMP client.
 
+	ASN1::Ptr query(SocketAddress& address, ASN1::Ptr query);
+		/// Pings the specified address [repeat] times.
+		/// Notifications are posted for events.
+		/// 
+		/// Returns the number of valid replies.
+
+	ASN1::Ptr query(const std::string& address, ASN1::Ptr query);
+		/// Calls ICMPClient::ping(SocketAddress&, int) and
+		/// returns the result.
+		/// 
+		/// Returns the number of valid replies.
+
 	void send(SocketAddress& address, ASN1::Ptr query);
 		/// Pings the specified address [repeat] times.
 		/// Notifications are posted for events.
