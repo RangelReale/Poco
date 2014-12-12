@@ -36,7 +36,11 @@ public:
 	Unknown(ASN1::Type type);
 
 	std::string toString() const;
+	std::string typeName() const;
+
 	const std::string &getValue() const;
+
+	void dump(std::ostream &stream, int ident) const;
 protected:
 	Poco::UInt32 getDataLength() const;
     void encodeData(Poco::BinaryWriter &stream) const;
@@ -53,6 +57,9 @@ public:
 	Null();
 
 	std::string toString() const;
+	std::string typeName() const;
+
+	void dump(std::ostream &stream, int ident) const;
 protected:
 	Poco::UInt32 getDataLength() const;
     void encodeData(Poco::BinaryWriter &stream) const;
@@ -66,6 +73,7 @@ public:
     static NullObject *Instance();
 
 	std::string toString() const;
+	std::string typeName() const;
 protected:
 	NullObject();
 
@@ -84,6 +92,7 @@ public:
 	bool getValue() const;
 
 	std::string toString() const;
+	std::string typeName() const;
 protected:
 	Poco::UInt32 getDataLength() const;
     void encodeData(Poco::BinaryWriter &stream) const;
@@ -103,6 +112,9 @@ public:
 	Poco::UInt32 getValue() const;
 
 	std::string toString() const;
+	std::string typeName() const;
+
+	void dump(std::ostream &stream, int ident) const;
 protected:
 	Poco::UInt32 getDataLength() const;
     void encodeData(Poco::BinaryWriter &stream) const;
@@ -122,6 +134,9 @@ public:
 	std::string getValue() const;
 
 	std::string toString() const;
+	std::string typeName() const;
+
+	void dump(std::ostream &stream, int ident) const;
 protected:
 	Poco::UInt32 getDataLength() const;
     void encodeData(Poco::BinaryWriter &stream) const;
@@ -138,6 +153,9 @@ public:
 	ObjectIdentifier(const std::string &value);
 
 	std::string toString() const;
+	std::string typeName() const;
+
+	void dump(std::ostream &stream, int ident) const;
 protected:
 	Poco::UInt32 getDataLength() const;
     void encodeData(Poco::BinaryWriter &stream) const;
@@ -164,6 +182,10 @@ public:
 	Sequence(ASN1::Type type, const SequenceData &value);
 
 	const SequenceData &getSequenceData() const;
+
+	std::string typeName() const;
+
+	void dump(std::ostream &stream, int ident) const;
 protected:
 	ASN1::Ptr getDataType(int pos) const;
 

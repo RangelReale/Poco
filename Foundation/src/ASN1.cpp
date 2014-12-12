@@ -142,4 +142,35 @@ std::string ASN1::toString() const
 }
 
 
+std::string ASN1::typeName() const
+{
+	return Poco::format("0x%s", Poco::NumberFormatter::formatHex(_type));
+}
+
+
+struct Whitespace
+{
+    Whitespace(int n)
+        : n(n)
+    {
+    }
+    int n;
+};
+
+std::ostream& operator<<(std::ostream& stream, const Whitespace &ws)
+{
+    for(int i = 0; i < ws.n; i++)
+    {
+        stream << "   ";
+    }
+    return stream;
+}
+
+
+void ASN1::dump(std::ostream &stream, int ident) const
+{
+	stream << Whitespace(ident) << "ASN.1 0x" << Poco::NumberFormatter::formatHex(_type) << " " << getDataLength() << " BYTES" << std::endl;
+}
+
+
 } // namespace Poco

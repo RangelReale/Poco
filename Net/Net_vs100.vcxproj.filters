@@ -459,6 +459,15 @@
     <ClInclude Include="include\Poco\Net\SNMPRawEventArgs.h">
       <Filter>SNMP\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Poco\Net\SNMPClient.h">
+      <Filter>SNMP\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Poco\Net\SNMPClientTypes.h">
+      <Filter>SNMP\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Poco\Net\SNMPEventArgs.h">
+      <Filter>SNMP\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Poco\Net\NTPClient.h">
       <Filter>NTP\Header Files</Filter>
     </ClInclude>
@@ -771,6 +780,15 @@
       <Filter>SNMP\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\SNMPRawEventArgs.cpp">
+      <Filter>SNMP\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SNMPClient.cpp">
+      <Filter>SNMP\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SNMPClientTypes.cpp">
+      <Filter>SNMP\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SNMPEventArgs.cpp">
       <Filter>SNMP\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\NTPClient.cpp">

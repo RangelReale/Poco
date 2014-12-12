@@ -27,6 +27,8 @@
 #include "Poco/BinaryReader.h"
 #include "Poco/BinaryWriter.h"
 
+#include <iostream>
+
 
 namespace Poco {
 
@@ -67,6 +69,9 @@ public:
 	Poco::UInt32 getLength() const;
 
 	virtual std::string toString() const;
+	virtual std::string typeName() const;
+
+	virtual void dump(std::ostream &stream, int ident = 0) const;
 protected:
 	virtual Poco::UInt32 getDataLength() const = 0;
     virtual void encodeData(Poco::BinaryWriter &stream) const = 0;

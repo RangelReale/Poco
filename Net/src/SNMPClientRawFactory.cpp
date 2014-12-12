@@ -26,8 +26,14 @@ ASN1::Ptr SNMPClientRawFactory::create(ASN1::Type type)
 {
 	switch (type)
 	{
-	case ASN1Types::SNMP_ASN1::IPAddress: return new ASN1Types::IPAddress;
-	case ASN1Types::SNMP_ASN1::Counter32: return new Poco::ASN1Types::Integer(type, 0);
+	case ASN1Types::SNMP_ASN1::IPAddress: 
+		return new ASN1Types::IPAddress;
+	case ASN1Types::SNMP_ASN1::Counter32: 
+		return new ASN1Types::Counter32;
+	case ASN1Types::SNMP_ASN1::Gauge32: 
+		return new ASN1Types::Gauge32;
+	case ASN1Types::SNMP_ASN1::TimeTicks: 
+		return new ASN1Types::TimeTicks;
 	case ASN1Types::SNMP_ASN1::GetRequestPDU: 
 	case ASN1Types::SNMP_ASN1::GetNextRequestPDU:
 	case ASN1Types::SNMP_ASN1::GetResponsePDU:

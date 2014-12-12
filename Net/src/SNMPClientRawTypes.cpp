@@ -15,6 +15,7 @@
 
 
 #include "Poco/Net/SNMPClientRawTypes.h"
+#include "Poco/Format.h"
 
 
 namespace Poco {
@@ -41,7 +42,90 @@ IPAddress::IPAddress(const std::string &value) : Poco::ASN1Types::OctetString(SN
 
 std::string IPAddress::toString() const
 {
-	return Poco::ASN1Types::OctetString::toString();
+	if (getValue().size() == 4)
+	{
+		return Poco::format("%?d.%?d.%?d.%?d", Poco::UInt8(getValue()[0]), Poco::UInt8(getValue()[1]), Poco::UInt8(getValue()[2]), Poco::UInt8(getValue()[3]));
+	}
+	else if (getValue().size() > 0)
+	{
+		return "[INVALID IP ADDRESS]";
+	}
+	return "";
+}
+
+
+std::string IPAddress::typeName() const
+{
+	return "IPADDRESS";
+}
+
+
+///
+/// Counter32
+///
+
+
+Counter32::Counter32() : Integer(SNMP_ASN1::Counter32)
+{
+
+}
+
+
+Counter32::Counter32(Poco::UInt32 value) : Integer(SNMP_ASN1::Counter32, value)
+{
+
+}
+
+
+std::string Counter32::typeName() const
+{
+	return "COUNTER32";
+}
+
+
+///
+/// Gauge32
+///
+
+
+Gauge32::Gauge32() : Integer(SNMP_ASN1::Gauge32)
+{
+
+}
+
+
+Gauge32::Gauge32(Poco::UInt32 value) : Integer(SNMP_ASN1::Gauge32, value)
+{
+
+}
+
+
+std::string Gauge32::typeName() const
+{
+	return "GAUGE32";
+}
+
+
+///
+/// TimeTicks
+///
+
+
+TimeTicks::TimeTicks() : Integer(SNMP_ASN1::TimeTicks)
+{
+
+}
+
+
+TimeTicks::TimeTicks(Poco::UInt32 value) : Integer(SNMP_ASN1::TimeTicks, value)
+{
+
+}
+
+
+std::string TimeTicks::typeName() const
+{
+	return "TIMETICKS";
 }
 
 

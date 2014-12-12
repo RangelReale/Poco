@@ -36,6 +36,8 @@ public:
 	enum BERType {
 		IPAddress = 0x40,
 		Counter32 = 0x41,
+		Gauge32 = 0x42,
+		TimeTicks = 0x43,
 
 		GetRequestPDU = 0xa0,
 		GetNextRequestPDU = 0xa1,
@@ -44,15 +46,45 @@ public:
 };
 
 
-class IPAddress : public OctetString
+class Net_API IPAddress : public OctetString
 {
 public:
 	IPAddress();
 	IPAddress(const std::string &value);
 
 	std::string toString() const;
+	std::string typeName() const;
 };
 
+
+class Net_API Counter32 : public Integer
+{
+public:
+	Counter32();
+	Counter32(Poco::UInt32 value);
+
+	std::string typeName() const;
+};
+
+
+class Net_API Gauge32 : public Integer
+{
+public:
+	Gauge32();
+	Gauge32(Poco::UInt32 value);
+
+	std::string typeName() const;
+};
+
+
+class Net_API TimeTicks : public Integer
+{
+public:
+	TimeTicks();
+	TimeTicks(Poco::UInt32 value);
+
+	std::string typeName() const;
+};
 
 } } } // namespace Poco::Net::ASN1Types
 

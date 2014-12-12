@@ -18,6 +18,7 @@
 #include "Poco/Format.h"
 #include "Poco/StringTokenizer.h"
 #include "Poco/NumberParser.h"
+#include "Poco/NumberFormatter.h"
 
 #include <sstream>
 #include <assert.h>
@@ -27,6 +28,26 @@
 
 namespace Poco {
 namespace ASN1Types {
+
+
+struct Whitespace
+{
+    Whitespace(int n)
+        : n(n)
+    {
+    }
+    int n;
+};
+
+std::ostream& operator<<(std::ostream& stream, const Whitespace &ws)
+{
+    for(int i = 0; i < ws.n; i++)
+    {
+        stream << "   ";
+    }
+    return stream;
+}
+
 
 ///
 /// Unknown
@@ -41,7 +62,13 @@ Unknown::Unknown(ASN1::Type type) : ASN1(type)
 
 std::string Unknown::toString() const
 {
-	return Poco::format("[unknown type %?d size %?d]", getType(), _value.size());
+	return Poco::format("[unknown type 0x%s size %?d]", Poco::NumberFormatter::formatHex(getType()), _value.size());
+}
+
+
+std::string Unknown::typeName() const
+{
+	return Poco::format("UNKNOWN-0x%s", Poco::NumberFormatter::formatHex(getType()));
 }
 
 
@@ -70,6 +97,12 @@ void Unknown::decodeData(Poco::SharedPtr<ASN1Factory> factory, Poco::BinaryReade
 }
 
 
+void Unknown::dump(std::ostream &stream, int ident) const
+{
+	stream << Whitespace(ident) << "UNKNOWN TYPE 0x" << Poco::NumberFormatter::formatHex(getType()) << " " << _value.size() << " BYTES" << std::endl;
+}
+
+
 ///
 /// Null
 ///
@@ -84,6 +117,12 @@ Null::Null() : ASN1(ASN1::Null)
 std::string Null::toString() const
 {
 	return "null";
+}
+
+
+std::string Null::typeName() const
+{
+	return "NULL";
 }
 
 
@@ -102,6 +141,12 @@ void Null::encodeData(Poco::BinaryWriter &stream) const
 void Null::decodeData(Poco::SharedPtr<ASN1Factory> factory, Poco::BinaryReader &stream, Poco::UInt32 length)
 {
 
+}
+
+
+void Null::dump(std::ostream &stream, int ident) const
+{
+	stream << Whitespace(ident) << "NULL " << std::endl;
 }
 
 
@@ -126,6 +171,12 @@ NullObject *NullObject::Instance()
 std::string NullObject::toString() const
 {
     throw DataException("No such element");
+}
+
+
+std::string NullObject::typeName() const
+{
+	return "NULLOBJECT";
 }
 
 
@@ -173,6 +224,12 @@ bool Boolean::getValue() const
 std::string Boolean::toString() const
 {
 	return _value?"true":"false";
+}
+
+
+std::string Boolean::typeName() const
+{
+	return "BOOLEAN";
 }
 
 
@@ -232,6 +289,16 @@ Poco::UInt32 Integer::getValue() const
 std::string Integer::toString() const
 {
 	return Poco::format("%?d", _value);
+}
+
+
+std::string Integer::typeName() const
+{
+	std::string seqtype;
+	if (getType() != ASN1::Integer)
+		seqtype = Poco::format("-0x%s", Poco::NumberFormatter::formatHex(getType()));
+
+	return Poco::format("INTEGER%s", seqtype);
 }
 
 
@@ -301,6 +368,12 @@ void Integer::decodeData(Poco::SharedPtr<ASN1Factory> factory, Poco::BinaryReade
 }
 
 
+void Integer::dump(std::ostream &stream, int ident) const
+{
+	stream << Whitespace(ident) << "INTEGER " << _value << std::endl;
+}
+
+
 ///
 /// OctetString
 ///
@@ -336,6 +409,16 @@ std::string OctetString::toString() const
 }
 
 
+std::string OctetString::typeName() const
+{
+	std::string seqtype;
+	if (getType() != ASN1::OctetString)
+		seqtype = Poco::format("-0x%s", Poco::NumberFormatter::formatHex(getType()));
+
+	return Poco::format("OCTETSTRING%s", seqtype);
+}
+
+
 Poco::UInt32 OctetString::getDataLength() const
 {
 	return _value.size();
@@ -351,6 +434,12 @@ void OctetString::encodeData(Poco::BinaryWriter &stream) const
 void OctetString::decodeData(Poco::SharedPtr<ASN1Factory> factory, Poco::BinaryReader &stream, Poco::UInt32 length)
 {
 	stream.readRaw(length, _value);
+}
+
+
+void OctetString::dump(std::ostream &stream, int ident) const
+{
+	stream << Whitespace(ident) << "OCTETSTRING '" << _value << "'" << std::endl;
 }
 
 
@@ -385,6 +474,12 @@ std::string ObjectIdentifier::toString() const
 		str << *i;
 	}
 	return str.str();
+}
+
+
+std::string ObjectIdentifier::typeName() const
+{
+	return "OBJECTIDENTIFIER";
 }
 
 
@@ -483,6 +578,12 @@ void ObjectIdentifier::decodeData(Poco::SharedPtr<ASN1Factory> factory, Poco::Bi
 
         _value.push_back(value);
     }
+}
+
+
+void ObjectIdentifier::dump(std::ostream &stream, int ident) const
+{
+	stream << Whitespace(ident) << "OID '" << toString() << "'" << std::endl;
 }
 
 
@@ -588,5 +689,28 @@ void Sequence::decodeData(Poco::SharedPtr<ASN1Factory> factory, Poco::BinaryRead
     }
 }
 
+
+void Sequence::dump(std::ostream &stream, int ident) const
+{
+	std::string seqtype;
+	if (getType() != ASN1::Sequence)
+		seqtype = Poco::format(" TYPE 0x%s", Poco::NumberFormatter::formatHex(getType()));
+
+	stream << Whitespace(ident) << "SEQUENCE BEGIN" << seqtype << " " << _value.size() << " ITEMS" << std::endl;
+	for (SequenceData::const_iterator i=_value.cbegin(); i!=_value.cend(); i++)
+	{
+		(*i)->dump(stream, ident+1);
+	}
+	stream << Whitespace(ident) << "SEQUENCE END" << seqtype << " " << _value.size() << " ITEMS" << std::endl;
+}
+
+std::string Sequence::typeName() const
+{
+	std::string seqtype;
+	if (getType() != ASN1::Sequence)
+		seqtype = Poco::format("-0x%s", Poco::NumberFormatter::formatHex(getType()));
+
+	return Poco::format("SEQUENCE%s", seqtype);
+}
 
 } } // namespace Poco::ASN1Types
