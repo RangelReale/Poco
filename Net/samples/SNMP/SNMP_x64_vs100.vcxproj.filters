@@ -9,12 +9,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ping.properties">
+    <None Include="snmp.properties">
       <Filter>Configuration Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ping.cpp">
+    <ClCompile Include="src\SNMP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

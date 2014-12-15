@@ -304,10 +304,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ping.properties"/>
+    <None Include="snmp.properties"/>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ping.cpp"/>
+    <ClCompile Include="src\SNMP.cpp"/>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
   <ImportGroup Label="ExtensionTargets"/>
