@@ -621,7 +621,7 @@ Sequence::Sequence(ASN1::Type type) : ASN1(type)
 
 Sequence::Sequence(const SequenceData &value) : ASN1(ASN1::Sequence)
 {
-	for (SequenceData::const_iterator i=value.cbegin(); i!=value.cend(); i++)
+	for (SequenceData::const_iterator i=value.begin(); i!=value.end(); i++)
 	{
 		_value.push_back(*i);
 	}
@@ -630,7 +630,7 @@ Sequence::Sequence(const SequenceData &value) : ASN1(ASN1::Sequence)
 
 Sequence::Sequence(ASN1::Type type, const SequenceData &value) : ASN1(type)
 {
-	for (SequenceData::const_iterator i=value.cbegin(); i!=value.cend(); i++)
+	for (SequenceData::const_iterator i=value.begin(); i!=value.end(); i++)
 	{
 		_value.push_back(*i);
 	}
@@ -654,7 +654,7 @@ ASN1::Ptr Sequence::getDataType(int pos) const
 Poco::UInt32 Sequence::getDataLength() const
 {
     Poco::UInt32 totalDataLength = 0;
-	for (SequenceData::const_iterator i=_value.cbegin(); i!=_value.cend(); i++)
+	for (SequenceData::const_iterator i=_value.begin(); i!=_value.end(); i++)
 	{
         totalDataLength += (*i)->getLength();
 	}
@@ -664,7 +664,7 @@ Poco::UInt32 Sequence::getDataLength() const
 
 void Sequence::encodeData(Poco::BinaryWriter &stream) const
 {
-	for (SequenceData::const_iterator i=_value.cbegin(); i!=_value.cend(); i++)
+	for (SequenceData::const_iterator i=_value.begin(); i!=_value.end(); i++)
 	{
 		(*i)->encode(stream);
 	}
@@ -694,7 +694,7 @@ void Sequence::dump(std::ostream &stream, int ident) const
 		seqtype = Poco::format(" TYPE 0x%s", Poco::NumberFormatter::formatHex(getType()));
 
 	stream << Whitespace(ident) << "SEQUENCE BEGIN" << seqtype << " " << _value.size() << " ITEMS" << std::endl;
-	for (SequenceData::const_iterator i=_value.cbegin(); i!=_value.cend(); i++)
+	for (SequenceData::const_iterator i=_value.begin(); i!=_value.end(); i++)
 	{
 		(*i)->dump(stream, ident+1);
 	}
