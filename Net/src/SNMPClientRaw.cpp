@@ -38,6 +38,7 @@ namespace Net {
 SNMPClientRaw::SNMPClientRaw() : _socket()
 {
 	Poco::Net::SocketAddress sa;
+	_socket.setSendTimeout(1 * 1000 * 1000);
 	_socket.setReceiveTimeout(1 * 1000 * 1000);
 	_socket.bind(sa);
 }
@@ -46,6 +47,7 @@ SNMPClientRaw::SNMPClientRaw() : _socket()
 SNMPClientRaw::SNMPClientRaw(const SocketAddress& listenAddr) :
 	_socket()
 {
+	_socket.setSendTimeout(1 * 1000 * 1000);
 	_socket.setReceiveTimeout(1 * 1000 * 1000);
 	_socket.bind(listenAddr);
 }
@@ -70,9 +72,11 @@ ASN1::Ptr SNMPClientRaw::query(SocketAddress& address, ASN1::Ptr query)
 	ASN1Codec codec(factory);
 	codec.encode(query, data);
 
-	_socket.sendTo(data.str().data(), data.str().size(), address);
+	int s = _socket.sendTo(data.str().data(), data.str().size(), address);
+	if (s != data.str().size())
+		throw Poco::Exception("Not sent all data!");
 
-	char buffer[1024];
+	char buffer[2048];
 	Poco::Net::SocketAddress sender;
 	int n = _socket.receiveFrom(buffer, sizeof(buffer)-1, sender);
 

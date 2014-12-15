@@ -76,17 +76,22 @@ void SNMPClient::send(SocketAddress& address, SNMPTypes::SNMPMessage::Ptr messag
 			Poco::ASN1::Ptr resp = snmpClient.query(address, message->encode());
 			SNMPTypes::SNMPMessage::Ptr sresp(new SNMPTypes::SNMPMessage(resp));
 
-			eventArgs.setMessage(sresp);
-			snmpReply.notify(this, eventArgs);
+			std::string curoid;
 
 			if (message->pdu().type() == ASN1Types::SNMP_ASN1::GetNextRequestPDU)
 			{
-				std::string curoid(sresp->pdu().varBindList().list().at(0)->oid());
+				curoid = sresp->pdu().varBindList().list().at(0)->oid();
 				if (curoid.substr(0, startoid.size()) != startoid)
 					break;
 
 				message->pdu().varBindList().list()[0]->setOid(curoid);
 			}
+
+			eventArgs.setMessage(sresp);
+			snmpReply.notify(this, eventArgs);
+
+			if (message->pdu().type() == ASN1Types::SNMP_ASN1::GetNextRequestPDU)
+				message->pdu().varBindList().list()[0]->setOid(curoid);
 			else
 				break;
 		}

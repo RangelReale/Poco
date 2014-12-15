@@ -488,14 +488,11 @@ Poco::UInt32 ObjectIdentifier::getDataLength() const
 	Poco::UInt32 totalLength = 1;
 
     for (int i = 2; i < _value.size(); ++i) {
-        if (_value.at(i) < 128)
-            totalLength += 1;
-        else if (_value.at(i) < 2048)
-            totalLength += 2;
-        else if (_value.at(i) < 32768)
-            totalLength += 3;
-        else
-            totalLength +=4;
+		Poco::UInt32 value = _value.at(i);
+		do {
+			value >>= 7;
+			totalLength++;
+		} while (value != 0);
     }
 
     return totalLength;
