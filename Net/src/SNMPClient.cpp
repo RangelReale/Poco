@@ -61,7 +61,7 @@ void SNMPClient::send(SocketAddress& address, SNMPTypes::SNMPMessage::Ptr messag
 
 	std::string startoid;
 
-	if (message->pdu().type() == ASN1Types::SNMP_ASN1::GetNextRequestPDU)
+	if (message->pdu().type().rawValue() == ASN1Types::SNMP_ASN1::GetNextRequestPDU)
 	{
 		if (message->pdu().varBindList().list().size() != 1)
 			throw Poco::IllegalStateException("For SNMP GET NEXT, only one VarBind must be requested");
@@ -71,6 +71,7 @@ void SNMPClient::send(SocketAddress& address, SNMPTypes::SNMPMessage::Ptr messag
 
 	try
 	{
+		std::string lastoid;
 		while (true)
 		{
 			Poco::ASN1::Ptr resp = snmpClient.query(address, message->encode());
@@ -78,19 +79,21 @@ void SNMPClient::send(SocketAddress& address, SNMPTypes::SNMPMessage::Ptr messag
 
 			std::string curoid;
 
-			if (message->pdu().type() == ASN1Types::SNMP_ASN1::GetNextRequestPDU)
+			if (message->pdu().type().rawValue() == ASN1Types::SNMP_ASN1::GetNextRequestPDU)
 			{
 				curoid = sresp->pdu().varBindList().list().at(0)->oid();
-				if (curoid.substr(0, startoid.size()) != startoid)
+				if (curoid == lastoid || curoid.substr(0, startoid.size()) != startoid)
 					break;
 
 				message->pdu().varBindList().list()[0]->setOid(curoid);
 			}
 
+			lastoid = curoid;
 			eventArgs.setMessage(sresp);
+			eventArgs.setRawMessage(resp);
 			snmpReply.notify(this, eventArgs);
 
-			if (message->pdu().type() == ASN1Types::SNMP_ASN1::GetNextRequestPDU)
+			if (message->pdu().type().rawValue() == ASN1Types::SNMP_ASN1::GetNextRequestPDU)
 				message->pdu().varBindList().list()[0]->setOid(curoid);
 			else
 				break;
@@ -119,6 +122,46 @@ void SNMPClient::send(SocketAddress& address, SNMPTypes::SNMPMessage::Ptr messag
 	}
 
 	snmpEnd.notify(this, eventArgs);
+}
+
+
+void SNMPClient::get(SocketAddress& address, const std::string &oid, int requestId)
+{
+	SNMPTypes::SNMPMessage::Ptr message(new SNMPTypes::SNMPMessage);
+	message->setVersion(0);
+	message->setCommunity("public");
+	message->pdu().setType(Poco::Net::ASN1Types::SNMP_ASN1::GetRequestPDU);
+	message->pdu().setRequestId(requestId);
+	message->pdu().varBindList().add(new Poco::Net::SNMPTypes::VarBind(oid, new Poco::ASN1Types::Null()));
+
+	send(address, message);
+}
+
+
+void SNMPClient::get(const std::string& address, const std::string &oid, int requestId)
+{
+	SocketAddress addr(address, 161);
+	get(addr, oid, requestId);
+}
+
+
+void SNMPClient::walk(SocketAddress& address, const std::string &oid, int requestId)
+{
+	SNMPTypes::SNMPMessage::Ptr message(new SNMPTypes::SNMPMessage);
+	message->setVersion(0);
+	message->setCommunity("public");
+	message->pdu().setType(Poco::Net::ASN1Types::SNMP_ASN1::GetNextRequestPDU);
+	message->pdu().setRequestId(requestId);
+	message->pdu().varBindList().add(new Poco::Net::SNMPTypes::VarBind(oid, new Poco::ASN1Types::Null()));
+
+	send(address, message);
+}
+
+
+void SNMPClient::walk(const std::string& address, const std::string &oid, int requestId)
+{
+	SocketAddress addr(address, 161);
+	walk(addr, oid, requestId);
 }
 
 

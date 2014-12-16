@@ -32,7 +32,7 @@ class Net_API SNMPClientRawFactory : public ASN1FactoryDefault
 	/// This class provides an ASN.1 factory for SNMP objects.
 {
 public:
-	ASN1::Ptr create(ASN1::Type type);		
+	ASN1::Ptr create(ASN1Type type);		
 };
 
 

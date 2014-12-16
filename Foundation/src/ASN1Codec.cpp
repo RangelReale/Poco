@@ -57,10 +57,10 @@ ASN1::Ptr ASN1Codec::decode(std::istream &stream)
 	ASN1::Ptr ret;
 	Poco::BinaryReader sread(stream);
 
-	ASN1::Type type;
-	sread >> type;
+	ASN1Type tp;
+	tp.decodeData(sread);
 
-	ret = _factory->create(type);
+	ret = _factory->create(tp);
 	ret->decode(_factory, sread);
 
 	return ret;

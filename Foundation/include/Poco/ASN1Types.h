@@ -33,7 +33,7 @@ namespace ASN1Types {
 class Foundation_API Unknown : public ASN1
 {
 public:
-	Unknown(ASN1::Type type);
+	Unknown(ASN1Type type);
 
 	std::string toString() const;
 	std::string typeName() const;
@@ -67,22 +67,6 @@ protected:
 };
 
 
-class Foundation_API NullObject : public ASN1
-{
-public:
-    static NullObject *Instance();
-
-	std::string toString() const;
-	std::string typeName() const;
-protected:
-	NullObject();
-
-	Poco::UInt32 getDataLength() const;
-    void encodeData(Poco::BinaryWriter &stream) const;
-	void decodeData(Poco::SharedPtr<ASN1Factory> factory, Poco::BinaryReader &stream, Poco::UInt32 length);
-};
-
-
 class Foundation_API Boolean : public ASN1
 {
 public:
@@ -93,6 +77,8 @@ public:
 
 	std::string toString() const;
 	std::string typeName() const;
+
+	void dump(std::ostream &stream, int ident) const;
 protected:
 	Poco::UInt32 getDataLength() const;
     void encodeData(Poco::BinaryWriter &stream) const;
@@ -107,7 +93,7 @@ class Foundation_API Integer : public ASN1
 public:
 	Integer();
 	Integer(Poco::UInt32 value);
-	Integer(ASN1::Type type, Poco::UInt32 value);
+	Integer(ASN1Type type, Poco::UInt32 value);
 
 	Poco::UInt32 getValue() const;
 
@@ -129,7 +115,7 @@ class Foundation_API OctetString : public ASN1
 public:
 	OctetString();
 	OctetString(const std::string &value);
-	OctetString(ASN1::Type type, const std::string &value = "");
+	OctetString(ASN1Type type, const std::string &value = "");
 
 	std::string getValue() const;
 
@@ -177,9 +163,9 @@ class Sequence : public ASN1
 {
 public:
 	Sequence();
-	Sequence(ASN1::Type type);
+	Sequence(ASN1Type type);
 	Sequence(const SequenceData &value);
-	Sequence(ASN1::Type type, const SequenceData &value);
+	Sequence(ASN1Type type, const SequenceData &value);
 
 	const SequenceData &getSequenceData() const;
 

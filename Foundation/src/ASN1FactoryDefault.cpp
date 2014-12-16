@@ -21,21 +21,23 @@
 namespace Poco {
 
 
-ASN1::Ptr ASN1FactoryDefault::create(ASN1::Type type)
+ASN1::Ptr ASN1FactoryDefault::create(ASN1Type type)
 {
-	switch (type)
+	if (type.aclass() == ASN1Type::Universal)
 	{
-	case ASN1::None: return new ASN1Types::Null;
-    case ASN1::Boolean: return new ASN1Types::Boolean;
-    case ASN1::Integer: return new ASN1Types::Integer;
-    case ASN1::OctetString: return new ASN1Types::OctetString;
-    case ASN1::Null: return new ASN1Types::Null;
-    case ASN1::ObjectIdentifier: return new ASN1Types::ObjectIdentifier;
-    case ASN1::Sequence: return new ASN1Types::Sequence;
-    default:
-        //assert(false, "factory method", Poco::format("Unknown type: %d", type));
-		return new ASN1Types::Unknown(type);
-    };
+		switch (type.tag())
+		{
+		case ASN1Type::None: return new ASN1Types::Null;
+		case ASN1Type::Boolean: return new ASN1Types::Boolean;
+		case ASN1Type::Integer: return new ASN1Types::Integer;
+		case ASN1Type::OctetString: return new ASN1Types::OctetString;
+		case ASN1Type::Null: return new ASN1Types::Null;
+		case ASN1Type::ObjectIdentifier: return new ASN1Types::ObjectIdentifier;
+		case ASN1Type::Sequence: return new ASN1Types::Sequence;
+		};
+	}
+
+	return new ASN1Types::Unknown(type);
 
     //return NullObject::Instance();
 }

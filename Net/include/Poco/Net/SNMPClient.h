@@ -64,6 +64,30 @@ public:
 		/// returns the result.
 		/// 
 		/// Returns the number of valid replies.
+
+	void get(SocketAddress& address, const std::string &oid, int requestId = 0);
+		/// Pings the specified address [repeat] times.
+		/// Notifications are posted for events.
+		/// 
+		/// Returns the number of valid replies.
+
+	void get(const std::string& address, const std::string &oid, int requestId = 0);
+		/// Calls ICMPClient::ping(SocketAddress&, int) and
+		/// returns the result.
+		/// 
+		/// Returns the number of valid replies.
+
+	void walk(SocketAddress& address, const std::string &oid, int requestId = 0);
+		/// Pings the specified address [repeat] times.
+		/// Notifications are posted for events.
+		/// 
+		/// Returns the number of valid replies.
+
+	void walk(const std::string& address, const std::string &oid, int requestId = 0);
+		/// Calls ICMPClient::ping(SocketAddress&, int) and
+		/// returns the result.
+		/// 
+		/// Returns the number of valid replies.
 };
 
 

@@ -21,6 +21,7 @@
 
 using Poco::ASN1Codec;
 using Poco::ASN1;
+using Poco::ASN1Type;
 using namespace Poco::ASN1Types;
 
 ASN1Test::ASN1Test(const std::string& name): CppUnit::TestCase(name)
@@ -60,7 +61,7 @@ void ASN1Test::testDecoder()
 		str << "\x04\x09" "ENCODE ME";
 		ASN1Codec encoder;
 		ASN1::Ptr s = encoder.decode(str);
-		assert(s->getType() == ASN1::OctetString);
+		assert(s->getType().rawValue() == ASN1Type::OctetString);
 		assert(s.cast<OctetString>()->getValue() == "ENCODE ME");
 	}
 
@@ -69,7 +70,7 @@ void ASN1Test::testDecoder()
 		str << "\x02\x03\x03\x27\x50";
 		ASN1Codec encoder;
 		ASN1::Ptr s = encoder.decode(str);
-		assert(s->getType() == ASN1::Integer);
+		assert(s->getType().rawValue() == ASN1Type::Integer);
 		assert(s.cast<Integer>()->getValue() == 206672);
 	}
 }

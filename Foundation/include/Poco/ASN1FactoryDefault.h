@@ -31,7 +31,7 @@ class Foundation_API ASN1FactoryDefault : public ASN1Factory
 	/// This class is a factory for ASN1 objects.
 {
 public:
-	ASN1::Ptr create(ASN1::Type type);		
+	ASN1::Ptr create(ASN1Type type);		
 };
 
 

@@ -53,6 +53,9 @@ public:
 	SNMPTypes::SNMPMessage::Ptr message() const;
 		/// Returns the number of repetitions for the ping operation.
 
+	Poco::ASN1::Ptr rawMessage() const;
+		/// Returns the number of repetitions for the ping operation.
+
 	const std::string &error() const;
 		/// Returns the number of repetitions for the ping operation.
 
@@ -60,11 +63,13 @@ private:
 	SNMPEventArgs();
 
 	void setMessage(SNMPTypes::SNMPMessage::Ptr message);
+	void setRawMessage(Poco::ASN1::Ptr rawmessage);
 	void setError(const std::string &error);
 
 	SocketAddress _address;
 	int _requestid;
 	SNMPTypes::SNMPMessage::Ptr _message;
+	Poco::ASN1::Ptr _rawmessage;
 	std::string _error;
 
 	friend class SNMPClient;

@@ -73,12 +73,12 @@ void VarBind::setValue(ASN1::Ptr value)
 
 void VarBind::decode(ASN1::Ptr data)
 {
-	if (data->getType() != ASN1::Sequence)
+	if (data->getType().universalValue() != ASN1Type::Sequence)
 		throw Poco::DataException("Data must be ASN.1 sequence for VarBind");
 	Poco::AutoPtr<Sequence> seq(data.cast<Sequence>());
 	if (seq->getSequenceData().size() != 2)
 		throw Poco::DataException("Data must be ASN.1 sequence with 2 values for VarBind");
-	if (seq->getSequenceData()[0]->getType() != ASN1::ObjectIdentifier)
+	if (seq->getSequenceData()[0]->getType().universalValue() != ASN1Type::ObjectIdentifier)
 		throw Poco::DataException("Invalid VarBind data format");
 
 	_oid = seq->getSequenceData()[0].cast<ObjectIdentifier>()->toString();
@@ -132,7 +132,7 @@ void VarBindList::decode(ASN1::Ptr data)
 {
 	_list.clear();
 
-	if (data->getType() != ASN1::Sequence)
+	if (data->getType().universalValue() != ASN1Type::Sequence)
 		throw Poco::DataException("Data must be ASN.1 sequence for VarBindList");
 	Poco::AutoPtr<Sequence> seq(data.cast<Sequence>());
 
@@ -161,26 +161,26 @@ ASN1::Ptr VarBindList::encode()
 
 
 PDU::PDU() : 
-	Poco::RefCountedObject(), _type(ASN1::Sequence), _requestid(0), _error(0), _errorindex(0)
+	Poco::RefCountedObject(), _type(ASN1Type(ASN1Type::Sequence, true)), _requestid(0), _error(0), _errorindex(0)
 {
 
 }
 
 
 PDU::PDU(ASN1::Ptr data) : 
-	Poco::RefCountedObject(), _type(ASN1::Sequence), _requestid(0), _error(0), _errorindex(0)
+	Poco::RefCountedObject(), _type(ASN1Type(ASN1Type::Sequence, true)), _requestid(0), _error(0), _errorindex(0)
 {
 	decode(data);
 }
 
 
-ASN1::Type PDU::type() const
+const ASN1Type &PDU::type() const
 {
 	return _type;
 }
 
 
-void PDU::setType(ASN1::Type value)
+void PDU::setType(const ASN1Type &value)
 {
 	_type = value;
 }
@@ -238,10 +238,10 @@ void PDU::decode(ASN1::Ptr data)
 	if (seq->getSequenceData().size() != 4)
 		throw Poco::DataException("Data must be ASN.1 sequence with 4 values for PDU");
 	
-	if (seq->getSequenceData()[0]->getType() != ASN1::Integer ||
-		seq->getSequenceData()[1]->getType() != ASN1::Integer ||
-		seq->getSequenceData()[2]->getType() != ASN1::Integer ||
-		seq->getSequenceData()[3]->getType() != ASN1::Sequence)
+	if (seq->getSequenceData()[0]->getType().universalValue() != ASN1Type::Integer ||
+		seq->getSequenceData()[1]->getType().universalValue() != ASN1Type::Integer ||
+		seq->getSequenceData()[2]->getType().universalValue() != ASN1Type::Integer ||
+		seq->getSequenceData()[3]->getType().universalValue() != ASN1Type::Sequence)
 		throw Poco::DataException("Invalid VarBind data format");
 
 	_type = seq->getType();
@@ -311,14 +311,14 @@ PDU &SNMPMessage::pdu()
 
 void SNMPMessage::decode(ASN1::Ptr data)
 {
-	if (data->getType() != ASN1::Sequence)
+	if (data->getType().universalValue() != ASN1Type::Sequence)
 		throw Poco::DataException("Data must be ASN.1 sequence for SNMPMessage");
 	Poco::AutoPtr<Sequence> seq(data.cast<Sequence>());
 	if (seq->getSequenceData().size() != 3)
 		throw Poco::DataException("Data must be ASN.1 sequence with 3 values for SNMPMessage");
 	
-	if (seq->getSequenceData()[0]->getType() != ASN1::Integer ||
-		seq->getSequenceData()[1]->getType() != ASN1::OctetString)
+	if (seq->getSequenceData()[0]->getType().universalValue() != ASN1Type::Integer ||
+		seq->getSequenceData()[1]->getType().universalValue() != ASN1Type::OctetString)
 		throw Poco::DataException("Invalid SNMPMessage data format");
 
 	_version = seq->getSequenceData()[0].cast<Integer>()->getValue();

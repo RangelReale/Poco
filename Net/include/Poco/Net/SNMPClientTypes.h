@@ -80,8 +80,8 @@ public:
 	PDU();
 	PDU(ASN1::Ptr data);
 
-	ASN1::Type type() const;
-	void setType(ASN1::Type value);
+	const ASN1Type &type() const;
+	void setType(const ASN1Type &value);
 
 	int requestId() const;
 	void setRequestId(int value);
@@ -97,7 +97,7 @@ public:
 	void decode(ASN1::Ptr data);
 	ASN1::Ptr encode();
 private:
-	ASN1::Type _type;
+	ASN1Type _type;
 	int _requestid;
 	int _error;
 	int _errorindex;

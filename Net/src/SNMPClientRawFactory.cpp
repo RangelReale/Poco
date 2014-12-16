@@ -22,22 +22,31 @@ namespace Poco {
 namespace Net {
 
 
-ASN1::Ptr SNMPClientRawFactory::create(ASN1::Type type)
+ASN1::Ptr SNMPClientRawFactory::create(ASN1Type type)
 {
-	switch (type)
+	if (type.aclass() == ASN1Type::Application)
 	{
-	case ASN1Types::SNMP_ASN1::IPAddress: 
-		return new ASN1Types::IPAddress;
-	case ASN1Types::SNMP_ASN1::Counter32: 
-		return new ASN1Types::Counter32;
-	case ASN1Types::SNMP_ASN1::Gauge32: 
-		return new ASN1Types::Gauge32;
-	case ASN1Types::SNMP_ASN1::TimeTicks: 
-		return new ASN1Types::TimeTicks;
-	case ASN1Types::SNMP_ASN1::GetRequestPDU: 
-	case ASN1Types::SNMP_ASN1::GetNextRequestPDU:
-	case ASN1Types::SNMP_ASN1::GetResponsePDU:
-		return new Poco::ASN1Types::Sequence(type);
+		switch (type.rawValue())
+		{
+		case ASN1Types::SNMP_ASN1::IPAddress: 
+			return new ASN1Types::IPAddress;
+		case ASN1Types::SNMP_ASN1::Counter32: 
+			return new ASN1Types::Counter32;
+		case ASN1Types::SNMP_ASN1::Gauge32: 
+			return new ASN1Types::Gauge32;
+		case ASN1Types::SNMP_ASN1::TimeTicks: 
+			return new ASN1Types::TimeTicks;
+		}
+	}
+	else if (type.aclass() == ASN1Type::ContextSpecific)
+	{
+		switch (type.rawValue())
+		{
+		case ASN1Types::SNMP_ASN1::GetRequestPDU: 
+		case ASN1Types::SNMP_ASN1::GetNextRequestPDU:
+		case ASN1Types::SNMP_ASN1::GetResponsePDU:
+			return new Poco::ASN1Types::Sequence(type);
+		}
 	}
 	return ASN1FactoryDefault::create(type);
 }
