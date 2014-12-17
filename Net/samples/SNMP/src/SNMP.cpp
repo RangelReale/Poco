@@ -18,10 +18,6 @@
 #include "Poco/Util/HelpFormatter.h"
 #include "Poco/Util/AbstractConfiguration.h"
 #include "Poco/Net/SNMPClient.h"
-#include "Poco/Net/SNMPEventArgs.h"
-#include "Poco/Net/SNMPClientTypes.h"
-#include "Poco/Net/SNMPClientRawTypes.h"
-#include "Poco/ASN1Types.h"
 #include "Poco/AutoPtr.h"
 #include "Poco/Delegate.h"
 #include <iostream>
@@ -130,14 +126,7 @@ protected:
 			displayHelp();
 		else 
 		{
-			Poco::Net::SNMPTypes::SNMPMessage::Ptr message(new Poco::Net::SNMPTypes::SNMPMessage);
-			message->setVersion(0);
-			message->setCommunity("public");
-			message->pdu().setType(Poco::Net::ASN1Types::SNMP_ASN1::GetRequestPDU);
-			message->pdu().setRequestId(920);
-			message->pdu().varBindList().add(new Poco::Net::SNMPTypes::VarBind(_oid, new Poco::ASN1Types::Null()));
-
-			_snmpClient.send(_target, message);
+			_snmpClient.get(_target, _oid, 920);
 		}
 		
 		return Application::EXIT_OK;
