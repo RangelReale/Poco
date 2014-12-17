@@ -130,11 +130,12 @@ void SNMPClient::send(SocketAddress& address, SNMPTypes::SNMPMessage::Ptr messag
 }
 
 
-void SNMPClient::get(SocketAddress& address, const std::string &oid, int requestId, SNMPVersion::Version version)
+void SNMPClient::get(SocketAddress& address, const std::string &oid, int requestId, 
+	const std::string &community, SNMPVersion::Version version)
 {
 	SNMPTypes::SNMPMessage::Ptr message(new SNMPTypes::SNMPMessage);
 	message->setVersion(version);
-	message->setCommunity("public");
+	message->setCommunity(community);
 	message->pdu().setType(SNMP_ASN1::GetRequestPDU);
 	message->pdu().setRequestId(requestId);
 	message->pdu().varBindList().add(new Poco::Net::SNMPTypes::VarBind(oid, new Poco::ASN1Types::Null()));
@@ -143,18 +144,20 @@ void SNMPClient::get(SocketAddress& address, const std::string &oid, int request
 }
 
 
-void SNMPClient::get(const std::string& address, const std::string &oid, int requestId, SNMPVersion::Version version)
+void SNMPClient::get(const std::string& address, const std::string &oid, int requestId, 
+	const std::string &community, SNMPVersion::Version version)
 {
 	SocketAddress addr(address, 161);
-	get(addr, oid, requestId, version);
+	get(addr, oid, requestId, community, version);
 }
 
 
-void SNMPClient::walk(SocketAddress& address, const std::string &oid, int requestId, SNMPVersion::Version version)
+void SNMPClient::walk(SocketAddress& address, const std::string &oid, int requestId, 
+	const std::string &community, SNMPVersion::Version version)
 {
 	SNMPTypes::SNMPMessage::Ptr message(new SNMPTypes::SNMPMessage);
 	message->setVersion(version);
-	message->setCommunity("public");
+	message->setCommunity(community);
 	message->pdu().setType(SNMP_ASN1::GetNextRequestPDU);
 	message->pdu().setRequestId(requestId);
 	message->pdu().varBindList().add(new Poco::Net::SNMPTypes::VarBind(oid, new Poco::ASN1Types::Null()));
@@ -163,10 +166,11 @@ void SNMPClient::walk(SocketAddress& address, const std::string &oid, int reques
 }
 
 
-void SNMPClient::walk(const std::string& address, const std::string &oid, int requestId, SNMPVersion::Version version)
+void SNMPClient::walk(const std::string& address, const std::string &oid, int requestId, 
+	const std::string &community, SNMPVersion::Version version)
 {
 	SocketAddress addr(address, 161);
-	walk(addr, oid, requestId, version);
+	walk(addr, oid, requestId, community, version);
 }
 
 

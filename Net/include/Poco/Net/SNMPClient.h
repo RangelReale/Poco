@@ -67,6 +67,7 @@ public:
 		/// Returns the number of valid replies.
 
 	void get(SocketAddress& address, const std::string &oid, int requestId = 0, 
+		const std::string &community = "public",
 		SNMPVersion::Version version = SNMPVersion::SNMPv1);
 		/// Pings the specified address [repeat] times.
 		/// Notifications are posted for events.
@@ -74,6 +75,7 @@ public:
 		/// Returns the number of valid replies.
 
 	void get(const std::string& address, const std::string &oid, int requestId = 0,
+		const std::string &community = "public",
 		SNMPVersion::Version version = SNMPVersion::SNMPv1);
 		/// Calls ICMPClient::ping(SocketAddress&, int) and
 		/// returns the result.
@@ -81,6 +83,7 @@ public:
 		/// Returns the number of valid replies.
 
 	void walk(SocketAddress& address, const std::string &oid, int requestId = 0,
+		const std::string &community = "public",
 		SNMPVersion::Version version = SNMPVersion::SNMPv1);
 		/// Pings the specified address [repeat] times.
 		/// Notifications are posted for events.
@@ -88,6 +91,7 @@ public:
 		/// Returns the number of valid replies.
 
 	void walk(const std::string& address, const std::string &oid, int requestId = 0,
+		const std::string &community = "public",
 		SNMPVersion::Version version = SNMPVersion::SNMPv1);
 		/// Calls ICMPClient::ping(SocketAddress&, int) and
 		/// returns the result.
