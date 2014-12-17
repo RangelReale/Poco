@@ -307,7 +307,6 @@
     <ClCompile Include="src\AutoReleasePoolTest.cpp" />
     <ClCompile Include="src\ASN1Test.cpp" />
     <ClCompile Include="src\Base32Test.cpp" />
-    <ClCompile Include="src\ASN1Test.cpp" />
     <ClCompile Include="src\ByteOrderTest.cpp" />
     <ClCompile Include="src\CoreTest.cpp" />
     <ClCompile Include="src\CoreTestSuite.cpp" />
