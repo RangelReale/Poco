@@ -21,6 +21,7 @@
 
 
 #include "Poco/Net/Net.h"
+#include "Poco/Net/SNMPCore.h"
 #include "Poco/Net/SNMPEventArgs.h"
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/Net/DatagramSocket.h"
@@ -65,25 +66,29 @@ public:
 		/// 
 		/// Returns the number of valid replies.
 
-	void get(SocketAddress& address, const std::string &oid, int requestId = 0);
+	void get(SocketAddress& address, const std::string &oid, int requestId = 0, 
+		SNMPVersion::Version version = SNMPVersion::SNMPv1);
 		/// Pings the specified address [repeat] times.
 		/// Notifications are posted for events.
 		/// 
 		/// Returns the number of valid replies.
 
-	void get(const std::string& address, const std::string &oid, int requestId = 0);
+	void get(const std::string& address, const std::string &oid, int requestId = 0,
+		SNMPVersion::Version version = SNMPVersion::SNMPv1);
 		/// Calls ICMPClient::ping(SocketAddress&, int) and
 		/// returns the result.
 		/// 
 		/// Returns the number of valid replies.
 
-	void walk(SocketAddress& address, const std::string &oid, int requestId = 0);
+	void walk(SocketAddress& address, const std::string &oid, int requestId = 0,
+		SNMPVersion::Version version = SNMPVersion::SNMPv1);
 		/// Pings the specified address [repeat] times.
 		/// Notifications are posted for events.
 		/// 
 		/// Returns the number of valid replies.
 
-	void walk(const std::string& address, const std::string &oid, int requestId = 0);
+	void walk(const std::string& address, const std::string &oid, int requestId = 0,
+		SNMPVersion::Version version = SNMPVersion::SNMPv1);
 		/// Calls ICMPClient::ping(SocketAddress&, int) and
 		/// returns the result.
 		/// 

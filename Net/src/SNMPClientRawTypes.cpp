@@ -15,6 +15,7 @@
 
 
 #include "Poco/Net/SNMPClientRawTypes.h"
+#include "Poco/Net/SNMPCore.h"
 #include "Poco/Format.h"
 
 

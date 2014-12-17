@@ -372,6 +372,7 @@
     <ClInclude Include="include\Poco\Net\ICMPSocket.h"/>
     <ClInclude Include="include\Poco\Net\ICMPSocketImpl.h"/>
     <ClInclude Include="include\Poco\Net\ICMPv4PacketImpl.h"/>
+    <ClInclude Include="include\Poco\Net\SNMPCore.h"/>
     <ClInclude Include="include\Poco\Net\SNMPClientRaw.h"/>
     <ClInclude Include="include\Poco\Net\SNMPClientRawTypes.h"/>
     <ClInclude Include="include\Poco\Net\SNMPClientRawFactory.h"/>

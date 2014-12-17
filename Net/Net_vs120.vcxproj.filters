@@ -447,6 +447,9 @@
     <ClInclude Include="include\Poco\Net\ICMPv4PacketImpl.h">
       <Filter>ICMP\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Poco\Net\SNMPCore.h">
+      <Filter>SNMP\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\Poco\Net\SNMPClientRaw.h">
       <Filter>SNMP\Header Files</Filter>
     </ClInclude>

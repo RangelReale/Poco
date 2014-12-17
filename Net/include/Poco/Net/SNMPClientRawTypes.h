@@ -30,22 +30,6 @@ namespace Net {
 namespace ASN1Types {
 
 
-class SNMP_ASN1
-{
-public:
-	enum BERType {
-		IPAddress = 0x40,
-		Counter32 = 0x41,
-		Gauge32 = 0x42,
-		TimeTicks = 0x43,
-
-		GetRequestPDU = 0xa0,
-		GetNextRequestPDU = 0xa1,
-		GetResponsePDU = 0xa2
-	};
-};
-
-
 class Net_API IPAddress : public OctetString
 {
 public:
@@ -85,6 +69,7 @@ public:
 
 	std::string typeName() const;
 };
+
 
 } } } // namespace Poco::Net::ASN1Types
 

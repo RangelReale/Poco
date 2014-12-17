@@ -876,6 +876,8 @@
 			<Filter
 				Name="Header Files">
 				<File
+					RelativePath=".\include\Poco\Net\SNMPCore.h"/>
+				<File
 					RelativePath=".\include\Poco\Net\SNMPClientRaw.h"/>
 				<File
 					RelativePath=".\include\Poco\Net\SNMPClientRawTypes.h"/>

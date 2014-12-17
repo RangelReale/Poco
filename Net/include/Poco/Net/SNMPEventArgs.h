@@ -59,6 +59,10 @@ public:
 	const std::string &error() const;
 		/// Returns the number of repetitions for the ping operation.
 
+	bool abort() const;
+
+	void setAbort(bool value);
+
 private:
 	SNMPEventArgs();
 
@@ -71,6 +75,7 @@ private:
 	SNMPTypes::SNMPMessage::Ptr _message;
 	Poco::ASN1::Ptr _rawmessage;
 	std::string _error;
+	bool _abort;
 
 	friend class SNMPClient;
 };

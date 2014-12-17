@@ -14,6 +14,7 @@
 //
 
 
+#include "Poco/Net/SNMPCore.h"
 #include "Poco/Net/SNMPClientRawFactory.h"
 #include "Poco/Net/SNMPClientRawTypes.h"
 
@@ -28,13 +29,13 @@ ASN1::Ptr SNMPClientRawFactory::create(ASN1Type type)
 	{
 		switch (type.rawValue())
 		{
-		case ASN1Types::SNMP_ASN1::IPAddress: 
+		case SNMP_ASN1::IPAddress: 
 			return new ASN1Types::IPAddress;
-		case ASN1Types::SNMP_ASN1::Counter32: 
+		case SNMP_ASN1::Counter32: 
 			return new ASN1Types::Counter32;
-		case ASN1Types::SNMP_ASN1::Gauge32: 
+		case SNMP_ASN1::Gauge32: 
 			return new ASN1Types::Gauge32;
-		case ASN1Types::SNMP_ASN1::TimeTicks: 
+		case SNMP_ASN1::TimeTicks: 
 			return new ASN1Types::TimeTicks;
 		}
 	}
@@ -42,9 +43,9 @@ ASN1::Ptr SNMPClientRawFactory::create(ASN1Type type)
 	{
 		switch (type.rawValue())
 		{
-		case ASN1Types::SNMP_ASN1::GetRequestPDU: 
-		case ASN1Types::SNMP_ASN1::GetNextRequestPDU:
-		case ASN1Types::SNMP_ASN1::GetResponsePDU:
+		case SNMP_ASN1::GetRequestPDU: 
+		case SNMP_ASN1::GetNextRequestPDU:
+		case SNMP_ASN1::GetResponsePDU:
 			return new Poco::ASN1Types::Sequence(type);
 		}
 	}
