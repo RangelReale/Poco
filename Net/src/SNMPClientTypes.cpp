@@ -105,10 +105,12 @@ VarBindList::VarBindList() : Poco::RefCountedObject()
 
 }
 
+
 VarBindList::VarBindList(ASN1::Ptr data) : Poco::RefCountedObject()
 {
 	decode(data);
 }
+
 
 void VarBindList::clear()
 {

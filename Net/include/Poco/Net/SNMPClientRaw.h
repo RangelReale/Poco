@@ -33,13 +33,10 @@ namespace Net {
 
 
 class Net_API SNMPClientRaw
-	/// This class provides ICMP Ping functionality.
+	/// This class provides SNMP querying functionality.
 	///
-	/// The events are available when class is instantiated
-	///	and non-static member functions are called.
-	/// 
-	///	A "lightweight" alternative is direct (without instantiation)
-	///	use of static member functions.
+	/// This version returns the raw ASN1 types received.
+	///	For a more friendly result version, use the SNMPClient class.
 {
 public:
 	mutable Poco::BasicEvent<SNMPRawEventArgs> snmpReply;
@@ -48,38 +45,28 @@ public:
 	SNMPClientRaw();
 
 	explicit SNMPClientRaw(const SocketAddress& listenAddr);
-		/// Creates an ICMP client.
-		///
-		/// If using raw socket, most operating systems requires root access.
-		/// Non-raw sockets are not available in all platforms, if not available
-		/// NotImplementedException is thrown.
+		/// Creates an SNMP raw client.
 
 	~SNMPClientRaw();
-		/// Destroys the ICMP client.
+		/// Destroys the SNMP raw client.
 
 	ASN1::Ptr query(SocketAddress& address, ASN1::Ptr query);
-		/// Pings the specified address [repeat] times.
+		/// Queries the specified address for a single result.
 		/// Notifications are posted for events.
 		/// 
-		/// Returns the number of valid replies.
+		/// Returns the number parsed ASN1 object.
 
 	ASN1::Ptr query(const std::string& address, ASN1::Ptr query);
-		/// Calls ICMPClient::ping(SocketAddress&, int) and
+		/// Calls SNMPClientRaw::query(SocketAddress&, int) and
 		/// returns the result.
-		/// 
-		/// Returns the number of valid replies.
 
 	void send(SocketAddress& address, ASN1::Ptr query);
-		/// Pings the specified address [repeat] times.
+		/// Queries the specified address.
 		/// Notifications are posted for events.
-		/// 
-		/// Returns the number of valid replies.
 
 	void send(const std::string& address, ASN1::Ptr query);
-		/// Calls ICMPClient::ping(SocketAddress&, int) and
-		/// returns the result.
-		/// 
-		/// Returns the number of valid replies.
+		/// Queries the specified address.
+		/// Notifications are posted for events.
 
 private:
 	Poco::Net::DatagramSocket _socket;

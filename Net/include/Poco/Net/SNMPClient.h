@@ -35,13 +35,7 @@ namespace Net {
 
 
 class Net_API SNMPClient
-	/// This class provides ICMP Ping functionality.
-	///
-	/// The events are available when class is instantiated
-	///	and non-static member functions are called.
-	/// 
-	///	A "lightweight" alternative is direct (without instantiation)
-	///	use of static member functions.
+	/// This class provides SNMP querying functionality.
 {
 public:
 	mutable Poco::BasicEvent<SNMPEventArgs> snmpBegin;
@@ -50,53 +44,40 @@ public:
 	mutable Poco::BasicEvent<SNMPEventArgs> snmpEnd;
 
 	SNMPClient();
+		/// Constructs the SNMP client.
 
 	~SNMPClient();
-		/// Destroys the ICMP client.
+		/// Destroys the SNMP client.
 
 	void send(SocketAddress& address, SNMPTypes::SNMPMessage::Ptr message);
-		/// Pings the specified address [repeat] times.
+		/// Sends the SNMP message to the specified address.
 		/// Notifications are posted for events.
-		/// 
-		/// Returns the number of valid replies.
 
 	void send(const std::string& address, SNMPTypes::SNMPMessage::Ptr message);
-		/// Calls ICMPClient::ping(SocketAddress&, int) and
-		/// returns the result.
-		/// 
-		/// Returns the number of valid replies.
+		/// Calls SNMPClient::send(SocketAddress&, int).
 
 	void get(SocketAddress& address, const std::string &oid, int requestId = 0, 
 		const std::string &community = "public",
 		SNMPVersion::Version version = SNMPVersion::SNMPv1);
-		/// Pings the specified address [repeat] times.
+		/// Sends a SNMP GET request for a single value.
 		/// Notifications are posted for events.
-		/// 
-		/// Returns the number of valid replies.
 
 	void get(const std::string& address, const std::string &oid, int requestId = 0,
 		const std::string &community = "public",
 		SNMPVersion::Version version = SNMPVersion::SNMPv1);
-		/// Calls ICMPClient::ping(SocketAddress&, int) and
-		/// returns the result.
-		/// 
-		/// Returns the number of valid replies.
+		/// Calls SNMPClient::get(SocketAddress&, const std::string&, int, const std::string&, SNMPVersion::Version).
 
 	void walk(SocketAddress& address, const std::string &oid, int requestId = 0,
 		const std::string &community = "public",
 		SNMPVersion::Version version = SNMPVersion::SNMPv1);
-		/// Pings the specified address [repeat] times.
+		/// Sends a SNMP GETNEXT request for a list of values, starting from the passed OID.
 		/// Notifications are posted for events.
-		/// 
-		/// Returns the number of valid replies.
 
 	void walk(const std::string& address, const std::string &oid, int requestId = 0,
 		const std::string &community = "public",
 		SNMPVersion::Version version = SNMPVersion::SNMPv1);
-		/// Calls ICMPClient::ping(SocketAddress&, int) and
-		/// returns the result.
-		/// 
-		/// Returns the number of valid replies.
+		/// Calls SNMPClient::walk(SocketAddress&, const std::string&, int, const std::string&, SNMPVersion::Version).
+
 };
 
 

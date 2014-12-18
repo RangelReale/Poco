@@ -30,17 +30,14 @@ namespace Net {
 
 
 class Net_API SNMPRawEventArgs
-	/// The purpose of the ICMPEventArgs class is to be used as template parameter
-	/// to instantiate event members in ICMPClient class.
-	/// When clients register for an event notification, the reference to the class is 
-	///	passed to the handler function to provide information about the event.
+	/// Argument to the SNMP client raw events.
 {
 public:
 	SNMPRawEventArgs(const SocketAddress& address);
-		/// Creates ICMPEventArgs.
+		/// Creates SNMPRawEventArgs.
 
 	virtual ~SNMPRawEventArgs();
-		/// Destroys ICMPEventArgs.
+		/// Destroys SNMPRawEventArgs.
 
 	std::string hostName() const;
 		/// Tries to resolve the target IP address into host name.
@@ -51,10 +48,10 @@ public:
 		/// Returns the target IP address.
 
 	ASN1::Ptr response() const;
-		/// Returns the number of repetitions for the ping operation.
+		/// Returns the parsed ASN1 response.
 
 	const std::string &error() const;
-		/// Returns the number of repetitions for the ping operation.
+		/// Returns error if any.
 
 private:
 	SNMPRawEventArgs();
