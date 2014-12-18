@@ -1,11 +1,11 @@
 //
-// Ascii.cpp
+// ASN1.cpp
 //
-// $Id: //poco/1.4/Foundation/src/Ascii.cpp#1 $
+// $Id: //poco/1.4/Foundation/src/ASN1.cpp#1 $
 //
 // Library: Foundation
-// Package: Core
-// Module:  Ascii
+// Package: Streams
+// Module:  ASN1
 //
 // Copyright (c) 2010, Applied Informatics Software Engineering GmbH.
 // and Contributors.
@@ -34,6 +34,7 @@ ASN1Type::ASN1Type() : _aclass(0), _primitive(true), _tag(0)
 {
 
 }
+
 
 ASN1Type::ASN1Type(Poco::UInt8 aclass, bool primitive, Poco::UInt32 tag) : 
 	_aclass(aclass), _primitive(primitive), _tag(tag)
@@ -65,10 +66,12 @@ Poco::UInt8 ASN1Type::aclass() const
 	return _aclass;
 }
 
+
 bool ASN1Type::primitive() const
 {
 	return _primitive;
 }
+
 
 Poco::UInt32 ASN1Type::tag() const
 {
@@ -117,6 +120,7 @@ void ASN1Type::encodeData(Poco::BinaryWriter &stream) const
 	if (_tag >= 0x1f)
 		ASN1::writeBase128Int(_tag, stream);
 }
+
 
 Poco::UInt8 ASN1Type::decodeData(Poco::BinaryReader &stream)
 {
@@ -171,8 +175,8 @@ void ASN1::encode(Poco::BinaryWriter &stream) const
 	Poco::UInt32 dataLength = getDataLength();
 
 	_type.encodeData(stream);
-	//stream << static_cast<Poco::UInt8>(_type);
 
+	// encode length
 	if (dataLength > 127)
 	{
 		Poco::UInt8 numBytes = 1;
@@ -225,9 +229,6 @@ Poco::UInt32 ASN1::decode(Poco::SharedPtr<ASN1Factory> factory, Poco::BinaryRead
 
 			length <<= 8;
 			length |= int(dataLength);
-
-			//if (length == 0)
-				//throw DataFormatException("superfluous leading zeros in length");
 		}
 	}
 
@@ -276,6 +277,7 @@ struct Whitespace
     }
     int n;
 };
+
 
 std::ostream& operator<<(std::ostream& stream, const Whitespace &ws)
 {

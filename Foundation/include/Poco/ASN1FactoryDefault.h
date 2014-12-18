@@ -28,10 +28,13 @@ namespace Poco {
 
 
 class Foundation_API ASN1FactoryDefault : public ASN1Factory
-	/// This class is a factory for ASN1 objects.
+	/// This class is a factory for default ASN1 types.
 {
 public:
-	ASN1::Ptr create(ASN1Type type);		
+
+	ASN1::Ptr create(ASN1Type type);
+		/// Creates the ASN1 object using the passed type.
+
 };
 
 

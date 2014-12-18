@@ -38,8 +38,6 @@ ASN1::Ptr ASN1FactoryDefault::create(ASN1Type type)
 	}
 
 	return new ASN1Types::Unknown(type);
-
-    //return NullObject::Instance();
 }
 
 

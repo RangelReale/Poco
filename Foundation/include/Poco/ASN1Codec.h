@@ -33,14 +33,22 @@ class Foundation_API ASN1Codec
 	/// This class encodes and decodes ASN.1 streams.
 {
 public:
+
 	ASN1Codec();
+		/// Constructor that uses the default ASN1 factory.
+
 	ASN1Codec(Poco::SharedPtr<ASN1Factory> factory);
+		/// Constructs passing a custom ASN1 factory.
 
 	void setFactory(Poco::SharedPtr<ASN1Factory> factory);
+		/// Sets the factory to be used.
 
 	void encode(ASN1::Ptr data, std::ostream &stream);
+		/// Encodes the ASN1 data to the stream.
 
 	ASN1::Ptr decode(std::istream &stream);
+		/// Decodes the ASN1 data from the stream.
+
 private:
 	Poco::SharedPtr<ASN1Factory> _factory;
 };

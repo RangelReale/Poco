@@ -39,6 +39,7 @@ struct Whitespace
     int n;
 };
 
+
 std::ostream& operator<<(std::ostream& stream, const Whitespace &ws)
 {
     for(int i = 0; i < ws.n; i++)
@@ -460,7 +461,7 @@ Poco::UInt32 ObjectIdentifier::getDataLength() const
 void ObjectIdentifier::encodeData(Poco::BinaryWriter &stream) const
 {
     if (_value.size() < 2)
-        assert(false);//#TODO: throw DataException("Invalid Object Identifier");
+        throw DataException("Invalid Object Identifier");
 
 	stream << (Poco::UInt8)(_value.at(0) * 40 + _value.at(1));
 
@@ -469,13 +470,13 @@ void ObjectIdentifier::encodeData(Poco::BinaryWriter &stream) const
         std::string tmp;
 		Poco::UInt32 value = _value.at(i);
 
-        if (value < 128) { //#TODO: Magic
+        if (value < 128) {
             result.push_back((char)value);
         } else {
             Poco::UInt32 val = value;
 
             while (val != 0) {
-                Poco::UInt8 bval = (Poco::UInt8)(val & 0xFF); //#TODO: Magic
+                Poco::UInt8 bval = (Poco::UInt8)(val & 0xFF);
                 if ((bval & HIGH_BIT) != 0) {
                     bval = (Poco::UInt8)(bval & ~HIGH_BIT);
                 }
@@ -670,5 +671,6 @@ std::string Sequence::typeName() const
 
 	return Poco::format("SEQUENCE%s", seqtype);
 }
+
 
 } } // namespace Poco::ASN1Types
