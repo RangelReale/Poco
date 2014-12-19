@@ -31,12 +31,23 @@ ASN1::Ptr SNMPClientRawFactory::create(ASN1Type type)
 		{
 		case SNMP_ASN1::IPAddress: 
 			return new ASN1Types::IPAddress;
+		case SNMP_ASN1::NetworkAddress: 
+			return new ASN1Types::NetworkAddress;
 		case SNMP_ASN1::Counter32: 
+		case SNMP_ASN1::Uinteger32: 
 			return new ASN1Types::Counter32;
 		case SNMP_ASN1::Gauge32: 
 			return new ASN1Types::Gauge32;
+		case SNMP_ASN1::Counter64: 
+#ifdef POCO_HAVE_INT64
+			return new ASN1Types::Counter64;
+#else
+			return new ASN1Types::Counter32;
+#endif
 		case SNMP_ASN1::TimeTicks: 
 			return new ASN1Types::TimeTicks;
+		case SNMP_ASN1::Opaque: 
+			return new ASN1Types::Opaque;
 		}
 	}
 	else if (type.aclass() == ASN1Type::ContextSpecific)

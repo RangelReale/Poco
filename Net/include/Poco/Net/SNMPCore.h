@@ -33,7 +33,7 @@ class Net_API SNMPVersion
 public:
 	enum Version {
 		SNMPv1				= 0,
-		SNMPv2c				= 2
+		SNMPv2c				= 1
 	};
 };
 
@@ -47,10 +47,16 @@ public:
 		Counter32			= 0x41,
 		Gauge32				= 0x42,
 		TimeTicks			= 0x43,
+		Opaque				= 0x44,
+		NetworkAddress		= 0x45,
+		Counter64			= 0x46,
+		Uinteger32			= 0x47,
 
 		GetRequestPDU		= 0xa0,
 		GetNextRequestPDU	= 0xa1,
-		GetResponsePDU		= 0xa2
+		GetResponsePDU		= 0xa2,
+		SetRequestPDU		= 0xa3,
+		GetBulkRequestPDU	= 0xa5
 	};
 };
 

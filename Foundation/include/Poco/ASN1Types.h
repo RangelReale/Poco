@@ -40,6 +40,8 @@ public:
 
 	Unknown(ASN1Type type);
 
+	Unknown(ASN1Type type, const std::string &value);
+
 	std::string toString() const;
 
 	std::string typeName() const;
@@ -130,6 +132,36 @@ private:
 	Poco::UInt32 _value;
 };
 
+#ifdef POCO_HAVE_INT64
+
+class Foundation_API Integer64 : public ASN1
+{
+	/// ASN1 Integer Universal value.
+public:
+
+	Integer64();
+
+	Integer64(Poco::UInt64 value);
+
+	Integer64(ASN1Type type, Poco::UInt64 value);
+
+	Poco::UInt64 getValue() const;
+
+	std::string toString() const;
+
+	std::string typeName() const;
+
+	void dump(std::ostream &stream, int ident) const;
+
+protected:
+	Poco::UInt32 getDataLength() const;
+    void encodeData(Poco::BinaryWriter &stream) const;
+	void decodeData(Poco::SharedPtr<ASN1Factory> factory, Poco::BinaryReader &stream, Poco::UInt32 length);
+private:
+	Poco::UInt64 _value;
+};
+
+#endif
 
 class Foundation_API OctetString : public ASN1
 	/// ASN1 OctetString Universal value.

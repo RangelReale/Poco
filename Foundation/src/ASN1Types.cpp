@@ -23,6 +23,7 @@
 #include <sstream>
 #include <assert.h>
 
+
 #define HIGH_BIT 0x80
 
 
@@ -56,6 +57,12 @@ std::ostream& operator<<(std::ostream& stream, const Whitespace &ws)
 
 
 Unknown::Unknown(ASN1Type type) : ASN1(type)
+{
+
+}
+
+
+Unknown::Unknown(ASN1Type type, const std::string &value) : ASN1(type), _value(value)
 {
 
 }
@@ -331,6 +338,128 @@ void Integer::dump(std::ostream &stream, int ident) const
 {
 	stream << Whitespace(ident) << "INTEGER " << _value << std::endl;
 }
+
+
+#ifdef POCO_HAVE_INT64
+
+///
+/// Integer64
+///
+
+
+Integer64::Integer64() : ASN1(ASN1Type(ASN1Type::Integer, true)), _value(0)
+{
+
+}
+
+
+Integer64::Integer64(Poco::UInt64 value) : ASN1(ASN1Type(ASN1Type::Integer, true)), _value(value)
+{
+
+}
+
+
+Integer64::Integer64(ASN1Type type, Poco::UInt64 value) : ASN1(type), _value(value)
+{
+
+}
+
+
+Poco::UInt64 Integer64::getValue() const
+{
+	return _value;
+}
+
+
+std::string Integer64::toString() const
+{
+	return Poco::format("%?d", _value);
+}
+
+
+std::string Integer64::typeName() const
+{
+	std::string seqtype;
+	if (getType().universalValue() != ASN1Type::Integer)
+		seqtype = Poco::format("-0x%s", Poco::NumberFormatter::formatHex(getType().rawValue()));
+
+	return Poco::format("INTEGER64%s", seqtype);
+}
+
+
+Poco::UInt32 Integer64::getDataLength() const
+{
+	Poco::Int64 value = _value;
+    int valueSize = 0;
+
+    do {
+        value >>= 7;
+        valueSize++;
+    } while (value != 0);
+
+    return valueSize;
+}
+
+
+void Integer64::encodeData(Poco::BinaryWriter &stream) const
+{
+	Poco::UInt64 integer = _value;
+    int mask;
+    int intsize = 4;
+
+    /*
+     * Truncate "unnecessary" bytes off of the most significant end of this
+     * 2's complement integer.  There should be no sequence of 9
+     * consecutive 1's or 0's at the most significant end of the
+     * integer.
+     */
+    mask = 0x1FF << ((8 * 3) - 1);
+    /* mask is 0xFF800000 on a big-endian machine */
+    while ((((integer & mask) == 0) || ((integer & mask) == mask))
+          && intsize > 1){
+        intsize--;
+        integer <<= 8;
+    }
+    //encodeHeader(os, type, intsize);
+    mask = 0xFF << (8 * 3);
+    /* mask is 0xFF000000 on a big-endian machine */
+    while ((intsize--) > 0){
+		stream << (char)( ((integer & mask) >> (8 * 3)) );
+        integer <<= 8;
+    }
+}
+
+
+void Integer64::decodeData(Poco::SharedPtr<ASN1Factory> factory, Poco::BinaryReader &stream, Poco::UInt32 length)
+{
+	Poco::UInt8 bytesRead = 0;
+
+    Poco::UInt8 byte = 0;
+    stream >> byte;
+    bytesRead++;
+
+    _value = (byte & HIGH_BIT) == 0 ? 0 : -1;
+
+    for (;;) {
+        _value <<= 8;
+        _value |= byte;
+
+        if (bytesRead >= length)
+            break;
+
+        stream >> byte;
+        bytesRead++;
+    }
+}
+
+
+void Integer64::dump(std::ostream &stream, int ident) const
+{
+	stream << Whitespace(ident) << "INTEGER64 " << _value << std::endl;
+}
+
+
+#endif // POCO_HAVE_INT64
 
 
 ///

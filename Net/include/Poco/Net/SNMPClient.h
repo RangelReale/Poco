@@ -67,6 +67,17 @@ public:
 		SNMPVersion::Version version = SNMPVersion::SNMPv1);
 		/// Calls SNMPClient::get(SocketAddress&, const std::string&, int, const std::string&, SNMPVersion::Version).
 
+	void set(SocketAddress& address, const std::string &oid, ASN1::Ptr value, int requestId = 0, 
+		const std::string &community = "public",
+		SNMPVersion::Version version = SNMPVersion::SNMPv1);
+		/// Sends a SNMP SET request for a single value.
+		/// Notifications are posted for events.
+
+	void set(const std::string& address, const std::string &oid, ASN1::Ptr value, int requestId = 0,
+		const std::string &community = "public",
+		SNMPVersion::Version version = SNMPVersion::SNMPv1);
+		/// Calls SNMPClient::set(SocketAddress&, const std::string&, ASN1::Ptr value, int, const std::string&, SNMPVersion::Version).
+
 	void walk(SocketAddress& address, const std::string &oid, int requestId = 0,
 		const std::string &community = "public",
 		SNMPVersion::Version version = SNMPVersion::SNMPv1);
@@ -78,6 +89,18 @@ public:
 		SNMPVersion::Version version = SNMPVersion::SNMPv1);
 		/// Calls SNMPClient::walk(SocketAddress&, const std::string&, int, const std::string&, SNMPVersion::Version).
 
+	void getBulk(SocketAddress& address, const std::string &oid, int requestId = 0,
+		int nonRepeaters = 0, int maxRepetitions = 10,
+		const std::string &community = "public",
+		SNMPVersion::Version version = SNMPVersion::SNMPv2c);
+		/// Sends a SNMP GETBULK request for a list of values, starting from the passed OID.
+		/// Notifications are posted for events.
+
+	void getBulk(const std::string& address, const std::string &oid, int requestId = 0,
+		int nonRepeaters = 0, int maxRepetitions = 10,
+		const std::string &community = "public",
+		SNMPVersion::Version version = SNMPVersion::SNMPv2c);
+		/// Calls SNMPClient::getBulk(SocketAddress&, const std::string&, int, int, int const std::string&, SNMPVersion::Version).
 };
 
 

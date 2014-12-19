@@ -224,6 +224,30 @@ void PDU::setErrorIndex(int value)
 }
 
 
+int PDU::nonRepeaters() const
+{
+	return _error;
+}
+
+
+void PDU::setNonRepeaters(int value)
+{
+	_error = value;
+}
+
+
+int PDU::maxRepetitions() const
+{
+	return _errorindex;
+}
+
+
+void PDU::setMaxRepetitions(int value)
+{
+	_errorindex = value;
+}
+
+
 VarBindList &PDU::varBindList()
 {
 	return _varbindlist;

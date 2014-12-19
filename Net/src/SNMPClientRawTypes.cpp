@@ -16,6 +16,7 @@
 
 #include "Poco/Net/SNMPClientRawTypes.h"
 #include "Poco/Net/SNMPCore.h"
+#include "Poco/NumberFormatter.h"
 #include "Poco/Format.h"
 
 
@@ -41,6 +42,12 @@ IPAddress::IPAddress(const std::string &value) : Poco::ASN1Types::OctetString(SN
 }
 
 
+IPAddress::IPAddress(ASN1Type type, const std::string &value) : Poco::ASN1Types::OctetString(type, value)
+{
+
+}
+
+
 std::string IPAddress::toString() const
 {
 	if (getValue().size() == 4)
@@ -58,6 +65,29 @@ std::string IPAddress::toString() const
 std::string IPAddress::typeName() const
 {
 	return "IPADDRESS";
+}
+
+
+///
+/// NetworkAddress
+///
+
+
+NetworkAddress::NetworkAddress() : IPAddress(SNMP_ASN1::NetworkAddress)
+{
+
+}
+
+
+NetworkAddress::NetworkAddress(const std::string &value) : IPAddress(SNMP_ASN1::NetworkAddress, value)
+{
+
+}
+
+
+std::string NetworkAddress::typeName() const
+{
+	return "NETWORKADDRESS";
 }
 
 
@@ -107,6 +137,35 @@ std::string Gauge32::typeName() const
 }
 
 
+#ifdef POCO_HAVE_INT64
+
+
+///
+/// Counter64
+///
+
+
+Counter64::Counter64() : Integer64(SNMP_ASN1::Counter64)
+{
+
+}
+
+
+Counter64::Counter64(Poco::UInt64 value) : Integer64(SNMP_ASN1::Counter64, value)
+{
+
+}
+
+
+std::string Counter64::typeName() const
+{
+	return "COUNTER64";
+}
+
+
+#endif POCO_HAVE_INT64
+
+
 ///
 /// TimeTicks
 ///
@@ -127,6 +186,35 @@ TimeTicks::TimeTicks(Poco::UInt32 value) : Integer(SNMP_ASN1::TimeTicks, value)
 std::string TimeTicks::typeName() const
 {
 	return "TIMETICKS";
+}
+
+
+///
+/// Opaque
+///
+
+
+Opaque::Opaque() : Unknown(SNMP_ASN1::Opaque)
+{
+
+}
+
+
+Opaque::Opaque(const std::string &value) : Unknown(SNMP_ASN1::Opaque, value)
+{
+
+}
+
+
+std::string Opaque::toString() const
+{
+	return Poco::format("[opaque type 0x%s size %?d]", Poco::NumberFormatter::formatHex(getType().rawValue()), getValue().size());
+}
+
+
+std::string Opaque::typeName() const
+{
+	return "OPAQUE";
 }
 
 

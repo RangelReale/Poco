@@ -94,6 +94,27 @@ class Net_API PDU : public Poco::RefCountedObject
 	/// PDU SNMP type.
 {
 public:
+	enum Errors {
+		E_NOERROR				= 0,
+		E_TOOBIG				= 1,
+		E_NOSUCHNAME			= 2,
+		E_BADVALUE				= 3,
+		E_READONLY				= 4,
+		E_GENERR				= 5,
+		E_NOACCESS				= 6,
+		E_WRONGTYPE				= 7,
+		E_WRONGLENGTH			= 8,
+		E_WRONGENCODING			= 9,
+		E_WRONGVALUE			= 10,
+		E_NOCREATION			= 11,
+		E_INCONSISTENTVALUE		= 12,
+		E_RESOURCEUNAVAILABLE	= 13,
+		E_COMMITFAILED			= 14,
+		E_UNDOFAILED			= 15,
+		E_AUTHORIZATIONERROR	= 16,
+		E_NOTWRITABLE			= 17,
+		E_INCONSISTENTNAME		= 18
+	};
 
 	PDU();
 
@@ -114,6 +135,14 @@ public:
 	int errorIndex() const;
 
 	void setErrorIndex(int value);
+
+	int nonRepeaters() const;
+
+	void setNonRepeaters(int value);
+
+	int maxRepetitions() const;
+
+	void setMaxRepetitions(int value);
 
 	VarBindList &varBindList();
 

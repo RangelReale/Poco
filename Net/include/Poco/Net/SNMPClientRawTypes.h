@@ -41,7 +41,23 @@ public:
 
 	IPAddress(const std::string &value);
 
+	IPAddress(ASN1Type type, const std::string &value = "");
+
 	std::string toString() const;
+
+	std::string typeName() const;
+
+};
+
+
+class Net_API NetworkAddress : public IPAddress
+	/// SNMP network address ASN1 type.
+{
+public:
+
+	NetworkAddress();
+
+	NetworkAddress(const std::string &value);
 
 	std::string typeName() const;
 
@@ -75,6 +91,22 @@ public:
 
 };
 
+#ifdef POCO_HAVE_INT64
+
+class Net_API Counter64 : public Integer64
+	/// SNMP Counter64 ASN1 type.
+{
+public:
+
+	Counter64();
+
+	Counter64(Poco::UInt64 value);
+
+	std::string typeName() const;
+
+};
+
+#endif // POCO_HAVE_INT64
 
 class Net_API TimeTicks : public Integer
 	/// SNMP TimeTicks ASN1 type.
@@ -84,6 +116,22 @@ public:
 	TimeTicks();
 
 	TimeTicks(Poco::UInt32 value);
+
+	std::string typeName() const;
+
+};
+
+
+class Net_API Opaque : public Unknown
+	/// SNMP Opaque ASN1 type.
+{
+public:
+
+	Opaque();
+
+	Opaque(const std::string &value);
+
+	std::string toString() const;
 
 	std::string typeName() const;
 

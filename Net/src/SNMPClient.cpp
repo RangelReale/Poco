@@ -153,6 +153,28 @@ void SNMPClient::get(const std::string& address, const std::string &oid, int req
 }
 
 
+void SNMPClient::set(SocketAddress& address, const std::string &oid, ASN1::Ptr value, int requestId, 
+	const std::string &community, SNMPVersion::Version version)
+{
+	SNMPTypes::SNMPMessage::Ptr message(new SNMPTypes::SNMPMessage);
+	message->setVersion(version);
+	message->setCommunity(community);
+	message->pdu().setType(SNMP_ASN1::SetRequestPDU);
+	message->pdu().setRequestId(requestId);
+	message->pdu().varBindList().add(new Poco::Net::SNMPTypes::VarBind(oid, value));
+
+	send(address, message);
+}
+
+
+void SNMPClient::set(const std::string& address, const std::string &oid, ASN1::Ptr value, int requestId, 
+	const std::string &community, SNMPVersion::Version version)
+{
+	SocketAddress addr(address, 161);
+	set(addr, oid, value, requestId, community, version);
+}
+
+
 void SNMPClient::walk(SocketAddress& address, const std::string &oid, int requestId, 
 	const std::string &community, SNMPVersion::Version version)
 {
@@ -172,6 +194,32 @@ void SNMPClient::walk(const std::string& address, const std::string &oid, int re
 {
 	SocketAddress addr(address, 161);
 	walk(addr, oid, requestId, community, version);
+}
+
+
+void SNMPClient::getBulk(SocketAddress& address, const std::string &oid, int requestId, 
+	int nonRepeaters, int maxRepetitions,
+	const std::string &community, SNMPVersion::Version version)
+{
+	SNMPTypes::SNMPMessage::Ptr message(new SNMPTypes::SNMPMessage);
+	message->setVersion(version);
+	message->setCommunity(community);
+	message->pdu().setType(SNMP_ASN1::GetBulkRequestPDU);
+	message->pdu().setRequestId(requestId);
+	message->pdu().setNonRepeaters(nonRepeaters);
+	message->pdu().setMaxRepetitions(maxRepetitions);
+	message->pdu().varBindList().add(new Poco::Net::SNMPTypes::VarBind(oid, new Poco::ASN1Types::Null()));
+
+	send(address, message);
+}
+
+
+void SNMPClient::getBulk(const std::string& address, const std::string &oid, int requestId, 
+	int nonRepeaters, int maxRepetitions,
+	const std::string &community, SNMPVersion::Version version)
+{
+	SocketAddress addr(address, 161);
+	getBulk(addr, oid, requestId, nonRepeaters, maxRepetitions, community, version);
 }
 
 
