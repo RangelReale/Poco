@@ -300,6 +300,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Ascii.cpp" />
     <ClCompile Include="src\AtomicCounter.cpp" />
     <ClCompile Include="src\Bugcheck.cpp" />
     <ClCompile Include="src\ByteOrder.cpp">
