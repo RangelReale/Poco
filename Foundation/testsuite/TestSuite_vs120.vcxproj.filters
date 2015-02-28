@@ -336,6 +336,9 @@
     <ClCompile Include="src\ConditionTest.cpp">
       <Filter>Threading\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\MutexTest.cpp">
+      <Filter>Threading\Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\RWLockTest.cpp">
       <Filter>Threading\Source Files</Filter>
     </ClCompile>
@@ -585,7 +588,9 @@
     <ClCompile Include="src\Driver.cpp">
       <Filter>_Driver\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\PBKDF2EngineTest.cpp" />
+    <ClCompile Include="src\PBKDF2EngineTest.cpp">
+      <Filter>Crypt\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AnyTest.h">
@@ -742,6 +747,9 @@
       <Filter>Threading\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ConditionTest.h">
+      <Filter>Threading\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MutexTest.h">
       <Filter>Threading\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\RWLockTest.h">
@@ -990,6 +998,8 @@
     <ClInclude Include="src\FIFOBufferStreamTest.h">
       <Filter>Streams\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\PBKDF2EngineTest.h" />
+    <ClInclude Include="src\PBKDF2EngineTest.h">
+      <Filter>Crypt\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

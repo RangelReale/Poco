@@ -65,7 +65,10 @@ PooledThread::PooledThread(const std::string& name, int stackSize):
 	_pTarget(0), 
 	_name(name), 
 	_thread(name),
-	_targetCompleted(false)
+	_targetReady(),
+	_targetCompleted(Event::EVENT_MANUALRESET),
+	_started(),
+	_mutex()
 {
 	poco_assert_dbg (stackSize >= 0);
 	_thread.setStackSize(stackSize);
@@ -128,6 +131,7 @@ void PooledThread::start(Thread::Priority priority, Runnable& target, const std:
 
 inline bool PooledThread::idle()
 {
+	FastMutex::ScopedLock lock(_mutex);
 	return _idle;
 }
 
