@@ -11,20 +11,21 @@
 # General Settings
 #
 LINKMODE ?= SHARED
-POCO_TARGET_OSNAME = Nacl
+POCO_TARGET_OSNAME = NaCl
 POCO_TARGET_OSARCH = i686
+CROSS_COMPILE      = i686-nacl-
 
 #
 # Define Tools
 #
-#CC      = ${CROSS_COMPILE}gcc
-#CXX     = ${CROSS_COMPILE}g++
+CC      = ${CROSS_COMPILE}gcc
+CXX     = ${CROSS_COMPILE}g++
 LINK    = $(CXX)
 LIB     = ${AR} -cr
-#RANLIB  = ${CROSS_COMPILE}ranlib
+RANLIB  = ${CROSS_COMPILE}ranlib
 SHLIB   = $(CXX) -shared -Wl,-soname,$(notdir $@) -o $@
 SHLIBLN = $(POCO_BASE)/build/script/shlibln
-#STRIP   = ${CROSS_COMPILE}strip
+STRIP   = ${CROSS_COMPILE}strip
 DEP     = $(POCO_BASE)/build/script/makedepend.gcc 
 SHELL   = sh
 RM      = rm -rf
