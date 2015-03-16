@@ -360,12 +360,18 @@ inline void Thread::setStackSize(int size)
 
 inline void Thread::setAffinity(unsigned int cpu)
 {
+#ifdef POCO_OS_WINDOWS
 	setAffinityImpl(cpu);
+#endif
 }
 
 inline unsigned Thread::getAffinity() const
 {
+#ifdef POCO_OS_WINDOWS
 	return getAffinityImpl();
+#else
+	return 0;
+#endif
 }
 
 inline int Thread::getStackSize() const
