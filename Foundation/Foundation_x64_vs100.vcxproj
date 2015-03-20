@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="debug_shared|x64">
@@ -244,6 +244,7 @@
     </ClCompile>
     <Lib>
       <OutputFile>..\lib64\PocoFoundationmdd.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'">
@@ -270,10 +271,15 @@
     </ClCompile>
     <Lib>
       <OutputFile>..\lib64\PocoFoundationmd.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Ascii.cpp"/>
+    <ClCompile Include="src\ASN1.cpp"/>
+    <ClCompile Include="src\ASN1Codec.cpp"/>
+    <ClCompile Include="src\ASN1FactoryDefault.cpp"/>
+    <ClCompile Include="src\ASN1Types.cpp"/>
     <ClCompile Include="src\AtomicCounter.cpp"/>
     <ClCompile Include="src\Bugcheck.cpp"/>
     <ClCompile Include="src\ByteOrder.cpp">
@@ -994,6 +1000,10 @@
   <ItemGroup>
     <ClInclude Include="include\Poco\Any.h"/>
     <ClInclude Include="include\Poco\Ascii.h"/>
+    <ClInclude Include="include\Poco\ASN1.h"/>
+    <ClInclude Include="include\Poco\ASN1Codec.h"/>
+    <ClInclude Include="include\Poco\ASN1FactoryDefault.h"/>
+    <ClInclude Include="include\Poco\ASN1Types.h"/>
     <ClInclude Include="include\Poco\AtomicCounter.h"/>
     <ClInclude Include="include\Poco\AutoPtr.h"/>
     <ClInclude Include="include\Poco\AutoReleasePool.h"/>
