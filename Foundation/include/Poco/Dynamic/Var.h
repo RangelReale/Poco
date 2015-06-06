@@ -225,6 +225,23 @@ public:
 				typeid(T).name()));
 	}
 
+	void* extractPointer() const
+		/// Returns a void pointer reference.
+		///
+		/// If T is not a pointer, a BadCastException
+		/// is thrown.
+		/// Throws InvalidAccessException if Var is empty.
+	{
+		VarHolder* pHolder = content();
+
+		if (pHolder)
+		{
+			return pHolder->extractPointer();
+		}
+		else
+			throw InvalidAccessException("Can not extract empty value.");
+	}
+
 	template <typename T> 
 	Var& operator = (const T& other)
 		/// Assignment operator for assigning POD to Var
@@ -510,6 +527,9 @@ public:
 
 	bool isDateTime() const;
 		/// Returns true if stored value represents a date/time.
+
+	bool isPointer() const;
+		/// Returns true if stored value is a pointer.
 
 	std::size_t size() const;
 		/// Returns the size of this Var.
@@ -871,6 +891,13 @@ inline bool Var::isDateTime() const
 {
 	VarHolder* pHolder = content();
 	return pHolder ? pHolder->isDateTime() : false;
+}
+
+
+inline bool Var::isPointer() const
+{
+	VarHolder* pHolder = content();
+	return pHolder ? pHolder->isPointer() : false;
 }
 
 

@@ -137,6 +137,10 @@ public:
 		/// Implementation must return the type information
 		/// (typeid) for the stored content.
 
+	virtual void* extractPointer() const;
+		/// Throws BadCastException. Must be overriden in a type
+		/// specialization in order to support the conversion.
+
 	virtual void convert(Int8& val) const;
 		/// Throws BadCastException. Must be overriden in a type
 		/// specialization in order to support the conversion.
@@ -263,6 +267,10 @@ public:
 		/// specialization in order to support the diagnostic.
 
 	virtual bool isDateTime() const;
+		/// Returns false. Must be properly overriden in a type
+		/// specialization in order to support the diagnostic.
+
+	virtual bool isPointer() const;
 		/// Returns false. Must be properly overriden in a type
 		/// specialization in order to support the diagnostic.
 
@@ -399,6 +407,12 @@ protected:
 		to = static_cast<T>(from);
 	}
 
+	template<typename T>
+	struct is_pointer { static const bool value = false; };
+
+	template<typename T>
+	struct is_pointer<T*> { static const bool value = true; };
+
 private:
 	template <typename F, typename T>
 	void checkUpperLimit(const F& from) const
@@ -441,6 +455,12 @@ private:
 //
 // inlines
 //
+
+
+inline void* VarHolder::extractPointer() const
+{
+	throw BadCastException("Can not extract pointer");
+}
 
 
 inline void VarHolder::convert(Int8& /*val*/) const
@@ -639,6 +659,11 @@ inline bool VarHolder::isDateTime() const
 	return false;
 }
 
+inline bool VarHolder::isPointer() const
+{
+	return false;
+}
+
 inline std::size_t VarHolder::size() const
 {
 	return 1u;
@@ -690,6 +715,29 @@ public:
 		return _val;
 	}
 
+	void *extractPointer() const
+	{
+		return internalExtractPointer<T>(_val);
+	}
+
+	bool isPointer() const
+	{
+		return is_pointer<T>::value;
+	}
+
+protected:
+	template<typename T>
+	void *internalExtractPointer(const T* val) const
+	{
+		return (void*)val;
+	}
+
+	template<typename T>
+	void *internalExtractPointer(const T& val) const
+	{
+		return (void*)&val;
+	}
+
 private:
 	VarHolderImpl();
 	VarHolderImpl(const VarHolderImpl&);
@@ -714,6 +762,11 @@ public:
 	const std::type_info& type() const
 	{
 		return typeid(Int8);
+	}
+
+	void* extractPointer() const
+	{
+		return (void*)&_val;
 	}
 
 	void convert(Int8& val) const
@@ -858,6 +911,11 @@ public:
 		return typeid(Int16);
 	}
 
+	void* extractPointer() const
+	{
+		return (void*)&_val;
+	}
+
 	void convert(Int8& val) const
 	{
 		convertToSmaller(_val, val);
@@ -998,6 +1056,11 @@ public:
 		return typeid(Int32);
 	}
 
+	void* extractPointer() const
+	{
+		return (void*)&_val;
+	}
+
 	void convert(Int8& val) const
 	{
 		convertToSmaller(_val, val);
@@ -1134,6 +1197,11 @@ public:
 	const std::type_info& type() const
 	{
 		return typeid(Int64);
+	}
+
+	void* extractPointer() const
+	{
+		return (void*)&_val;
 	}
 
 	void convert(Int8& val) const
@@ -1289,6 +1357,11 @@ public:
 		return typeid(UInt8);
 	}
 
+	void* extractPointer() const
+	{
+		return (void*)&_val;
+	}
+
 	void convert(Int8& val) const
 	{
 		convertUnsignedToSigned(_val, val);
@@ -1425,6 +1498,11 @@ public:
 	const std::type_info& type() const
 	{
 		return typeid(UInt16);
+	}
+
+	void* extractPointer() const
+	{
+		return (void*)&_val;
 	}
 
 	void convert(Int8& val) const
@@ -1565,6 +1643,11 @@ public:
 		return typeid(UInt32);
 	}
 
+	void* extractPointer() const
+	{
+		return (void*)&_val;
+	}
+
 	void convert(Int8& val) const
 	{
 		convertUnsignedToSigned(_val, val);
@@ -1701,6 +1784,11 @@ public:
 	const std::type_info& type() const
 	{
 		return typeid(UInt64);
+	}
+
+	void* extractPointer() const
+	{
+		return (void*)&_val;
 	}
 
 	void convert(Int8& val) const
@@ -1862,6 +1950,11 @@ public:
 		return typeid(bool);
 	}
 
+	void* extractPointer() const
+	{
+		return (void*)&_val;
+	}
+
 	void convert(Int8& val) const
 	{
 		val = static_cast<Int8>(_val ? 1 : 0);
@@ -1996,6 +2089,11 @@ public:
 	const std::type_info& type() const
 	{
 		return typeid(float);
+	}
+
+	void* extractPointer() const
+	{
+		return (void*)&_val;
 	}
 
 	void convert(Int8& val) const
@@ -2135,6 +2233,11 @@ public:
 	const std::type_info& type() const
 	{
 		return typeid(double);
+	}
+
+	void* extractPointer() const
+	{
+		return (void*)&_val;
 	}
 
 	void convert(Int8& val) const
@@ -2282,6 +2385,11 @@ public:
 		return typeid(char);
 	}
 
+	void* extractPointer() const
+	{
+		return (void*)&_val;
+	}
+
 	void convert(Int8& val) const
 	{
 		val = static_cast<Int8>(_val);
@@ -2420,6 +2528,11 @@ public:
 	const std::type_info& type() const
 	{
 		return typeid(std::string);
+	}
+
+	void* extractPointer() const
+	{
+		return (void*)&_val;
 	}
 
 	void convert(Int8& val) const
@@ -2598,6 +2711,11 @@ public:
 	const std::type_info& type() const
 	{
 		return typeid(Poco::UTF16String);
+	}
+
+	void* extractPointer() const
+	{
+		return (void*)&_val;
 	}
 
 	void convert(Int8& val) const
@@ -2787,6 +2905,11 @@ public:
 		return typeid(long);
 	}
 
+	void* extractPointer() const
+	{
+		return (void*)&_val;
+	}
+
 	void convert(Int8& val) const
 	{
 		convertToSmaller(_val, val);
@@ -2923,6 +3046,11 @@ public:
 	const std::type_info& type() const
 	{
 		return typeid(unsigned long);
+	}
+
+	void* extractPointer() const
+	{
+		return (void*)&_val;
 	}
 
 	void convert(Int8& val) const
@@ -3269,6 +3397,11 @@ public:
 	const std::type_info& type() const
 	{
 		return typeid(DateTime);
+	}
+
+	void* extractPointer() const
+	{
+		return (void*)&_val;
 	}
 
 	void convert(Int8& /*val*/) const
