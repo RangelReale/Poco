@@ -717,7 +717,7 @@ public:
 
 	void *extractPointer() const
 	{
-		return internalExtractPointer<T>(_val);
+		return internalExtractPointer(_val);
 	}
 
 	bool isPointer() const
@@ -726,13 +726,11 @@ public:
 	}
 
 protected:
-	template<typename T>
 	void *internalExtractPointer(const T* val) const
 	{
 		return (void*)val;
 	}
 
-	template<typename T>
 	void *internalExtractPointer(const T& val) const
 	{
 		return (void*)&val;
