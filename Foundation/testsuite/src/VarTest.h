@@ -71,6 +71,7 @@ public:
 	void testDate();
 	void testEmpty();
 	void testIterator();
+	void testExtractPointer();
 
 
 	void setUp();

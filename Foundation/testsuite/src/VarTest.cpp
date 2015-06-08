@@ -2588,6 +2588,33 @@ void VarTest::testIterator()
 }
 
 
+void VarTest::testExtractPointer()
+{
+	Var da;
+	void *ptr;
+	try
+	{
+		void *ptr = da.extractPointer();
+		fail ("must fail");
+	} catch (InvalidAccessException&) { }
+
+	da = "123";
+	ptr = da.extractPointer();
+	assert(ptr != NULL);
+
+	std::string str("456");
+	std::string *strptr = &str;
+	da = strptr;
+	ptr = da.extractPointer();
+	assert(strptr == ptr);
+
+	Dummy d;
+	da = d;
+	ptr = da.extractPointer();
+	assert(&d != ptr); // Dummy was copied as it was a value, should not return the same value
+}
+
+
 void VarTest::setUp()
 {
 }
@@ -2645,6 +2672,7 @@ CppUnit::Test* VarTest::suite()
 	CppUnit_addTest(pSuite, VarTest, testDate);
 	CppUnit_addTest(pSuite, VarTest, testEmpty);
 	CppUnit_addTest(pSuite, VarTest, testIterator);
+	CppUnit_addTest(pSuite, VarTest, testExtractPointer);
 
 	return pSuite;
 }

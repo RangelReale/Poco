@@ -413,6 +413,8 @@ protected:
 	template<typename T>
 	struct is_pointer<T*> { static const bool value = true; };
 
+	template <bool v> struct Bool2Type { static const bool value = v; };
+
 private:
 	template <typename F, typename T>
 	void checkUpperLimit(const F& from) const
@@ -717,7 +719,7 @@ public:
 
 	void *extractPointer() const
 	{
-		return internalExtractPointer(_val);
+		return internalExtractPointer(_val, Bool2Type<is_pointer<T>::value>());
 	}
 
 	bool isPointer() const
@@ -726,12 +728,13 @@ public:
 	}
 
 protected:
-	void *internalExtractPointer(const T* val) const
+
+	void *internalExtractPointer(const T& val, Bool2Type<true>) const
 	{
 		return (void*)val;
 	}
 
-	void *internalExtractPointer(const T& val) const
+	void *internalExtractPointer(const T& val, Bool2Type<false>) const
 	{
 		return (void*)&val;
 	}
