@@ -49,7 +49,7 @@ public:
 	mutable Poco::BasicEvent<ICMPEventArgs> pingError;
 	mutable Poco::BasicEvent<ICMPEventArgs> pingEnd;
 
-	explicit ICMPClient(IPAddress::Family family, bool useRawSocket = true);
+	explicit ICMPClient(SocketAddress::Family family, bool useRawSocket = true);
 		/// Creates an ICMP client.
 		///
 		/// If using raw socket, most operating systems requires root access.
@@ -71,7 +71,7 @@ public:
 		/// 
 		/// Returns the number of valid replies.
 
-	static int ping(SocketAddress& address, IPAddress::Family family, int repeat = 1, bool useRawSocket = true);
+	static int ping(SocketAddress& address, SocketAddress::Family family, int repeat = 1, bool useRawSocket = true);
 		/// Pings the specified address [repeat] times.
 		/// Notifications are not posted for events.
 		/// 
