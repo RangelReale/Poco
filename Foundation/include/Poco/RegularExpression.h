@@ -25,19 +25,22 @@
 
 #include "Poco/Foundation.h"
 #include <vector>
+#include <map>
 
 
+#ifdef POCO_UNBUNDLED
+#include <pcre.h>
+#else
 //
 // Copy these definitions from pcre.h
 // to avoid pulling in the entire header file
 //
 extern "C"
 {
-	struct real_pcre8_or_16;                 /* declaration; the definition is private  */
 	typedef struct real_pcre8_or_16 pcre;
 	struct pcre_extra;
 }
-
+#endif
 
 namespace Poco {
 
@@ -91,8 +94,10 @@ public:
 	{
 		std::string::size_type offset; /// zero based offset (std::string::npos if subexpr does not match)
 		std::string::size_type length; /// length of substring
+		std::string name;              /// name of group
 	};
 	typedef std::vector<Match> MatchVec;
+	typedef std::map<int, std::string> GroupMap;
 	
 	RegularExpression(const std::string& pattern, int options = 0, bool study = true);
 		/// Creates a regular expression and parses the given pattern.
@@ -212,6 +217,8 @@ private:
 	pcre*       _pcre;
 	pcre_extra* _extra;
 	
+	GroupMap _groups;
+
 	static const int OVEC_SIZE;
 	
 	RegularExpression();
