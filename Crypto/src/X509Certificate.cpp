@@ -20,6 +20,8 @@
 #include "Poco/DateTimeParser.h"
 #include <sstream>
 #include <openssl/pem.h>
+// fix for WIN32
+#undef X509_NAME 
 #include <openssl/x509v3.h>
 #include <openssl/err.h>
 #include <openssl/evp.h>
