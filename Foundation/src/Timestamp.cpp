@@ -17,6 +17,9 @@
 #include "Poco/Timestamp.h"
 #include "Poco/Timespan.h"
 #include "Poco/Exception.h"
+#if defined(_WIN32)
+#include "Poco/UnWindows.h"
+#endif
 #include <algorithm>
 #undef min
 #undef max

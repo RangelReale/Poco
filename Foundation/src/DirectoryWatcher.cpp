@@ -15,6 +15,7 @@
 
 
 #include "Poco/DirectoryWatcher.h"
+#include "Poco/UnWindows.h"
 
 
 #ifndef POCO_NO_INOTIFY

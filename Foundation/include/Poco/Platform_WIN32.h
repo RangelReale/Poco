@@ -21,7 +21,7 @@
 #define Foundation_Platform_WIN32_INCLUDED
 
 
-#include "Poco/UnWindows.h"
+//#include "Poco/UnWindows.h"
 
 
 #ifndef POCO_FORCE_MIN_WINDOWS_OS_SUPPORT
