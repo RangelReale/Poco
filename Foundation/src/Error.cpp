@@ -17,7 +17,9 @@
 #include "Poco/Foundation.h"
 #include "Poco/UnicodeConverter.h"
 #include "Poco/Error.h"
+#ifdef POCO_OS_FAMILY_WINDOWS
 #include "Poco/UnWindows.h"
+#endif
 #include <string>
 #include <string.h>
 #include <errno.h>
