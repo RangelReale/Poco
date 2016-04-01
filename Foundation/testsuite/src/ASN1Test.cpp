@@ -11,8 +11,8 @@
 
 
 #include "ASN1Test.h"
-#include "CppUnit/TestCaller.h"
-#include "CppUnit/TestSuite.h"
+#include "Poco/CppUnit/TestCaller.h"
+#include "Poco/CppUnit/TestSuite.h"
 #include "Poco/ASN1Codec.h"
 #include "Poco/ASN1Types.h"
 #include "Poco/Exception.h"
