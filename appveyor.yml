@@ -1,24 +1,41 @@
-version: poco-1.7.0 {branch}-{build}
+version: build {branch}-{build}
 
 cache:
   - c:\mysql-5.7.9-win32
   - C:\ProgramData\chocolatey
   - C:\OpenSSL-Win32
   - C:\OpenSSL-Win64
-  
+  - C:\Program Files (x86)\PostgreSQL\9.4
+
+
+branches:
+  except:
+    - /.*ravis.*/
+
+
+skip_commits:
+  message: /Merge pull request.*/
+
+
 hosts:
   localhost: 127.0.0.1
   db.server.com: 127.0.0.2
-  
+
 services:
 # mysql : server: localhost, port: 3306
 # mysql : user  : root, password: Password12!
-#  - mysql
+  - mysql
 
 # mongodb config  : C:\mongodb\mongod.cfg
 # mongodb database: C:\mongodb\data\db
   - mongodb
 
+# Server name: localhost
+# Server port: 5432
+# postgres account password: Password12!
+  - postgresql94
+
+  
 platform:
   - Win32
   - x64
@@ -34,12 +51,15 @@ configuration:
 
 environment:
   bundling: bundled
+  MYSQL32:    C:\mysql-5.7.9-win32
+  MYSQL64:    C:\Program Files\MySql\MySQL Server 5.6
+  POSTGRES32: C:\Program Files (x86)\PostgreSQL\9.4
+  POSTGRES64: C:\Program Files\PostgreSQL\9.4
 
   matrix:
 
-    - builder: cmake
-      vsver: 120
-
+    - builder: cygwin
+      
     - builder: msbuild
       vsver: 120
       linkmode: shared
@@ -76,30 +96,49 @@ environment:
 #      vsver: 140
 #      linkmode: static_mt
 
+    - builder: cmake
+      vsver: 120
 
 matrix:
   fast_finish: true
 
 install:
+  - C:\cygwin\setup-x86.exe -qnNdO -R C:/cygwin -s http://cygwin.mirror.constant.com -l C:/cygwin/var/cache/setup -P openssl-devel -P libiodbc-devel -P libiodbc2 -P odbc-mysql -P odbc-pgsql -P odbc-sqlite3 -P libmysqlclient-devel -P libsqlite3-devel 
+#
+# C:Cygwin64 is not yet available on Build Worker image.
+#  - C:\cygwin64\setup-x86_64.exe -B -q -n -N -d -l C:/cygwin64/var/cache/setup -R c:\cygwin64 -s http://cygwin.mirror.constant.com  -P openssl-devel
+  
+  - set POCO_BASE=%CD%
   - set PATH=C:\ProgramData\chocolatey\bin;%PATH%
-  - systeminfo
-  - c:\cygwin\bin\uname -a
-  - c:\cygwin\bin\cat /proc/cpuinfo
-  - c:\cygwin\bin\cat /proc/meminfo
   - ps: |
-        if ($env:builder -eq "cmake")
+      if ($env:builder -eq "cygwin")
+      {
+        if ($env:platform -eq "Win32")
         {
-          if (Test-Path "$env:ChocolateyInstall\bin\jom.exe") {
-              echo "using jom from cache"
-          } else {
-              choco install jom
-          }
-          if (Test-Path "$env:ChocolateyInstall\bin\cmake.exe") {
-            echo "using cmake from cache"
-          } else {
-            choco install cmake
-          }
+          $env:PATH = "C:\cygwin\bin;" + $env:PATH
         }
+        if ($env:platform -eq "x64")
+        {
+          $env:PATH = "c:\cygwin64\bin;" + $env:PATH
+        }
+      }
+  - uname -a
+  - cat /proc/cpuinfo
+  - cat /proc/meminfo
+  - ps: |
+      if ($env:builder -eq "cmake")
+      {
+        if (Test-Path "$env:ChocolateyInstall\bin\jom.exe") {
+            echo "using jom from cache"
+        } else {
+            choco install jom
+        }
+        if (Test-Path "$env:ChocolateyInstall\bin\cmake.exe") {
+          echo "using cmake from cache"
+        } else {
+          choco install cmake
+        }
+      }
   - set
 
 # -------------------------------------------------------------------------------------------
@@ -109,8 +148,8 @@ install:
   - ps: |
       if ($env:builder -eq "cmake")
       {
-        $env:PATH = $env:ChocolateyInstall + "\bin" + ";" + $env:PATH
-        $env:PATH = $env:ChocolateyInstall + "\lib\jom\content" + ";" + $env:PATH
+        $env:PATH = $env:ChocolateyInstall + "\bin;" + $env:PATH
+        $env:PATH = $env:ChocolateyInstall + "\lib\jom\content;" + $env:PATH
       }
 # -------------------------------------------------------------------------------------------
 
@@ -146,29 +185,58 @@ install:
            }
          }
        }
-# -------------------------------------------------------------------------------------------
-   
+# -------------------------------------------------------------------------------------------  
 #  MySQL 32 bit is not available by default on AppVeyor
 # -------------------------------------------------------------------------------------------
   - ps: |
-        if ($env:platform -eq "Win32")
-        {
-            if (Test-Path "c:\mysql-5.7.9-win32") {
-                echo "using c:\mysql-5.7.9-win32 from cache"
-            }
-            else
-            {
-                echo "downloading mysql-5.7.9-win32"
-                Invoke-WebRequest "http://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.9-win32.zip" -OutFile mysql-5.7.9-win32.zip
-                echo "installing c:\mysql-5.7.9-win32"
-                7z x -y mysql-5.7.9-win32.zip -oc:\
-            }
+      if (($env:platform -eq "Win32") -and !($env:builder -eq "cygwin"))
+      {
+        if (Test-Path $env:MYSQL32) {
+          echo "using $env:MYSQL32 from cache"
         }
- # -------------------------------------------------------------------------------------------
+        else
+        {
+          echo "downloading $env:MYSQL32"
+          Invoke-WebRequest "http://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.11-win32.zip" -OutFile mysql-5.7.9-win32.zip
+          echo "installing $env:MYSQL32"
+          7z x -y mysql-5.7.9-win32.zip -oc:\
+        }
+      }
+# -------------------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------------------  
+#  PostgreSQL 32 bit is not available by default on AppVeyor
+#  http://www.enterprisedb.com/products-services-training/pgdownload#windows
+# -------------------------------------------------------------------------------------------
+  - ps: |
+      if (($env:platform -eq "Win32") -and !($env:builder -eq "cygwin"))
+      {
+        if (Test-Path $env:POSTGRES32) {
+          echo "using $env:POSTGRES32 from cache"
+        }
+        else
+        {
+          Write-Host "Installing $env:POSTGRES32 ..." -ForegroundColor Cyan
+          Write-Host "Downloading..."
+          $exePath = "$($env:USERPROFILE)\postgresql-9.4.5-1-windows.exe"
+          (New-Object Net.WebClient).DownloadFile('http://get.enterprisedb.com/postgresql/postgresql-9.4.5-1-windows.exe', $exePath)
+          Write-Host "Installing..."
+          cmd /c start /wait $exePath --mode unattended --superpassword Password12!
+          del $exePath
+          Write-Host "Setting up services..."
+          Stop-Service postgresql-9.4
+          Set-Service -Name postgresql-9.4 -StartupType Manual
+
+          Write-Host "$env:POSTGRES32 installed" -ForegroundColor Green
+        }
+      }
+# -------------------------------------------------------------------------------------------
+
    
 before_build:
-  - set POCO_BASE=%CD%
   - ps: |
+      if ($env:builder -eq "cmake")
+      {
         if ($env:vsver -eq "110")
         {
           $vspath= convert-path $env:VS110COMNTOOLS\..\..\VC\bin; $yyyy='2010'
@@ -179,8 +247,7 @@ before_build:
         {
           $vspath= convert-path $env:VS120COMNTOOLS\..\..\VC\bin;$yyyy='2013'
           if($env:platform -eq 'Win32') { $vctool='';}
-          if($env:platform -eq 'x64')   { $vctool='x86_amd64';$vspath+='\'+$vctool }
-          
+          if($env:platform -eq 'x64')   { $vctool='x86_amd64';$vspath+='\'+$vctool }    
         }
         if ($env:vsver -eq "140")
         {
@@ -198,19 +265,64 @@ before_build:
         }
         popd
         write-host "`nVisual Studio $yyyy CLI variables set." -ForegroundColor Yellow
+      }
   
+# -------------------------------------------------------------------------------------------  
 # MySQL
+#        & C:\cygwin\bin\ls -lR $env:MYSQL32
+#        & C:\cygwin\bin\ls -lR $env:MYSQL64
+# -------------------------------------------------------------------------------------------  
   - ps: |
-      if ($env:platform -eq "Win32")
+      if (!($env:builder -eq "cygwin"))
       {
-          $env:INCLUDE = "C:\mysql-5.7.9-win32\include;" + $env:INCLUDE
-          $env:LIB     = "C:\mysql-5.7.9-win32\lib;" + $env:LIB
+        if ($env:platform -eq "Win32")
+        {
+          $env:INCLUDE = $env:MYSQL32 + "\include;" + $env:INCLUDE
+          $env:LIB     = $env:MYSQL32 + "\lib;" + $env:LIB
+          $env:PATH    = $env:MYSQL32 + "\bin;" + $env:PATH
+          if (Test-Path ($env:MYSQL32 + "\lib\libmysql.dll")) {
+            $from = $env:MYSQL32 + "\lib\libmysql.dll";
+            $to   = $env:MYSQL32 + "\bin\libmysql.dll"
+            copy $from $to
+          }
+        }
+        if ($env:platform -eq "x64")
+        {
+          $env:INCLUDE = $env:MYSQL64 + "\include;" + $env:INCLUDE
+          $env:LIB     = $env:MYSQL64 + "\lib;" + $env:LIB
+          $env:PATH    = $env:MYSQL64 + "\bin;" + $env:PATH
+          if (Test-Path ($env:MYSQL64 + "\lib\libmysql.dll")) {
+            $from = $env:MYSQL64 + "\lib\libmysql.dll";
+            $to   = $env:MYSQL64 + "\bin\libmysql.dll"
+            copy $from $to
+          }
+        }
+        $env:MYSQL_PWD="Password12!"
+        $cmd = 'mysql -e "create database pocotestdb;" --user=root';
+        iex "& $cmd"
       }
-      if ($env:platform -eq "x64")
+# -------------------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------------------  
+# PostgreSQL
+# -------------------------------------------------------------------------------------------  
+  - ps: |
+      if (!($env:builder -eq "cygwin"))
       {
-          $env:INCLUDE = "C:\Program Files\MySql\MySQL Server 5.6\include;" + $env:INCLUDE
-          $env:LIB     = "C:\Program Files\MySql\MySQL Server 5.6\lib;" + $env:LIB
+        if ($env:platform -eq "Win32")
+        {
+            $env:INCLUDE = $env:POSTGRES32 + "\include;" + $env:INCLUDE
+            $env:LIB     = $env:POSTGRES32 + "\lib;" + $env:LIB
+            $env:PATH    = $env:POSTGRES32 + "\bin;" + $env:PATH
+        }
+        if ($env:platform -eq "x64")
+        {
+            $env:INCLUDE = $env:POSTGRES64 + "\include;" + $env:INCLUDE
+            $env:LIB     = $env:POSTGRES64 + "\lib;" + $env:LIB
+            $env:PATH    = $env:POSTGRES64 + "\bin;" + $env:PATH
+        }
       }
+# -------------------------------------------------------------------------------------------
 
 after_build:
   - ps: |
@@ -262,6 +374,11 @@ build_script:
 # Command executed with exception: MC: Compiling C:/projects/poco/Foundation/src/pocomsg.mc
 # -------------------------------------------------------------------------------------------
   - ps: |
+      if (($env:builder -eq "cygwin") -and ($env:platform -eq "Win32"))
+      {
+        $cmd = 'bash.exe configure --everything';iex "& $cmd"
+        $cmd = 'make.exe -s';iex "& $cmd"
+      }
       if ($env:builder -eq "msbuild")
       {
         $logger='"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"';
@@ -309,7 +426,7 @@ build_script:
       }
 
 before_test:
-  - ps: |
+- ps: |
       $line='-------------------------------------------------------------------------------------';
       $CPPUNIT_IGNORE='';
       $CPPUNIT_IGNORE+='class CppUnit::TestCaller<class NTPClientTest>.testTimeSync';
@@ -326,22 +443,30 @@ before_test:
       
 after_test:
 
+
 test_script:
   - ps: |
       $runs=0;$fails=0;$failedTests='';$status=0;$tab="`t";
       $line='-------------------------------------------------------------------------------------';
       if ($env:configuration -eq "release")
       {
+        if (($env:builder -eq "cygwin") -and ($env:platform -eq "Win32"))
+        {
+          $cmd = 'C:\cygwin\usr\sbin\cygserver.exe "&"';iex "& $cmd"
+          $cmd = 'bash.exe -c "appveyor/Cygwin/runtests.sh"';iex "& $cmd"
+        }
         if ($env:builder -eq "msbuild" -and $env:linkmode -eq "shared")
         {
           $suffix = '';
           if ($env:platform -eq "Win32")
           {
             $env:PATH = "$env:POCO_BASE\bin;" + $env:PATH;$suffix = '';
+            $excluded   = @('Data', 'Data/ODBC', 'Redis', 'PDF')
           }
           if ($env:platform -eq "x64")
           {
             $env:PATH = "$env:POCO_BASE\bin64;" + $env:PATH;$suffix = 64;
+            $excluded   = @('Data', 'Data/ODBC', 'Redis', 'PDF')
           }
 
           Write-Host -ForegroundColor Yellow '>>> current directory is '  $(get-location).Path;
@@ -352,7 +477,6 @@ test_script:
           $components;
           Write-Host -ForegroundColor Yellow $line;
  
-          $excluded   = @('Data', 'Data/MySQL', 'Data/ODBC','Redis', 'PDF')
           
           Write-Host excluded;
           Write-Host -ForegroundColor Yellow $line;

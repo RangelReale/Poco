@@ -11,8 +11,8 @@
 
 
 #include "SharedLibraryTest.h"
-#include "CppUnit/TestCaller.h"
-#include "CppUnit/TestSuite.h"
+#include "Poco/CppUnit/TestCaller.h"
+#include "Poco/CppUnit/TestSuite.h"
 #include "Poco/SharedLibrary.h"
 #include "Poco/Exception.h"
 
@@ -26,7 +26,7 @@ using Poco::LibraryAlreadyLoadedException;
 typedef int (*GimmeFiveFunc)();
 
 
-SharedLibraryTest::SharedLibraryTest(const std::string& name): CppUnit::TestCase(name)
+SharedLibraryTest::SharedLibraryTest(const std::string& rName): CppUnit::TestCase(rName)
 {
 }
 

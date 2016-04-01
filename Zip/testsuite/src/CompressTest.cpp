@@ -17,8 +17,8 @@
 #include "Poco/Zip/ZipManipulator.h"
 #include "Poco/File.h"
 #include "Poco/FileStream.h"
-#include "CppUnit/TestCaller.h"
-#include "CppUnit/TestSuite.h"
+#include "Poco/CppUnit/TestCaller.h"
+#include "Poco/CppUnit/TestSuite.h"
 #include <iostream>
 #include <fstream>
 #undef min
@@ -28,7 +28,7 @@
 using namespace Poco::Zip;
 
 
-CompressTest::CompressTest(const std::string& name): CppUnit::TestCase(name)
+CompressTest::CompressTest(const std::string& rName): CppUnit::TestCase(rName)
 {
 }
 
