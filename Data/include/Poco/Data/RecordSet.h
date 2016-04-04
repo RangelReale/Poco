@@ -337,14 +337,6 @@ public:
 		/// Returns the value in the given column of the current row.
 
 	template <class T>
-	const T& value(const std::string& name) const;
-		/// Returns the value in the named column of the current row.
-
-	template <class T>
-	const T& value(std::size_t index) const;
-		/// Returns the value in the given column of the current row.
-
-	template <class T>
 	Poco::Nullable<T> valueNullable(const std::string& name) const;
 		/// Returns the value in the named column of the current row.
 
@@ -352,7 +344,7 @@ public:
 	Poco::Nullable<T> valueNullable(std::size_t index) const;
 		/// Returns the value in the given column of the current row.
 
-	Poco::Dynamic::Var operator [] (const std::string& name);
+	Poco::Dynamic::Var operator [] (const std::string& name) const;
 		/// Returns the value in the named column of the current row.
 
 	Poco::Dynamic::Var operator [] (std::size_t index) const;
@@ -579,20 +571,6 @@ inline Poco::Dynamic::Var RecordSet::value(std::size_t index) const
 
 
 template <class T>
-const T& RecordSet::value(const std::string& name) const
-{
-	return value<T>(name, _currentRow);
-}
-
-
-template <class T>
-const T& RecordSet::value(std::size_t index) const
-{
-	return value<T>(index, _currentRow);
-}
-
-
-template <class T>
 Poco::Nullable<T> RecordSet::valueNullable(const std::string& name) const
 {
 	if (isNull(name))
@@ -612,7 +590,7 @@ Poco::Nullable<T> RecordSet::valueNullable(std::size_t index) const
 }
 
 
-inline Poco::Dynamic::Var RecordSet::operator [] (const std::string& name)
+inline Poco::Dynamic::Var RecordSet::operator [] (const std::string& name)  const
 {
 	return value(name, _currentRow);
 }
