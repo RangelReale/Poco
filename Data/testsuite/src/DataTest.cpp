@@ -952,7 +952,7 @@ void DataTest::testRow()
 	row3.append("field4", 4);
 
 	assert (row3 == row);
-	assert (!(row < row3 | row3 < row));
+	assert (!(row < row3 || row3 < row));
 
 	Row row4(row3.names());
 	try
@@ -960,18 +960,6 @@ void DataTest::testRow()
 		row4.set("badfieldname", 0);
 		fail ("must fail");
 	}catch (NotFoundException&) {}
-
-	try
-	{
-		row4.set("field1", Var());
-		row4.addSortField(1);
-		row4.removeSortField(0);
-		fail ("must fail - field 1 is empty");
-	}
-	catch (IllegalStateException&)
-	{
-		row4.removeSortField(1);
-	}
 
 	row4.set("field0", 0);
 	row4.set("field1", 1);
