@@ -80,13 +80,11 @@ Global
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.debug_shared|x64.ActiveCfg = debug_shared|x64
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.debug_shared|x64.Build.0 = debug_shared|x64
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.debug_static_md|x64.ActiveCfg = debug_shared|x64
-		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.debug_static_md|x64.Build.0 = debug_shared|x64
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.debug_static_mt|x64.ActiveCfg = debug_shared|x64
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.debug_static_mt|x64.Build.0 = debug_shared|x64
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.release_shared|x64.ActiveCfg = release_shared|x64
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.release_shared|x64.Build.0 = release_shared|x64
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.release_static_md|x64.ActiveCfg = release_shared|x64
-		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.release_static_md|x64.Build.0 = release_shared|x64
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.release_static_mt|x64.ActiveCfg = release_shared|x64
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.release_static_mt|x64.Build.0 = release_shared|x64
 	EndGlobalSection
