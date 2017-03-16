@@ -80,13 +80,11 @@ Global
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.debug_shared|Win32.ActiveCfg = debug_shared|Win32
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.debug_shared|Win32.Build.0 = debug_shared|Win32
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.debug_static_md|Win32.ActiveCfg = debug_shared|Win32
-		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.debug_static_md|Win32.Build.0 = debug_shared|Win32
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.debug_static_mt|Win32.ActiveCfg = debug_shared|Win32
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.debug_static_mt|Win32.Build.0 = debug_shared|Win32
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.release_shared|Win32.ActiveCfg = release_shared|Win32
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.release_shared|Win32.Build.0 = release_shared|Win32
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.release_static_md|Win32.ActiveCfg = release_shared|Win32
-		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.release_static_md|Win32.Build.0 = release_shared|Win32
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.release_static_mt|Win32.ActiveCfg = release_shared|Win32
 		{0955EB03-544B-4BD4-9C10-89CF38078F5F}.release_static_mt|Win32.Build.0 = release_shared|Win32
 	EndGlobalSection
