@@ -391,6 +391,8 @@
     <ClCompile Include="src\ICMPClientTest.cpp"/>
     <ClCompile Include="src\ICMPClientTestSuite.cpp"/>
     <ClCompile Include="src\ICMPSocketTest.cpp"/>
+    <ClCompile Include="src\SNMPClientTest.cpp"/>
+    <ClCompile Include="src\SNMPClientTestSuite.cpp"/>
     <ClCompile Include="src\IPAddressTest.cpp"/>
     <ClCompile Include="src\MailMessageTest.cpp"/>
     <ClCompile Include="src\MailStreamTest.cpp"/>
