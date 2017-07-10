@@ -23,6 +23,52 @@
 namespace Poco {
 
 
+int mapPrio(int prio, int policy)
+{
+	int pmin = ThreadImpl::getMinOSPriorityImpl(policy);
+	int pmax = ThreadImpl::getMaxOSPriorityImpl(policy);
+
+	switch (prio)
+	{
+	case ThreadImpl::PRIO_LOWEST_IMPL:
+		return pmin;
+	case ThreadImpl::PRIO_LOW_IMPL:
+		return pmin + (pmax - pmin) / 4;
+	case ThreadImpl::PRIO_NORMAL_IMPL:
+		return pmin + (pmax - pmin) / 2;
+	case ThreadImpl::PRIO_HIGH_IMPL:
+		return pmin + 3 * (pmax - pmin) / 4;
+	case ThreadImpl::PRIO_HIGHEST_IMPL:
+		return pmax;
+	default:
+		poco_bugcheck_msg("invalid thread priority");
+	}
+	return -1; // just to satisfy compiler - we'll never get here anyway
+}
+
+
+int reverseMapPrio(int prio, int policy)
+{
+	if (policy == SCHED_OTHER)
+	{
+		int pmin = ThreadImpl::getMinOSPriorityImpl(policy);
+		int pmax = ThreadImpl::getMaxOSPriorityImpl(policy);
+		int normal = pmin + (pmax - pmin) / 2;
+		if (prio == pmax)
+			return ThreadImpl::PRIO_HIGHEST_IMPL;
+		if (prio > normal)
+			return ThreadImpl::PRIO_HIGH_IMPL;
+		else if (prio == normal)
+			return ThreadImpl::PRIO_NORMAL_IMPL;
+		else if (prio > pmin)
+			return ThreadImpl::PRIO_LOW_IMPL;
+		else
+			return ThreadImpl::PRIO_LOWEST_IMPL;
+	}
+	else return ThreadImpl::PRIO_HIGHEST_IMPL;
+}
+
+
 void ThreadImpl::setPriorityImpl(int prio)
 {
 	if (prio != _pData->prio)
@@ -37,7 +83,7 @@ void ThreadImpl::setPriorityImpl(int prio)
 
 			};
 			par.sched_priority = mapPrio(_pData->prio, SCHED_OTHER);
-			if (pthread_setschedparam(_pData->thread, SCHED_OTHER, &par))
+			if (pthread_setschedparam(_pData->thread->native_handle(), SCHED_OTHER, &par))
 				throw SystemException("cannot set thread priority");
 		}
 	}
@@ -52,7 +98,7 @@ void ThreadImpl::setOSPriorityImpl(int prio, int policy)
 		{
 			struct sched_param par;
 			par.sched_priority = prio;
-			if (pthread_setschedparam(_pData->thread, policy, &par))
+			if (pthread_setschedparam(_pData->thread->native_handle(), policy, &par))
 				throw SystemException("cannot set thread priority");
 		}
 		_pData->prio = reverseMapPrio(prio, policy);

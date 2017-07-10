@@ -82,7 +82,7 @@ SYSFLAGS = -D_XOPEN_SOURCE=600 -D_REENTRANT -D_THREAD_SAFE -D_FILE_OFFSET_BITS=6
 #
 # System Specific Libraries
 #
-SYSLIBS  = -lpthread -ldl -lrt
+SYSLIBS  = -lrt -lpthread -ldl
 
 #
 # Auto-detect architecture if not specified
