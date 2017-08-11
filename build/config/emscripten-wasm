@@ -3,7 +3,7 @@
 #
 # Linux
 #
-# Make settings for emscripten
+# Make settings for emscripten/webassembly
 #
 #
 
@@ -12,7 +12,7 @@
 #
 LINKMODE ?= SHARED
 POCO_TARGET_OSNAME = emscripten
-POCO_TARGET_OSARCH = asmjs
+POCO_TARGET_OSARCH = wasm
 CROSS_COMPILE      = em
 
 #
@@ -44,13 +44,13 @@ BINEXT          = .bc
 #
 # Compiler and Linker Flags
 #
-CFLAGS          = -s USE_PTHREADS=1
+CFLAGS          = -s WASM=1
 CFLAGS32        =
 CFLAGS64        =
-CXXFLAGS        = -Wall -Wno-sign-compare -s USE_PTHREADS=1
+CXXFLAGS        = -Wall -Wno-sign-compare -s WASM=1
 CXXFLAGS32      =
 CXXFLAGS64      =
-LINKFLAGS       = -s USE_PTHREADS=1
+LINKFLAGS       = -s WASM=1
 LINKFLAGS32     =
 LINKFLAGS64     =
 STATICOPT_CC    =
