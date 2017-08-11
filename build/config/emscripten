@@ -12,7 +12,7 @@
 #
 LINKMODE ?= SHARED
 POCO_TARGET_OSNAME = emscripten
-POCO_TARGET_OSARCH = emscripten
+POCO_TARGET_OSARCH = wasm
 CROSS_COMPILE      = em
 
 #
@@ -39,16 +39,18 @@ MKDIR   = mkdir -p
 SHAREDLIBEXT     = .so.$(target_version)
 SHAREDLIBLINKEXT = .so
 
+BINEXT          = .bc
+
 #
 # Compiler and Linker Flags
 #
-CFLAGS          = 
+CFLAGS          = -s WASM=1
 CFLAGS32        =
 CFLAGS64        =
-CXXFLAGS        = -Wall -Wno-sign-compare
+CXXFLAGS        = -Wall -Wno-sign-compare -s WASM=1
 CXXFLAGS32      =
 CXXFLAGS64      =
-LINKFLAGS       =
+LINKFLAGS       = -s WASM=1
 LINKFLAGS32     =
 LINKFLAGS64     =
 STATICOPT_CC    =
