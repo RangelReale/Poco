@@ -43,7 +43,10 @@ public:
 		/// Gets the interval passed on the constructor.
 
 	void addBytes(std::streamsize bytes);
-		/// Add bytes to the counter
+		/// Add bytes to the counter.
+
+	void setBytes(std::streamsize bytes);
+		/// Set the current total bytes.
 
 	std::streamsize getTotalAverage();
 		/// Gets the average bytes per interval.

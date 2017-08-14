@@ -39,6 +39,12 @@ void ByteRateCounter::addBytes(std::streamsize bytes)
 }
 
 
+void ByteRateCounter::setBytes(std::streamsize bytes)
+{
+	_totalbytes = bytes;
+}
+
+
 std::streamsize ByteRateCounter::getTotalAverage()
 {
 	Poco::Clock::ClockDiff elapinterval = _watch.elapsed() / _interval;
