@@ -39,7 +39,7 @@ MKDIR   = mkdir -p
 SHAREDLIBEXT     = .so.$(target_version)
 SHAREDLIBLINKEXT = .so
 
-BINEXT          = .bc
+BINEXT          = .html
 
 #
 # Compiler and Linker Flags

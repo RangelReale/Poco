@@ -56,12 +56,7 @@ using threads.
 
 !!Samples
 
-The samples executables are generated in bitcode format (.bc). To run them, you need to generate
-the .js and .html files, using this command:
-
-    emcc -s PTHREADS=1 executable.bc -o executable.html
-----
-Then run in a local webbrowser:
+The samples executables are generated in .js format (with sibling .html file). To run, use emrun.
 
     emrun executable.html
 ----
