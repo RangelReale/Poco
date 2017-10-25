@@ -1,8 +1,6 @@
 //
 // AtomicCounter.cpp
 //
-// $Id: //poco/1.4/Foundation/src/AtomicCounter.cpp#2 $
-//
 // Library: Foundation
 // Package: Core
 // Module:  AtomicCounter
@@ -177,9 +175,9 @@ AtomicCounter& AtomicCounter::operator = (const AtomicCounter& counter)
 }
 
 	
-AtomicCounter& AtomicCounter::operator = (AtomicCounter::ValueType valueType)
+AtomicCounter& AtomicCounter::operator = (AtomicCounter::ValueType value)
 {
-	__sync_lock_test_and_set(&_counter, valueType);
+	__sync_lock_test_and_set(&_counter, value);
 	return *this;
 }
 

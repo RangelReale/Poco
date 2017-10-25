@@ -1,8 +1,6 @@
 //
 // BulkExtraction.h
 //
-// $Id: //poco/Main/Data/include/Poco/Data/BulkExtraction.h#9 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  BulkExtraction
@@ -46,22 +44,22 @@ public:
 	typedef BulkExtraction<ValType> Type;
 	typedef SharedPtr<Type>         Ptr;
 
-	BulkExtraction(C& rResult, Poco::UInt32 limit, const Position& pos = Position(0)): 
-		AbstractExtraction(typeid(C).name(), limit, pos.value(), true),
-		_rResult(rResult), 
+	BulkExtraction(C& result, Poco::UInt32 limit, const Position& pos = Position(0)): 
+		AbstractExtraction(limit, pos.value(), true),
+		_rResult(result), 
 		_default()
 	{
-		if (static_cast<Poco::UInt32>(rResult.size()) != limit)
-			rResult.resize(limit);
+		if (static_cast<Poco::UInt32>(result.size()) != limit)
+			result.resize(limit);
 	}
 
-	BulkExtraction(C& rResult, const CValType& def, Poco::UInt32 limit, const Position& pos = Position(0)): 
-		AbstractExtraction(typeid(C).name(), limit, pos.value(), true),
-		_rResult(rResult), 
+	BulkExtraction(C& result, const CValType& def, Poco::UInt32 limit, const Position& pos = Position(0)): 
+		AbstractExtraction(limit, pos.value(), true),
+		_rResult(result), 
 		_default(def)
 	{
-		if (static_cast<Poco::UInt32>(rResult.size()) != limit)
-			rResult.resize(limit);
+		if (static_cast<Poco::UInt32>(result.size()) != limit)
+			result.resize(limit);
 	}
 
 	virtual ~BulkExtraction()
@@ -140,7 +138,7 @@ class InternalBulkExtraction: public BulkExtraction<C>
 	/// Container Data Type specialization extension for extraction of values from a query result set.
 	///
 	/// This class is intended for PocoData internal use - it is used by StatementImpl 
-	/// to automatically create internal BulkExtraction in cases when statement returns data and no external storage
+	/// to automaticaly create internal BulkExtraction in cases when statement returns data and no external storage
 	/// was supplied. It is later used by RecordSet to retrieve the fetched data after statement execution.
 	/// It takes ownership of the Column pointer supplied as constructor argument. Column object, in turn
 	/// owns the data container pointer.
@@ -154,11 +152,11 @@ public:
 	typedef InternalBulkExtraction<ValType> Type;
 	typedef SharedPtr<Type>                 Ptr;
 
-	InternalBulkExtraction(C& rResult,
+	InternalBulkExtraction(C& result,
 		Column<C>* pColumn,
 		Poco::UInt32 limit,
 		const Position& pos = Position(0)): 
-		BulkExtraction<C>(rResult, CValType(), limit, pos), 
+		BulkExtraction<C>(result, CValType(), limit, pos), 
 		_pColumn(pColumn)
 		/// Creates InternalBulkExtraction.
 	{

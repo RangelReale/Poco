@@ -1,8 +1,6 @@
 //
 // TextBufferIteratorTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/TextBufferIteratorTest.cpp#1 $
-//
 // Copyright (c) 2010, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "TextBufferIteratorTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/TextBufferIterator.h"
 #include "Poco/Latin1Encoding.h"
 #include "Poco/UTF8Encoding.h"
@@ -25,7 +23,7 @@ using Poco::UTF8Encoding;
 using Poco::UTF16Encoding;
 
 
-TextBufferIteratorTest::TextBufferIteratorTest(const std::string& rName): CppUnit::TestCase(rName)
+TextBufferIteratorTest::TextBufferIteratorTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

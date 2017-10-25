@@ -1,8 +1,6 @@
 //
 // MetaObject.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/MetaObject.h#1 $
-//
 // Library: Foundation
 // Package: SharedLibrary
 // Module:  ClassLoader
@@ -40,7 +38,7 @@ class AbstractMetaObject
 	/// factory for its class.
 {
 public:
-	AbstractMetaObject(const char* pName): _name(pName)
+	AbstractMetaObject(const char* name): _name(name)
 	{
 	}
 

@@ -1,8 +1,6 @@
 //
 // WinConfigurationTest.cpp
 //
-// $Id: //poco/1.4/Util/testsuite/src/WinConfigurationTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "WinConfigurationTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Util/WinRegistryConfiguration.h"
 #include "Poco/Util/WinRegistryKey.h"
 #include "Poco/Environment.h"

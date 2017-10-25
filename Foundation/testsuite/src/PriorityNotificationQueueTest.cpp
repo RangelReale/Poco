@@ -1,8 +1,6 @@
 //
 // PriorityNotificationQueueTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/PriorityNotificationQueueTest.cpp#1 $
-//
 // Copyright (c) 2009, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "PriorityNotificationQueueTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/PriorityNotificationQueue.h"
 #include "Poco/Notification.h"
 #include "Poco/Thread.h"
@@ -49,7 +47,7 @@ namespace
 }
 
 
-PriorityNotificationQueueTest::PriorityNotificationQueueTest(const std::string& rName): CppUnit::TestCase(rName)
+PriorityNotificationQueueTest::PriorityNotificationQueueTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

@@ -1,8 +1,6 @@
 //
 // ProcessTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/ProcessTest.cpp#2 $
-//
 // Copyright (c) 2005-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,13 +9,11 @@
 
 
 #include "ProcessTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Process.h"
 #include "Poco/Pipe.h"
 #include "Poco/PipeStream.h"
-#include "Poco/Thread.h"
-#include <csignal>
 
 
 using Poco::Process;
@@ -27,7 +23,7 @@ using Poco::PipeInputStream;
 using Poco::PipeOutputStream;
 
 
-ProcessTest::ProcessTest(const std::string& rName): CppUnit::TestCase(rName)
+ProcessTest::ProcessTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 
@@ -41,6 +37,9 @@ void ProcessTest::testLaunch()
 {
 	std::string name("TestApp");
 	std::string cmd;
+#if defined(_DEBUG)
+	name += "d";
+#endif
 
 #if defined(POCO_OS_FAMILY_UNIX)
 	cmd = "./";
@@ -68,6 +67,9 @@ void ProcessTest::testLaunchRedirectIn()
 #if !defined(_WIN32_WCE)
 	std::string name("TestApp");
 	std::string cmd;
+#if defined(_DEBUG)
+	name += "d";
+#endif
 
 #if defined(POCO_OS_FAMILY_UNIX)
 	cmd = "./";
@@ -94,6 +96,9 @@ void ProcessTest::testLaunchRedirectOut()
 #if !defined(_WIN32_WCE)
 	std::string name("TestApp");
 	std::string cmd;
+#if defined(_DEBUG)
+	name += "d";
+#endif
 
 #if defined(POCO_OS_FAMILY_UNIX)
 	cmd = "./";
@@ -122,6 +127,9 @@ void ProcessTest::testLaunchEnv()
 #if !defined(_WIN32_WCE)
 	std::string name("TestApp");
 	std::string cmd;
+#if defined(_DEBUG)
+	name += "d";
+#endif
 
 #if defined(POCO_OS_FAMILY_UNIX)
 	cmd = "./";
@@ -205,6 +213,9 @@ void ProcessTest::testIsRunning()
 #if !defined(_WIN32_WCE)
 	std::string name("TestApp");
 	std::string cmd;
+#if defined(_DEBUG)
+	name += "d";
+#endif
 
 #if defined(POCO_OS_FAMILY_UNIX)
 	cmd = "./";
@@ -223,49 +234,10 @@ void ProcessTest::testIsRunning()
 	PipeOutputStream ostr(inPipe);
 	ostr << std::string(100, 'x');
 	ostr.close();
-	int rc = ph.wait();
+	int POCO_UNUSED rc = ph.wait();
 	assert (!Process::isRunning(ph));
 	assert (!Process::isRunning(id));
 #endif // !defined(_WIN32_WCE)
-}
-
-
-void ProcessTest::testIsRunningAllowsForTermination()
-{
-#if !defined(_WIN32_WCE)
-	std::string name("TestApp");
-	std::string cmd;
-
-#if defined(POCO_OS_FAMILY_UNIX)
-	cmd = "./";
-	cmd += name;
-#else
-	cmd = name;
-#endif
-
-	std::vector<std::string> args;
-	ProcessHandle ph = Process::launch(cmd, args, 0, 0, 0);
-	while (Process::isRunning(ph))
-		Poco::Thread::sleep(100);
-#endif // !defined(_WIN32_WCE)
-}
-
-
-void ProcessTest::testSignalExitCode()
-{
-#if defined(POCO_OS_FAMILY_UNIX)
-	std::string name("TestApp");
-	std::string cmd;
-
-	cmd = "./";
-	cmd += name;
-
-	std::vector<std::string> args;
-	args.push_back("-raise-int");
-	ProcessHandle ph = Process::launch(cmd, args, 0, 0, 0);
-	int rc = ph.wait();
-	assert (rc == -SIGINT);
-#endif // defined(POCO_OS_FAMILY_UNIX)
 }
 
 
@@ -289,8 +261,6 @@ CppUnit::Test* ProcessTest::suite()
 	CppUnit_addTest(pSuite, ProcessTest, testLaunchEnv);
 	CppUnit_addTest(pSuite, ProcessTest, testLaunchArgs);
 	CppUnit_addTest(pSuite, ProcessTest, testIsRunning);
-	CppUnit_addTest(pSuite, ProcessTest, testIsRunningAllowsForTermination);
-	CppUnit_addTest(pSuite, ProcessTest, testSignalExitCode);
 
 	return pSuite;
 }

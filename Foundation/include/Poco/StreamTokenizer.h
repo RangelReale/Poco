@@ -1,8 +1,6 @@
 //
 // StreamTokenizer.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/StreamTokenizer.h#1 $
-//
 // Library: Foundation
 // Package: Streams
 // Module:  StreamTokenizer
@@ -78,7 +76,13 @@ public:
 		/// You must not delete the token returned by next().
 
 private:
-	typedef std::vector<Token*> TokenVec;
+	struct TokenInfo
+	{
+		Token* pToken;
+		bool   ignore;
+	};
+	
+	typedef std::vector<TokenInfo> TokenVec;
 	
 	TokenVec      _tokens;
 	std::istream* _pIstr;

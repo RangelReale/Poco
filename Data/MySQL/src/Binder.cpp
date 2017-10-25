@@ -1,8 +1,6 @@
 //
 // MySQLException.cpp
 //
-// $Id: //poco/1.4/Data/MySQL/src/Binder.cpp#1 $
-//
 // Library: Data/MySQL
 // Package: MySQL
 // Module:  Binder
@@ -37,56 +35,56 @@ Binder::~Binder()
 }
 
 
-void Binder::bind(std::size_t pos, const Poco::Int8& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Poco::Int8& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_TINY, &val, 0);
 }
 
 
-void Binder::bind(std::size_t pos, const Poco::UInt8& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Poco::UInt8& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_TINY, &val, 0, true);
 }
 
 
-void Binder::bind(std::size_t pos, const Poco::Int16& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Poco::Int16& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_SHORT, &val, 0);
 }
 
 
-void Binder::bind(std::size_t pos, const Poco::UInt16& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Poco::UInt16& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_SHORT, &val, 0, true);
 }
 
 
-void Binder::bind(std::size_t pos, const Poco::Int32& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Poco::Int32& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_LONG, &val, 0);
 }
 
 
-void Binder::bind(std::size_t pos, const Poco::UInt32& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Poco::UInt32& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_LONG, &val, 0, true);
 }
 
 
-void Binder::bind(std::size_t pos, const Poco::Int64& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Poco::Int64& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_LONGLONG, &val, 0);
 }
 
 
-void Binder::bind(std::size_t pos, const Poco::UInt64& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Poco::UInt64& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_LONGLONG, &val, 0, true);
@@ -95,14 +93,14 @@ void Binder::bind(std::size_t pos, const Poco::UInt64& val, Direction dir, const
 
 #ifndef POCO_LONG_IS_64_BIT
 
-void Binder::bind(std::size_t pos, const long& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const long& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_LONG, &val, 0);
 }
 
 
-void Binder::bind(std::size_t pos, const unsigned long& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const unsigned long& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_LONG, &val, 0, true);
@@ -111,56 +109,56 @@ void Binder::bind(std::size_t pos, const unsigned long& val, Direction dir, cons
 #endif // POCO_LONG_IS_64_BIT
 
 
-void Binder::bind(std::size_t pos, const bool& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const bool& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_TINY, &val, 0);
 }
 
 	
-void Binder::bind(std::size_t pos, const float& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const float& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_FLOAT, &val, 0);
 }
 
 
-void Binder::bind(std::size_t pos, const double& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const double& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_DOUBLE, &val, 0);
 }
 
 
-void Binder::bind(std::size_t pos, const char& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const char& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_TINY, &val, 0);
 }
 
 
-void Binder::bind(std::size_t pos, const std::string& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const std::string& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_STRING, val.c_str(), static_cast<int>(val.length()));
 }
 
 
-void Binder::bind(std::size_t pos, const Poco::Data::BLOB& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Poco::Data::BLOB& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_BLOB, val.rawContent(), static_cast<int>(val.size()));
 }
 
 
-void Binder::bind(std::size_t pos, const Poco::Data::CLOB& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Poco::Data::CLOB& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_BLOB, val.rawContent(), static_cast<int>(val.size()));
 }
 
 
-void Binder::bind(std::size_t pos, const DateTime& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const DateTime& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	MYSQL_TIME mt = {0};
@@ -171,7 +169,7 @@ void Binder::bind(std::size_t pos, const DateTime& val, Direction dir, const Whe
 	mt.hour = val.hour();
 	mt.minute = val.minute();
 	mt.second = val.second();
-	mt.second_part = val.millisecond();
+	mt.second_part = val.millisecond() * 1000 + val.microsecond();
 
 	mt.time_type  = MYSQL_TIMESTAMP_DATETIME;
 
@@ -181,7 +179,7 @@ void Binder::bind(std::size_t pos, const DateTime& val, Direction dir, const Whe
 }
 
 
-void Binder::bind(std::size_t pos, const Date& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Date& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	MYSQL_TIME mt = {0};
@@ -193,12 +191,12 @@ void Binder::bind(std::size_t pos, const Date& val, Direction dir, const WhenNul
 	mt.time_type = MYSQL_TIMESTAMP_DATE;
 
 	_dates.push_back(new MYSQL_TIME(mt));
-	
+
 	realBind(pos, MYSQL_TYPE_DATE, _dates.back(), sizeof(MYSQL_TIME));
 }
 
 
-void Binder::bind(std::size_t pos, const Time& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Time& val, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	MYSQL_TIME mt = {0};
@@ -208,14 +206,14 @@ void Binder::bind(std::size_t pos, const Time& val, Direction dir, const WhenNul
 	mt.second = val.second();
 
 	mt.time_type = MYSQL_TIMESTAMP_TIME;
-	
+
 	_dates.push_back(new MYSQL_TIME(mt));
-	
+
 	realBind(pos, MYSQL_TYPE_TIME, _dates.back(), sizeof(MYSQL_TIME));
 }
 
 
-void Binder::bind(std::size_t pos, const NullData&, Direction dir, const std::type_info& bindType)
+void Binder::bind(std::size_t pos, const NullData&, Direction dir)
 {
 	poco_assert(dir == PD_IN);
 	realBind(pos, MYSQL_TYPE_NULL, 0, 0);
@@ -601,19 +599,19 @@ void Binder::bind(std::size_t pos, const std::list<Poco::Data::Time>& val, Direc
 }
 
 
-void Binder::bind(std::size_t pos, const std::vector<Poco::Data::NullData>& val, Direction dir, const std::type_info& bindType)
+void Binder::bind(std::size_t pos, const std::vector<Poco::Data::NullData>& val, Direction dir) 
 {
 	throw NotImplementedException();
 }
 
 
-void Binder::bind(std::size_t pos, const std::deque<Poco::Data::NullData>& val, Direction dir, const std::type_info& bindType)
+void Binder::bind(std::size_t pos, const std::deque<Poco::Data::NullData>& val, Direction dir)
 {
 	throw NotImplementedException();
 }
 
 
-void Binder::bind(std::size_t pos, const std::list<Poco::Data::NullData>& val, Direction dir, const std::type_info& bindType)
+void Binder::bind(std::size_t pos, const std::list<Poco::Data::NullData>& val, Direction dir) 
 {
 	throw NotImplementedException();
 }

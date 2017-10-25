@@ -1,8 +1,6 @@
 //
 // MySQLException.h
 //
-// $Id: //poco/1.4/Data/MySQL/include/Poco/Data/MySQL/MySQLException.h#1 $
-//
 // Library: Data/MySQL
 // Package: MySQL
 // Module:  MySQLException
@@ -93,7 +91,7 @@ private:
 
 
 class TransactionException : public ConnectionException
-	/// TransactionException
+	/// TrabsactionException
 {
 public:
 

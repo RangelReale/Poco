@@ -1,16 +1,14 @@
 //
 // GUITestResult.h
 //
-// $Id: //poco/1.4/CppUnit/WinTestRunner/src/GUITestResult.h#1 $
-//
 
 
 #ifndef GuiTestResult_INCLUDED
 #define GuiTestResult_INCLUDED
 
 
-#include "Poco/CppUnit/CppUnit.h"
-#include "Poco/CppUnit/TestResult.h"
+#include "CppUnit/CppUnit.h"
+#include "CppUnit/TestResult.h"
 #include <afxmt.h>
 
 

@@ -1,8 +1,6 @@
 //
 // File_VMS.cpp
 //
-// $Id: //poco/1.4/Foundation/src/File_VMS.cpp#1 $
-//
 // Library: Foundation
 // Package: Filesystem
 // Module:  File
@@ -347,36 +345,6 @@ bool FileImpl::createDirectoryImpl()
 	if (mkdir(p.toString().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) 
 		handleLastErrorImpl(_path);
 	return true;
-}
-
-
-FileImpl::FileSizeImpl FileImpl::totalSpaceImpl() const
-{
-	poco_assert(!_path.empty());
-
-	// TODO: implement
-	
-	return -1;
-}
-
-
-FileImpl::FileSizeImpl FileImpl::usableSpaceImpl() const
-{
-	poco_assert(!_path.empty());
-
-	// TODO: implement
-	
-	return -1;
-}
-
-
-FileImpl::FileSizeImpl FileImpl::freeSpaceImpl() const
-{
-	poco_assert(!_path.empty());
-
-	// TODO: implement
-	
-	return -1;
 }
 
 

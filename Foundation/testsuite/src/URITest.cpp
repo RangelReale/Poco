@@ -1,8 +1,6 @@
 //
 // URITest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/URITest.cpp#3 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "URITest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/URI.h"
 #include "Poco/Path.h"
 
@@ -21,7 +19,7 @@ using Poco::URI;
 using Poco::Path;
 
 
-URITest::URITest(const std::string& rName): CppUnit::TestCase(rName)
+URITest::URITest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

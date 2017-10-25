@@ -1,8 +1,6 @@
 //
 // CipherKeyImpl.cpp
 //
-// $Id: //poco/1.4/Crypto/src/CipherKeyImpl.cpp#1 $
-//
 // Library: Crypto
 // Package: Cipher
 // Module:  CipherKeyImpl
@@ -27,7 +25,7 @@ namespace Poco {
 namespace Crypto {
 
 
-CipherKeyImpl::CipherKeyImpl(const std::string& name,
+CipherKeyImpl::CipherKeyImpl(const std::string& name, 
 	const std::string& passphrase, 
 	const std::string& salt,
 	int iterationCount,
@@ -50,7 +48,6 @@ CipherKeyImpl::CipherKeyImpl(const std::string& name,
 	if (!_pDigest)
 		throw Poco::NotFoundException("Digest " + name + " was not found");
 
-
 	_key = ByteVec(keySize());
 	_iv = ByteVec(ivSize());
 	generateKey(passphrase, salt, iterationCount);
@@ -61,6 +58,7 @@ CipherKeyImpl::CipherKeyImpl(const std::string& name,
 	const ByteVec& key, 
 	const ByteVec& iv):
 	_pCipher(0),
+	_pDigest(0),
 	_name(name),
 	_key(key),
 	_iv(iv)
@@ -76,6 +74,7 @@ CipherKeyImpl::CipherKeyImpl(const std::string& name,
 	
 CipherKeyImpl::CipherKeyImpl(const std::string& name):
 	_pCipher(0),
+	_pDigest(0),
 	_name(name),
 	_key(),
 	_iv()
@@ -154,6 +153,7 @@ void CipherKeyImpl::generateKey(
 
 	// OpenSSL documentation specifies that the salt must be an 8-byte array.
 	unsigned char saltBytes[8];
+
 	if (!salt.empty())
 	{
 		int len = static_cast<int>(salt.size());
@@ -164,10 +164,10 @@ void CipherKeyImpl::generateKey(
 			saltBytes[i % 8] ^= salt.at(i);
 	}
 
-	// Now create the key and IV, using the digest set in the constructor.
+	// Now create the key and IV, using the MD5 digest algorithm.
 	int keySize = EVP_BytesToKey(
 		_pCipher,
-		_pDigest,
+		_pDigest ? _pDigest : EVP_md5(),
 		(salt.empty() ? 0 : saltBytes),
 		reinterpret_cast<const unsigned char*>(password.data()),
 		static_cast<int>(password.size()),

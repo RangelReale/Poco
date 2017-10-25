@@ -1,8 +1,6 @@
 //
 // TestStatementImpl.cpp
 //
-// $Id: //poco/Main/Data/testsuite/src/TestStatementImpl.cpp#2 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -72,7 +70,7 @@ std::size_t TestStatementImpl::columnsReturned() const
 }
 
 
-const MetaColumn& TestStatementImpl::metaColumn(std::size_t pos, std::size_t /*rsPos*/) const
+const MetaColumn& TestStatementImpl::metaColumn(std::size_t pos) const
 {
 	static MetaColumn c(pos, "", MetaColumn::FDT_BOOL, 0);
 	return c;

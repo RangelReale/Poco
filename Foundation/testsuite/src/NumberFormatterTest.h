@@ -1,8 +1,6 @@
 //
 // NumberFormatterTest.h
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/NumberFormatterTest.h#1 $
-//
 // Definition of the NumberFormatterTest class.
 //
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
@@ -17,7 +15,7 @@
 
 
 #include "Poco/Foundation.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 
 
 class NumberFormatterTest: public CppUnit::TestCase

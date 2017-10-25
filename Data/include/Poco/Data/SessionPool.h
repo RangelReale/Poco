@@ -1,8 +1,6 @@
 //
 // SessionPool.h
 //
-// $Id: //poco/Main/Data/include/Poco/Data/SessionPool.h#4 $
-//
 // Library: Data
 // Package: SessionPooling
 // Module:  SessionPool
@@ -96,7 +94,7 @@ public:
 		/// is thrown.
 	
 	template <typename T>
-	Session get(const std::string& rName, const T& value)
+	Session get(const std::string& name, const T& value)
 		/// Returns a Session with requested property set.
 		/// The property can be different from the default pool
 		/// value, in which case it is reset back to the pool 
@@ -104,8 +102,8 @@ public:
 	{
 		Session s = get();
 		_addPropertyMap.insert(AddPropertyMap::value_type(s.impl(),
-			std::make_pair(rName, s.getProperty(rName))));
-		s.setProperty(rName, value);
+			std::make_pair(name, s.getProperty(name))));
+		s.setProperty(name, value);
 
 		return s;
 	}

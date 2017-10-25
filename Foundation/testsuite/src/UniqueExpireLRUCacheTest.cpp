@@ -1,8 +1,6 @@
 //
 // UniqueExpireLRUCacheTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/UniqueExpireLRUCacheTest.cpp#1 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "UniqueExpireLRUCacheTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Exception.h"
 #include "Poco/UniqueExpireLRUCache.h"
 #include "Poco/UniqueAccessExpireLRUCache.h"
@@ -48,7 +46,7 @@ typedef AccessExpirationDecorator<int> DIntVal;
 #define DURWAIT  300
 
 
-UniqueExpireLRUCacheTest::UniqueExpireLRUCacheTest(const std::string& rName): CppUnit::TestCase(rName)
+UniqueExpireLRUCacheTest::UniqueExpireLRUCacheTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

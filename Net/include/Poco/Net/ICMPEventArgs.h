@@ -1,8 +1,6 @@
 //
 // ICMPEventArgs.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/ICMPEventArgs.h#1 $
-//
 // Library: Net
 // Package: ICMP
 // Module:  ICMPEventArgs
@@ -105,8 +103,6 @@ private:
 	std::vector<std::string> _errors;
 
 	friend class ICMPClient;
-	friend class ICMPClientRaw;
-	friend class ICMPClientUserImpl;
 };
 
 

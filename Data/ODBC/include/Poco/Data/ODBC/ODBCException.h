@@ -1,8 +1,6 @@
 //
 // ODBCException.h
 //
-// $Id: //poco/Main/Data/ODBC/include/Poco/Data/ODBC/ODBCException.h#4 $
-//
 // Library: Data/ODBC
 // Package: ODBC
 // Module:  ODBCException
@@ -43,9 +41,7 @@ template <class H, SQLSMALLINT handleType>
 class HandleException: public ODBCException
 {
 public:
-	HandleException(const H& handle, int code = 0) : 
-		ODBCException(code),
-		_error(handle)
+	HandleException(const H& handle): _error(handle)
 		/// Creates HandleException
 	{
 		message(_error.toString());
@@ -57,7 +53,7 @@ public:
 		/// Creates HandleException
 	{
 		extendedMessage(_error.toString());
-	}
+	}							
 
 	HandleException(const H& handle, const std::string& msg, const std::string& arg): 
 		ODBCException(msg, arg), 
@@ -131,22 +127,10 @@ public:
 			_error.toString());
 	}
 
-	std::string errorString() const
-		/// Returns the error diagnostics string
-	{
-		return _error.toString();
-	}
-
 	static std::string errorString(const H& handle)
 		/// Returns the error diagnostics string for the handle.
 	{
 		return Error<H, handleType>(handle).toString();
-	}
-
-protected:
-	const Error<H, handleType>& error() const
-	{
-		return _error;
 	}
 
 private:

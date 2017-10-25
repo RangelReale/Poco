@@ -83,7 +83,7 @@ inline const std::string& Element::name() const
 typedef std::list<Element::Ptr> ElementSet;
 
 
-template<typename T>
+template<typename T> 
 struct ElementTraits
 {
 };
@@ -113,11 +113,51 @@ struct ElementTraits<std::string>
 
 	static std::string toString(const std::string& value, int indent = 0)
 	{
-		std::string result;
-		result.append(1, '"');
-		result.append(UTF8::escape(value));
-		result.append(1, '"');
-		return result;
+		std::ostringstream oss;
+
+		oss << '"';
+
+		for (std::string::const_iterator it = value.begin(); it != value.end(); ++it)
+		{
+			switch (*it)
+			{
+			case '"':
+				oss << "\\\"";
+				break;
+			case '\\':
+				oss << "\\\\";
+				break;
+			case '\b':
+				oss << "\\b";
+				break;
+			case '\f':
+				oss << "\\f";
+				break;
+			case '\n':
+				oss << "\\n";
+				break;
+			case '\r':
+				oss << "\\r";
+				break;
+			case '\t':
+				oss << "\\t";
+				break;
+			default:
+				{
+					if ( *it > 0 && *it <= 0x1F )
+					{
+						oss << "\\u" << std::hex << std::uppercase << std::setfill('0') << std::setw(4) << static_cast<int>(*it);
+					}
+					else
+					{
+						oss << *it;
+					}
+					break;
+				}
+			}
+		}
+		oss << '"';
+		return oss.str();
 	}
 };
 
@@ -326,7 +366,7 @@ public:
 	{
 	}
 
-
+	
 	T value() const
 	{
 		return _value;
@@ -338,7 +378,7 @@ public:
 		return ElementTraits<T>::toString(_value, indent);
 	}
 
-
+	
 	int type() const
 	{
 		return ElementTraits<T>::TypeId;

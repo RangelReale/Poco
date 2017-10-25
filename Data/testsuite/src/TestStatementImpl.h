@@ -1,8 +1,6 @@
 //
 // TestStatementImpl.h
 //
-// $Id: //poco/Main/Data/testsuite/src/TestStatementImpl.h#2 $
-//
 // Definition of the TestStatementImpl class.
 //
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
@@ -50,7 +48,7 @@ protected:
 		/// Returns the number of affected rows.
 		/// Used to find out the number of rows affected by insert or update.
 
-	const MetaColumn& metaColumn(std::size_t pos, std::size_t rsPos) const;
+	const MetaColumn& metaColumn(std::size_t pos) const;
 		/// Returns column meta data.
 
 	bool hasNext();

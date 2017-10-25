@@ -1,8 +1,6 @@
 	//
 // ODBCPostgreSQLTest.cpp
 //
-// $Id: //poco/Main/Data/ODBC/testsuite/src/ODBCPostgreSQLTest.cpp#5 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "ODBCPostgreSQLTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "ODBCTest.h"
 #include "Poco/Format.h"
 #include "Poco/Any.h"
@@ -21,7 +19,6 @@
 #include "Poco/Data/ODBC/Diagnostics.h"
 #include "Poco/Data/ODBC/ODBCException.h"
 #include <iostream>
-#include "Poco/Environment.h"
 
 
 using namespace Poco::Data::Keywords;
@@ -59,41 +56,11 @@ using Poco::DateTime;
 #endif
 
 #define POSTGRESQL_SERVER POCO_ODBC_TEST_DATABASE_SERVER
-
-static std::string postgreSchema()
-{
-	return Poco::Environment::get("POCO_TEST_POSTGRES_SCHEMA", "public");
-}
-
-
-static std::string postgreDriver()
-{
-	return Poco::Environment::get("POCO_TEST_POSTGRES_DRIVER", POSTGRESQL_ODBC_DRIVER);
-}
-
-static std::string postgreSettings()
-{
-	return Poco::Environment::get("POCO_TEST_POSTGRES_SETTINGS", "");
-}
-
+#define POSTGRESQL_PORT    "5432"
+#define POSTGRESQL_DB      "postgres"
+#define POSTGRESQL_UID     "postgres"
+#define POSTGRESQL_PWD     "postgres"
 #define POSTGRESQL_VERSION "9.3"
-
-static std::string postgreConnParams()
-{
-	return Poco::Environment::get("POCO_TEST_POSTGRES_CONN", "DATABASE=postgres;"
-		"SERVER=postgres;"
-		"PORT=5432;");
-}
-
-static std::string postgreUid()
-{
-	return Poco::Environment::get("POCO_TEST_POSTGRES_UID", "");
-}
-
-static std::string postgrePwd()
-{
-	return Poco::Environment::get("POCO_TEST_POSTGRES_PWD", "");
-}
 
 #ifdef POCO_OS_FAMILY_WINDOWS
 const std::string ODBCPostgreSQLTest::_libDir = "C:\\\\Program Files\\\\PostgreSQL\\\\" POSTGRESQL_VERSION "\\\\lib\\\\";
@@ -104,15 +71,17 @@ const std::string ODBCPostgreSQLTest::_libDir = "/usr/local/pgsql/lib/";
 
 ODBCTest::SessionPtr ODBCPostgreSQLTest::_pSession;
 ODBCTest::ExecPtr    ODBCPostgreSQLTest::_pExecutor;
-std::string          ODBCPostgreSQLTest::_driver = postgreDriver();
+std::string          ODBCPostgreSQLTest::_driver = POSTGRESQL_ODBC_DRIVER;
 std::string          ODBCPostgreSQLTest::_dsn = POSTGRESQL_DSN;
-std::string          ODBCPostgreSQLTest::_uid = postgreUid();
-std::string          ODBCPostgreSQLTest::_pwd = postgrePwd();
-std::string ODBCPostgreSQLTest::_connectString =
-	"DRIVER=" + postgreDriver() + ";"
-	+ postgreConnParams() + ";" +
-	"UID=" + postgreUid() + ";"
-	"PWD=" + postgrePwd() + ";"
+std::string          ODBCPostgreSQLTest::_uid = POSTGRESQL_UID;
+std::string          ODBCPostgreSQLTest::_pwd = POSTGRESQL_PWD;
+std::string ODBCPostgreSQLTest::_connectString = 
+	"DRIVER=" POSTGRESQL_ODBC_DRIVER ";"
+	"DATABASE=" POSTGRESQL_DB ";"
+	"SERVER=" POSTGRESQL_SERVER ";"
+	"PORT=" POSTGRESQL_PORT ";"
+	"UID=" POSTGRESQL_UID ";"
+	"PWD=" POSTGRESQL_PWD ";"
 	"SSLMODE=prefer;"
 	"LowerCaseIdentifier=0;"
 	"UseServerSidePrepare=0;"
@@ -137,7 +106,7 @@ std::string ODBCPostgreSQLTest::_connectString =
 	"UnknownSizes=0;"
 	"Socket=8192;"
 	"Fetch=100;"
-	"ConnSettings=" + postgreSettings() + ";"
+	"ConnSettings=;"
 	"ShowSystemTables=0;"
 	"RowVersioning=0;"
 	"ShowOidColumn=0;"
@@ -158,7 +127,7 @@ ODBCPostgreSQLTest::~ODBCPostgreSQLTest()
 
 void ODBCPostgreSQLTest::testBareboneODBC()
 {
-	std::string tableCreateString = "CREATE TABLE " + ExecUtil::test_tbl() +
+	std::string tableCreateString = "CREATE TABLE Test "
 		"(First VARCHAR(30),"
 		"Second VARCHAR(30),"
 		"Third BYTEA,"
@@ -171,7 +140,7 @@ void ODBCPostgreSQLTest::testBareboneODBC()
 	executor().bareboneODBCTest(_connectString, tableCreateString, SQLExecutor::PB_AT_EXEC, SQLExecutor::DE_MANUAL);
 	executor().bareboneODBCTest(_connectString, tableCreateString, SQLExecutor::PB_AT_EXEC, SQLExecutor::DE_BOUND);
 
-	tableCreateString = "CREATE TABLE " + ExecUtil::test_tbl() +
+	tableCreateString = "CREATE TABLE Test "
 		"(First VARCHAR(30),"
 		"Second VARCHAR(30),"
 		"Third BYTEA,"
@@ -186,7 +155,7 @@ void ODBCPostgreSQLTest::testBareboneODBC()
 
 //neither pSQL ODBC nor Mammoth drivers support multiple results properly
 /*
-	tableCreateString = "CREATE TABLE " + ExecUtil::test_tbl() +
+	tableCreateString = "CREATE TABLE Test "
 		"(First VARCHAR(30),"
 		"Second INTEGER,"
 		"Third FLOAT)";
@@ -230,18 +199,17 @@ void ODBCPostgreSQLTest::testStoredFunction()
 {
 	configurePLPgSQL();
 
-	const std::string func("testStoredFunction()");
-	const std::string nm = ExecUtil::stored_func();
+	std::string func("testStoredFunction()");
 
 	for (int k = 0; k < 8;)
 	{
 		session().setFeature("autoBind", bindValue(k));
 		session().setFeature("autoExtract", bindValue(k+1));
 
-		dropObject("FUNCTION", nm + "()");
+		dropObject("FUNCTION", "storedFunction()");
 		try 
 		{
-			session() << "CREATE FUNCTION " << nm << "() RETURNS INTEGER AS '"
+			session() << "CREATE FUNCTION storedFunction() RETURNS INTEGER AS '"
 				"BEGIN "
 				" return -1; "
 				"END;'"
@@ -251,13 +219,13 @@ void ODBCPostgreSQLTest::testStoredFunction()
 		catch(StatementException& se){ std::cout << se.toString() << std::endl; fail (func); }
 
 		int i = 0;
-		session() << "{? = call "<< nm << "()}", out(i), now;
+		session() << "{? = call storedFunction()}", out(i), now;
 		assert(-1 == i);
-		dropObject("FUNCTION", nm + "(INTEGER)");
+		dropObject("FUNCTION", "storedFunction()");
 
 		try 
 		{
-			session() << "CREATE FUNCTION " << nm << "(INTEGER) RETURNS INTEGER AS '"
+			session() << "CREATE FUNCTION storedFunction(INTEGER) RETURNS INTEGER AS '"
 				"BEGIN "
 				" RETURN $1 * $1; "
 				"END;'"
@@ -268,14 +236,14 @@ void ODBCPostgreSQLTest::testStoredFunction()
 
 		i = 2;
 		int result = 0;
-		session() << "{? = call " << nm << "(?)}", out(result), in(i), now;
+		session() << "{? = call storedFunction(?)}", out(result), in(i), now;
 		assert(4 == result);
-		dropObject("FUNCTION", nm + "(INTEGER)");
+		dropObject("FUNCTION", "storedFunction(INTEGER)");
 
-		dropObject("FUNCTION", nm + "(TIMESTAMP)");
+		dropObject("FUNCTION", "storedFunction(TIMESTAMP)");
 		try 
 		{
-			session() << "CREATE FUNCTION " << nm << "(TIMESTAMP) RETURNS TIMESTAMP AS '"
+			session() << "CREATE FUNCTION storedFunction(TIMESTAMP) RETURNS TIMESTAMP AS '"
 				"BEGIN "
 				" RETURN $1; "
 				"END;'"
@@ -286,14 +254,14 @@ void ODBCPostgreSQLTest::testStoredFunction()
 
 		DateTime dtIn(1965, 6, 18, 5, 35, 1);
 		DateTime dtOut;
-		session() << "{? = call " << nm << "(?)}", out(dtOut), in(dtIn), now;
+		session() << "{? = call storedFunction(?)}", out(dtOut), in(dtIn), now;
 		assert(dtOut == dtIn);
-		dropObject("FUNCTION", nm + "(TIMESTAMP)");
+		dropObject("FUNCTION", "storedFunction(TIMESTAMP)");
 
-		dropObject("FUNCTION", nm + "(TEXT, TEXT)");
+		dropObject("FUNCTION", "storedFunction(TEXT, TEXT)");
 		try 
 		{
-			session() << "CREATE FUNCTION " << nm << "(TEXT,TEXT) RETURNS TEXT AS '"
+			session() << "CREATE FUNCTION storedFunction(TEXT,TEXT) RETURNS TEXT AS '"
 				"BEGIN "
 				" RETURN $1 || '', '' || $2 || ''!'';"
 				"END;'"
@@ -307,13 +275,13 @@ void ODBCPostgreSQLTest::testStoredFunction()
 		std::string ret;
 		try 
 		{
-			session() << "{? = call " << nm << "(?,?)}", out(ret), in(param1), in(param2), now; 
+			session() << "{? = call storedFunction(?,?)}", out(ret), in(param1), in(param2), now; 
 		}
 		catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail (func); }
 		catch(StatementException& se){ std::cout << se.toString() << std::endl; fail (func); }
 
 		assert(ret == "Hello, world!");
-		dropObject("FUNCTION", nm  + "(TEXT, TEXT)");
+		dropObject("FUNCTION", "storedFunction(TEXT, TEXT)");
 
 		k += 2;
 	}
@@ -322,10 +290,7 @@ void ODBCPostgreSQLTest::testStoredFunction()
 
 void ODBCPostgreSQLTest::testStoredFunctionAny()
 {
-	const std::string nm = ExecUtil::stored_func();
-
-	dropObject("FUNCTION", nm  + "(INTEGER)");
-	session() << "CREATE FUNCTION "<< nm << "(INTEGER) RETURNS INTEGER AS '"
+	session() << "CREATE FUNCTION storedFunction(INTEGER) RETURNS INTEGER AS '"
 			"BEGIN "
 			" RETURN $1 * $1; "
 			"END;'"
@@ -338,23 +303,19 @@ void ODBCPostgreSQLTest::testStoredFunctionAny()
 
 		Any i = 2;
 		Any result = 0;
-		session() << "{? = call " << nm << "(?)}", out(result), in(i), now;
+		session() << "{? = call storedFunction(?)}", out(result), in(i), now;
 		assert(4 == AnyCast<int>(result));
 
 		k += 2;
 	}
 
-	dropObject("FUNCTION", nm + "(INTEGER)");
+	dropObject("FUNCTION", "storedFunction(INTEGER)");
 }
 
 
 void ODBCPostgreSQLTest::testStoredFunctionDynamicAny()
 {
-	const std::string nm = ExecUtil::stored_func();
-
-	dropObject("FUNCTION", nm + "(INTEGER)");
-
-	session() << "CREATE FUNCTION " << nm << "(INTEGER) RETURNS INTEGER AS '"
+	session() << "CREATE FUNCTION storedFunction(INTEGER) RETURNS INTEGER AS '"
 			"BEGIN "
 			" RETURN $1 * $1; "
 			"END;'"
@@ -367,13 +328,13 @@ void ODBCPostgreSQLTest::testStoredFunctionDynamicAny()
 
 		DynamicAny i = 2;
 		DynamicAny result = 0;
-		session() << "{? = call " << nm << "(?)}", out(result), in(i), now;
+		session() << "{? = call storedFunction(?)}", out(result), in(i), now;
 		assert(4 == result);
 
 		k += 2;
 	}
 
-	dropObject("FUNCTION", nm  + "(INTEGER)");
+	dropObject("FUNCTION", "storedFunction(INTEGER)");
 }
 
 
@@ -427,8 +388,8 @@ void ODBCPostgreSQLTest::dropObject(const std::string& type, const std::string& 
 
 void ODBCPostgreSQLTest::recreateNullableTable()
 {
-	dropObject("TABLE", ExecUtil::nullabletest());
-	try { *_pSession << "CREATE TABLE "<< ExecUtil::nullabletest() << " (EmptyString VARCHAR(30) NULL, EmptyInteger INTEGER NULL, EmptyFloat FLOAT NULL , EmptyDateTime TIMESTAMP NULL)", now; }
+	dropObject("TABLE", "NullableTest");
+	try { *_pSession << "CREATE TABLE NullableTest (EmptyString VARCHAR(30) NULL, EmptyInteger INTEGER NULL, EmptyFloat FLOAT NULL , EmptyDateTime TIMESTAMP NULL)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreatePersonTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreatePersonTable()"); }
 }
@@ -436,8 +397,8 @@ void ODBCPostgreSQLTest::recreateNullableTable()
 
 void ODBCPostgreSQLTest::recreatePersonTable()
 {
-	dropObject("TABLE", ExecUtil::person());
-	try { session() << "CREATE TABLE " << ExecUtil::person() << " (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), Age INTEGER)", now; }
+	dropObject("TABLE", "Person");
+	try { session() << "CREATE TABLE Person (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), Age INTEGER)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreatePersonTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreatePersonTable()"); }
 }
@@ -445,8 +406,8 @@ void ODBCPostgreSQLTest::recreatePersonTable()
 
 void ODBCPostgreSQLTest::recreatePersonBLOBTable()
 {
-	dropObject("TABLE", ExecUtil::person());
-	try { session() << "CREATE TABLE " << ExecUtil::person() << " (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), Image BYTEA)", now; }
+	dropObject("TABLE", "Person");
+	try { session() << "CREATE TABLE Person (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), Image BYTEA)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreatePersonBLOBTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreatePersonBLOBTable()"); }
 }
@@ -455,8 +416,8 @@ void ODBCPostgreSQLTest::recreatePersonBLOBTable()
 
 void ODBCPostgreSQLTest::recreatePersonDateTimeTable()
 {
-	dropObject("TABLE", ExecUtil::person());
-	try { session() << "CREATE TABLE " << ExecUtil::person() << " (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), Born TIMESTAMP)", now; }
+	dropObject("TABLE", "Person");
+	try { session() << "CREATE TABLE Person (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), Born TIMESTAMP)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreatePersonDateTimeTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreatePersonDateTimeTable()"); }
 }
@@ -464,8 +425,8 @@ void ODBCPostgreSQLTest::recreatePersonDateTimeTable()
 
 void ODBCPostgreSQLTest::recreatePersonDateTable()
 {
-	dropObject("TABLE", ExecUtil::person());
-	try { session() << "CREATE TABLE " << ExecUtil::person() << " (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), BornDate DATE)", now; }
+	dropObject("TABLE", "Person");
+	try { session() << "CREATE TABLE Person (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), BornDate DATE)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreatePersonDateTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreatePersonDateTable()"); }
 }
@@ -473,8 +434,8 @@ void ODBCPostgreSQLTest::recreatePersonDateTable()
 
 void ODBCPostgreSQLTest::recreatePersonTimeTable()
 {
-	dropObject("TABLE", ExecUtil::person());
-	try { session() << "CREATE TABLE " << ExecUtil::person() << " (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), BornTime TIME)", now; }
+	dropObject("TABLE", "Person");
+	try { session() << "CREATE TABLE Person (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), BornTime TIME)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreatePersonTimeTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreatePersonTimeTable()"); }
 }
@@ -482,8 +443,8 @@ void ODBCPostgreSQLTest::recreatePersonTimeTable()
 
 void ODBCPostgreSQLTest::recreateIntsTable()
 {
-	dropObject("TABLE", ExecUtil::ints());
-	try { session() << "CREATE TABLE " << ExecUtil::ints() <<" (str INTEGER)", now; }
+	dropObject("TABLE", "Strings");
+	try { session() << "CREATE TABLE Strings (str INTEGER)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreateIntsTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreateIntsTable()"); }
 }
@@ -491,8 +452,8 @@ void ODBCPostgreSQLTest::recreateIntsTable()
 
 void ODBCPostgreSQLTest::recreateStringsTable()
 {
-	dropObject("TABLE", ExecUtil::strings());
-	try { session() << "CREATE TABLE " << ExecUtil::strings() <<" (str VARCHAR(30))", now; }
+	dropObject("TABLE", "Strings");
+	try { session() << "CREATE TABLE Strings (str VARCHAR(30))", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreateStringsTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreateStringsTable()"); }
 }
@@ -500,8 +461,8 @@ void ODBCPostgreSQLTest::recreateStringsTable()
 
 void ODBCPostgreSQLTest::recreateFloatsTable()
 {
-	dropObject("TABLE", ExecUtil::strings());
-	try { session() << "CREATE TABLE " << ExecUtil::strings() <<" (str FLOAT)", now; }
+	dropObject("TABLE", "Strings");
+	try { session() << "CREATE TABLE Strings (str FLOAT)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreateFloatsTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreateFloatsTable()"); }
 }
@@ -509,8 +470,8 @@ void ODBCPostgreSQLTest::recreateFloatsTable()
 
 void ODBCPostgreSQLTest::recreateTuplesTable()
 {
-	dropObject("TABLE", ExecUtil::tuples());
-	try { session() << "CREATE TABLE " <<  ExecUtil::tuples() <<
+	dropObject("TABLE", "Tuples");
+	try { session() << "CREATE TABLE Tuples "
 		"(int0 INTEGER, int1 INTEGER, int2 INTEGER, int3 INTEGER, int4 INTEGER, int5 INTEGER, int6 INTEGER, "
 		"int7 INTEGER, int8 INTEGER, int9 INTEGER, int10 INTEGER, int11 INTEGER, int12 INTEGER, int13 INTEGER,"
 		"int14 INTEGER, int15 INTEGER, int16 INTEGER, int17 INTEGER, int18 INTEGER, int19 INTEGER)", now; }
@@ -521,8 +482,8 @@ void ODBCPostgreSQLTest::recreateTuplesTable()
 
 void ODBCPostgreSQLTest::recreateVectorsTable()
 {
-	dropObject("TABLE", ExecUtil::vectors());
-	try { session() << "CREATE TABLE " << ExecUtil::vectors() << " (i0 INTEGER, flt0 FLOAT, str0 VARCHAR(30))", now; }
+	dropObject("TABLE", "Vectors");
+	try { session() << "CREATE TABLE Vectors (int0 INTEGER, flt0 FLOAT, str0 VARCHAR(30))", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreateVectorsTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreateVectorsTable()"); }
 }
@@ -530,8 +491,8 @@ void ODBCPostgreSQLTest::recreateVectorsTable()
 
 void ODBCPostgreSQLTest::recreateAnysTable()
 {
-	dropObject("TABLE", ExecUtil::anys() );
-	try { session() << "CREATE TABLE " << ExecUtil::anys() << " (int0 INTEGER, flt0 FLOAT, str0 VARCHAR(30))", now; }
+	dropObject("TABLE", "Anys");
+	try { session() << "CREATE TABLE Anys (int0 INTEGER, flt0 FLOAT, str0 VARCHAR(30))", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreateAnysTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreateAnysTable()"); }
 }
@@ -539,8 +500,8 @@ void ODBCPostgreSQLTest::recreateAnysTable()
 
 void ODBCPostgreSQLTest::recreateNullsTable(const std::string& notNull)
 {
-	dropObject("TABLE", ExecUtil::nulltest());
-	try { session() << format("CREATE TABLE %s (i INTEGER %s, r FLOAT %s, v VARCHAR(30) %s)",ExecUtil::nulltest(),
+	dropObject("TABLE", "NullTest");
+	try { session() << format("CREATE TABLE NullTest (i INTEGER %s, r FLOAT %s, v VARCHAR(30) %s)",
 		notNull,
 		notNull,
 		notNull), now; }
@@ -560,11 +521,11 @@ void ODBCPostgreSQLTest::recreateBoolTable()
 
 void ODBCPostgreSQLTest::recreateMiscTable()
 {
-	dropObject("TABLE", ExecUtil::misctest());
+	dropObject("TABLE", "MiscTest");
 	try 
 	{ 
 		// Mammoth does not bind columns properly
-		session() << "CREATE TABLE "<< ExecUtil::misctest() <<
+		session() << "CREATE TABLE MiscTest "
 			"(First VARCHAR(30),"
 			"Second BYTEA,"
 			"Third INTEGER,"
@@ -577,8 +538,8 @@ void ODBCPostgreSQLTest::recreateMiscTable()
 
 void ODBCPostgreSQLTest::recreateLogTable()
 {
-	dropObject("TABLE", ExecUtil::pocolog());;
-	dropObject("TABLE", ExecUtil::pocolog_a());;
+	dropObject("TABLE", "T_POCO_LOG");
+	dropObject("TABLE", "T_POCO_LOG_ARCHIVE");
 
 	try 
 	{ 
@@ -592,8 +553,8 @@ void ODBCPostgreSQLTest::recreateLogTable()
 			"Text VARCHAR,"
 			"DateTime TIMESTAMP)"; 
 
-		session() << sql, ExecUtil::pocolog(), now; 
-		session() << sql, ExecUtil::pocolog_a(), now; 
+		session() << sql, "T_POCO_LOG", now; 
+		session() << sql, "T_POCO_LOG_ARCHIVE", now; 
 
 	} catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreateLogTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreateLogTable()"); }
@@ -617,20 +578,12 @@ CppUnit::Test* ODBCPostgreSQLTest::suite()
 	{
 		std::cout << "*** Connected to [" << _driver << "] test database." << std::endl;
 
-		std::string initSql;
-		if (!postgreSchema().empty())
-		{
-			initSql = "SET search_path TO " + postgreSchema() + (postgreSchema() != std::string("public") ? ", public;" : ";");
-			(*_pSession) << initSql, now;
-		}
-
-		_pExecutor = new SQLExecutor(_driver + " SQL Executor", _pSession, initSql, postgreSchema());
+		_pExecutor = new SQLExecutor(_driver + " SQL Executor", _pSession);
 
 		CppUnit::TestSuite* pSuite = new CppUnit::TestSuite("ODBCPostgreSQLTest");
 
 		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testBareboneODBC);
 		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testZeroRows);
-		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testSyntaxError);
 		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testSimpleAccess);
 		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testComplexType);
 		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testSimpleAccessVector);
@@ -713,8 +666,7 @@ CppUnit::Test* ODBCPostgreSQLTest::suite()
 		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testAny);
 		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testDynamicAny);
 		//neither pSQL ODBC nor Mammoth drivers support multiple results properly
-		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testMultipleResults);
-		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testMultipleResultsNoProj);
+		//CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testMultipleResults);
 		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testSQLChannel);
 		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testSQLLogger);
 		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testSessionTransaction);
@@ -723,7 +675,6 @@ CppUnit::Test* ODBCPostgreSQLTest::suite()
 		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testNullable);
 		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testUnicode);
 		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testReconnect);
-		CppUnit_addTest(pSuite, ODBCPostgreSQLTest, testInsertStatReuse);
 
 		return pSuite;
 	}

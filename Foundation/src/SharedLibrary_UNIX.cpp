@@ -1,8 +1,6 @@
 //
 // SharedLibrary_UNIX.cpp
 //
-// $Id: //poco/1.4/Foundation/src/SharedLibrary_UNIX.cpp#3 $
-//
 // Library: Foundation
 // Package: SharedLibrary
 // Module:  SharedLibrary
@@ -20,7 +18,7 @@
 
 
 // Note: cygwin is missing RTLD_LOCAL, set it to 0
-#if POCO_OS == POCO_OS_CYGWIN && !defined(RTLD_LOCAL)
+#if defined(__CYGWIN__) && !defined(RTLD_LOCAL)
 #define RTLD_LOCAL 0
 #endif
 
@@ -99,31 +97,21 @@ const std::string& SharedLibraryImpl::getPathImpl() const
 }
 
 
-std::string SharedLibraryImpl::prefixImpl()
-{
-#if POCO_OS == POCO_OS_CYGWIN
-	return "cyg";
-#else
-	return "lib";
-#endif
-}
-
-
 std::string SharedLibraryImpl::suffixImpl()
 {
-#if POCO_OS == POCO_OS_MAC_OS_X
+#if defined(__APPLE__)
 	#if defined(_DEBUG) && !defined(POCO_NO_SHARED_LIBRARY_DEBUG_SUFFIX)
 		return "d.dylib";
 	#else
 		return ".dylib";
 	#endif
-#elif POCO_OS == POCO_OS_HPUX
+#elif defined(hpux) || defined(_hpux)
 	#if defined(_DEBUG) && !defined(POCO_NO_SHARED_LIBRARY_DEBUG_SUFFIX)
 		return "d.sl";
 	#else
 		return ".sl";
 	#endif
-#elif POCO_OS == POCO_OS_CYGWIN
+#elif defined(__CYGWIN__)
 	#if defined(_DEBUG) && !defined(POCO_NO_SHARED_LIBRARY_DEBUG_SUFFIX)
 		return "d.dll";
 	#else

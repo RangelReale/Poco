@@ -1,8 +1,6 @@
 //
 // File_WIN32U.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/File_WINCE.h#1 $
-//
 // Library: Foundation
 // Package: Filesystem
 // Module:  File
@@ -59,9 +57,6 @@ protected:
 	void removeImpl();
 	bool createFileImpl();
 	bool createDirectoryImpl();
-	FileSizeImpl totalSpaceImpl() const;
-	FileSizeImpl usableSpaceImpl() const;
-	FileSizeImpl freeSpaceImpl() const;
 	static void handleLastErrorImpl(const std::string& path);
 	static void convertPath(const std::string& utf8Path, std::wstring& utf16Path);
 	

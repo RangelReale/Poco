@@ -1,15 +1,13 @@
 //
 // TestCase.cpp
 //
-// $Id: //poco/1.4/CppUnit/src/TestCase.cpp#1 $
-//
 
 
 #include <stdexcept>
 #include <math.h>
-#include "Poco/CppUnit/TestCase.h"
-#include "Poco/CppUnit/TestResult.h"
-#include "Poco/CppUnit/estring.h"
+#include "CppUnit/TestCase.h"
+#include "CppUnit/TestResult.h"
+#include "CppUnit/estring.h"
 #include <typeinfo>
 #include <iostream>
 

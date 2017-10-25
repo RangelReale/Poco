@@ -1,8 +1,6 @@
 //
 // FIFOBufferStream.cpp
 //
-// $Id: //poco/1.4/Foundation/src/FIFOBufferStream.cpp#1 $
-//
 // Library: Foundation
 // Package: Streams
 // Module:  FIFOBufferStream
@@ -33,12 +31,12 @@ FIFOBufferStreamBuf::FIFOBufferStreamBuf():
 }
 
 
-FIFOBufferStreamBuf::FIFOBufferStreamBuf(FIFOBuffer& rFifoBuffer):
-	BufferedBidirectionalStreamBuf(rFifoBuffer.size() + 4, std::ios::in | std::ios::out),
+FIFOBufferStreamBuf::FIFOBufferStreamBuf(FIFOBuffer& fifoBuffer):
+	BufferedBidirectionalStreamBuf(fifoBuffer.size() + 4, std::ios::in | std::ios::out),
 	_pFIFOBuffer(0),
-	_fifoBuffer(rFifoBuffer)
+	_fifoBuffer(fifoBuffer)
 {
-	rFifoBuffer.setNotify(true);
+	fifoBuffer.setNotify(true);
 }
 
 

@@ -1,8 +1,6 @@
 //
 // IPAddress.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/IPAddress.h#2 $
-//
 // Library: Net
 // Package: NetCore
 // Module:  IPAddress
@@ -26,7 +24,6 @@
 #include "Poco/AutoPtr.h"
 #include "Poco/Exception.h"
 #include <vector>
-#include <ostream>
 
 
 namespace Poco {
@@ -57,15 +54,15 @@ class Net_API IPAddress
 {
 public:
 	typedef std::vector<IPAddress> List;
-	
-	// The following declarations keep the Family type
-	// backwards compatible with the previously used
-	// enum declaration.
-	typedef AddressFamily::Family Family;
-	static const Family IPv4 = AddressFamily::IPv4;
-#if defined(POCO_HAVE_IPv6)
-	static const Family IPv6 = AddressFamily::IPv6;
+
+	enum Family
+		/// Possible address families for IP addresses.
+	{
+		IPv4 = Poco::Net::Impl::IPAddressImpl::IPv4
+#ifdef POCO_HAVE_IPv6
+		,IPv6 = Poco::Net::Impl::IPAddressImpl::IPv6
 #endif
+	};
 	
 	IPAddress();
 		/// Creates a wildcard (zero) IPv4 IPAddress.
@@ -374,15 +371,13 @@ private:
 #endif
 
 	Ptr pImpl() const;
-	void newIPv4();
 	void newIPv4(const void* hostAddr);
-	void newIPv4(unsigned prefix);
-#if defined(POCO_HAVE_IPv6)
-	void newIPv6();
 	void newIPv6(const void* hostAddr);
 	void newIPv6(const void* hostAddr, Poco::UInt32 scope);
+	void newIPv4(unsigned prefix);
 	void newIPv6(unsigned prefix);
-#endif
+	void newIPv4();
+	void newIPv6();
 	void destruct();
 
 #ifdef POCO_HAVE_ALIGNMENT
@@ -399,11 +394,7 @@ private:
 			AlignerType aligner;
 		}
 	#else // !POCO_ENABLE_CPP11
-		#if defined(POCO_HAVE_IPv6)
-			AlignedCharArrayUnion <Poco::Net::Impl::IPv6AddressImpl>
-		#else
-			AlignedCharArrayUnion <Poco::Net::Impl::IPv4AddressImpl>
-		#endif
+		AlignedCharArrayUnion <Poco::Net::Impl::IPv6AddressImpl>
 	#endif // POCO_ENABLE_CPP11
 		_memory;
 #else // !POCO_HAVE_ALIGNMENT
@@ -415,8 +406,6 @@ private:
 //
 // inlines
 //
-
-
 inline void IPAddress::destruct()
 {
 #ifdef POCO_HAVE_ALIGNMENT
@@ -436,45 +425,12 @@ inline IPAddress::Ptr IPAddress::pImpl() const
 }
 
 
-inline void IPAddress::newIPv4()
-{
-#ifdef POCO_HAVE_ALIGNMENT
-	new (storage()) Poco::Net::Impl::IPv4AddressImpl;
-#else
-	_pImpl = new Poco::Net::Impl::IPv4AddressImpl;
-#endif
-}
-
-
 inline void IPAddress::newIPv4(const void* hostAddr)
 {
 #ifdef POCO_HAVE_ALIGNMENT
 	new (storage()) Poco::Net::Impl::IPv4AddressImpl(hostAddr);
 #else
 	_pImpl = new Poco::Net::Impl::IPv4AddressImpl(hostAddr);
-#endif
-}
-
-
-inline void IPAddress::newIPv4(unsigned prefix)
-{
-#ifdef POCO_HAVE_ALIGNMENT
-	new (storage()) Poco::Net::Impl::IPv4AddressImpl(prefix);
-#else
-	_pImpl = new Poco::Net::Impl::IPv4AddressImpl(prefix);
-#endif
-}
-
-
-#if defined(POCO_HAVE_IPv6)
-
-
-inline void IPAddress::newIPv6()
-{
-#ifdef POCO_HAVE_ALIGNMENT
-	new (storage()) Poco::Net::Impl::IPv6AddressImpl;
-#else
-	_pImpl = new Poco::Net::Impl::IPv6AddressImpl;
 #endif
 }
 
@@ -499,6 +455,16 @@ inline void IPAddress::newIPv6(const void* hostAddr, Poco::UInt32 scope)
 }
 
 
+inline void IPAddress::newIPv4(unsigned prefix)
+{
+#ifdef POCO_HAVE_ALIGNMENT
+	new (storage()) Poco::Net::Impl::IPv4AddressImpl(prefix);
+#else
+	_pImpl = new Poco::Net::Impl::IPv4AddressImpl(prefix);
+#endif
+}
+
+
 inline void IPAddress::newIPv6(unsigned prefix)
 {
 #ifdef POCO_HAVE_ALIGNMENT
@@ -509,7 +475,24 @@ inline void IPAddress::newIPv6(unsigned prefix)
 }
 
 
-#endif // POCO_HAVE_IPv6
+inline void IPAddress::newIPv4()
+{
+#ifdef POCO_HAVE_ALIGNMENT
+	new (storage()) Poco::Net::Impl::IPv4AddressImpl;
+#else
+	_pImpl = new Poco::Net::Impl::IPv4AddressImpl;
+#endif
+}
+
+
+inline void IPAddress::newIPv6()
+{
+#ifdef POCO_HAVE_ALIGNMENT
+	new (storage()) Poco::Net::Impl::IPv6AddressImpl;
+#else
+	_pImpl = new Poco::Net::Impl::IPv6AddressImpl;
+#endif
+}
 
 
 #ifdef POCO_HAVE_ALIGNMENT
@@ -520,12 +503,11 @@ inline char* IPAddress::storage()
 #endif
 
 
+BinaryWriter& operator << (BinaryWriter& writer, const IPAddress& value);
+BinaryReader& operator >> (BinaryReader& reader, IPAddress& value);
+
+
 } } // namespace Poco::Net
-
-
-Net_API Poco::BinaryWriter& operator << (Poco::BinaryWriter& writer, const Poco::Net::IPAddress& value);
-Net_API Poco::BinaryReader& operator >> (Poco::BinaryReader& reader, Poco::Net::IPAddress& value);
-Net_API std::ostream& operator << (std::ostream& ostr, const Poco::Net::IPAddress& addr);
 
 
 #endif // Net_IPAddress_INCLUDED

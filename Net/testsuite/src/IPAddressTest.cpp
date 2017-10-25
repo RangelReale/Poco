@@ -1,8 +1,6 @@
 //
 // IPAddressTest.cpp
 //
-// $Id: //poco/1.4/Net/testsuite/src/IPAddressTest.cpp#2 $
-//
 // Copyright (c) 2005-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "IPAddressTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Net/IPAddress.h"
 #include "Poco/Net/NetException.h"
 

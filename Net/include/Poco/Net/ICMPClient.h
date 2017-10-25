@@ -1,8 +1,6 @@
 //
 // ICMPClient.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/ICMPClient.h#1 $
-//
 // Library: Net
 // Package: ICMP
 // Module:  ICMPClient
@@ -21,7 +19,7 @@
 
 
 #include "Poco/Net/Net.h"
-#include "Poco/Net/ICMPClientImpl.h"
+#include "Poco/Net/ICMPSocket.h"
 #include "Poco/Net/ICMPEventArgs.h"
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/BasicEvent.h"
@@ -29,9 +27,6 @@
 
 namespace Poco {
 namespace Net {
-
-
-class ICMPClientImpl;
 
 
 class Net_API ICMPClient
@@ -49,12 +44,8 @@ public:
 	mutable Poco::BasicEvent<ICMPEventArgs> pingError;
 	mutable Poco::BasicEvent<ICMPEventArgs> pingEnd;
 
-	explicit ICMPClient(SocketAddress::Family family, bool useRawSocket = true);
+	explicit ICMPClient(IPAddress::Family family);
 		/// Creates an ICMP client.
-		///
-		/// If using raw socket, most operating systems requires root access.
-		/// Non-raw sockets are not available in all platforms, if not available
-		/// NotImplementedException is thrown.
 
 	~ICMPClient();
 		/// Destroys the ICMP client.
@@ -71,25 +62,20 @@ public:
 		/// 
 		/// Returns the number of valid replies.
 
-	static int ping(SocketAddress& address, SocketAddress::Family family, int repeat = 1, bool useRawSocket = true);
+	static int ping(SocketAddress& address, IPAddress::Family family, int repeat = 1);
 		/// Pings the specified address [repeat] times.
 		/// Notifications are not posted for events.
 		/// 
 		/// Returns the number of valid replies.
 
-	static int pingIPv4(const std::string& address, int repeat = 1, bool useRawSocket = true);
+	static int pingIPv4(const std::string& address, int repeat = 1);
 		/// Calls ICMPClient::ping(SocketAddress&, int) and
 		/// returns the result.
 		/// 
 		/// Returns the number of valid replies.
 
 private:
-	void tpbegin(const void *sender, Poco::Net::ICMPEventArgs &args);
-	void tpreply(const void *sender, Poco::Net::ICMPEventArgs &args);
-	void tperror(const void *sender, Poco::Net::ICMPEventArgs &args);
-	void tpend(const void *sender, Poco::Net::ICMPEventArgs &args);
-
-	ICMPClientImpl *_impl;
+	mutable IPAddress::Family _family;
 };
 
 

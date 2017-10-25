@@ -1,8 +1,6 @@
 //
 // RSACipherImpl.h
 //
-// $Id: //poco/1.4/Crypto/include/Poco/Crypto/RSACipherImpl.h#2 $
-//
 // Library: Crypto
 // Package: RSA
 // Module:  RSACipherImpl
@@ -33,7 +31,7 @@ namespace Crypto {
 
 class RSACipherImpl: public Cipher
 	/// An implementation of the Cipher class for 
-	/// asymmetric (public-private key) encryption
+	/// assymetric (public-private key) encryption
 	/// based on the the RSA algorithm in OpenSSL's 
 	/// crypto library.
 	///
@@ -52,10 +50,10 @@ public:
 		/// Returns the name of the Cipher.
 	
 	CryptoTransform* createEncryptor();
-		/// Creates an encryptor object.
+		/// Creates an encrytor object.
 
 	CryptoTransform* createDecryptor();
-		/// Creates a decryptor object.
+		/// Creates a decrytor object.
 
 private:
 	RSAKey _key;

@@ -1,8 +1,6 @@
 //
 // Config.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/Config.h#3 $
-//
 // Library: Foundation
 // Package: Core
 // Module:  Foundation
@@ -23,9 +21,7 @@
 // Define to enable Windows Unicode (UTF-8) support
 // NOTE: As of POCO C++ Libraries release 1.6.0, compiling POCO
 // without POCO_WIN32_UTF8 defined on Windows is deprecated.
-#ifndef POCO_WIN32_UTF8
 #define POCO_WIN32_UTF8
-#endif
 
 
 // Define to enable C++11 support
@@ -92,12 +88,9 @@
 // !!! for std::aligned_storage.                           !!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //
-#ifndef POCO_NO_SOO
 #ifndef POCO_ENABLE_SOO
 #define POCO_NO_SOO
 #endif
-#endif
-
 
 
 // Small object size in bytes. When assigned to Any or Var,
@@ -185,6 +178,10 @@
 // Define to prevent changing the suffix for shared libraries
 // to "d.so", "d.dll", etc. for _DEBUG builds in Poco::SharedLibrary.
 // #define POCO_NO_SHARED_LIBRARY_DEBUG_SUFFIX
+
+
+// Disarm POCO_DEPRECATED macro.
+// #define POCO_NO_DEPRECATED
 
 
 #endif // Foundation_Config_INCLUDED

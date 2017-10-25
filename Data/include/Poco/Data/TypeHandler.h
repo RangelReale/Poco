@@ -1,8 +1,6 @@
 //
 // TypeHandler.h
 //
-// $Id: //poco/Main/Data/include/Poco/Data/TypeHandler.h#13 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  TypeHandler
@@ -30,9 +28,6 @@
 #include "Poco/SharedPtr.h"
 #include <cstddef>
 
-#if __cplusplus >= 201103L
-#include <tuple>
-#endif
 
 namespace Poco {
 namespace Data {
@@ -100,7 +95,7 @@ class TypeHandler: public AbstractTypeHandler
 	///	
 	///		static void extract(std::size_t pos, Person& obj, const Person& defVal, AbstractExtractor::Ptr pExt)
 	///		{
-	///			// defVal is the default person we should use if we encounter NULL entries, so we take the individual fields
+	///			// defVal is the default person we should use if we encunter NULL entries, so we take the individual fields
 	///			// as defaults. You can do more complex checking, ie return defVal if only one single entry of the fields is null etc...
 	///			poco_assert_dbg (!pExt.isNull());
 	///			std::string lastName;
@@ -257,21 +252,6 @@ template <typename T>
 class TypeHandler<Nullable<T> > 
 	/// Specialization of type handler for Nullable.
 {
-	class NullHandler : public AbstractBinder::WhenNullCb
-	{
-	public:
-		explicit NullHandler(const Nullable<T>& obj)
-		{
-			_data = &const_cast<Nullable<T>&>(obj);
-			_func = handle;
-		}
-	private:
-		static void handle(void* ptr)
-		{
-			reinterpret_cast<Nullable<T>*>(ptr)->clear();
-		}
-	};
-
 public:
 
 	static void bind(std::size_t pos, const Nullable<T>& obj, AbstractBinder::Ptr pBinder, AbstractBinder::Direction dir) 
@@ -279,14 +259,11 @@ public:
 		poco_assert_dbg (!pBinder.isNull());
 		if (obj.isNull()) 
 		{
-			pBinder->bind(pos++, NullValue::nullCode<T>(), dir, typeid(T));
+			pBinder->bind(pos++, Poco::Data::Keywords::null, dir);
 		}
 		else 
 		{
-			if (AbstractBinder::isOutBound(dir))
-				pBinder->bind(pos++, obj.value(), dir, NullHandler(obj));
-			else
-				pBinder->bind(pos++, obj.value(), dir);
+			pBinder->bind(pos++, obj.value(), dir);
 		}
 	}
 	
@@ -295,7 +272,7 @@ public:
 		poco_assert_dbg (!pPreparator.isNull());
 		if (obj.isNull()) 
 		{
-			pPreparator->prepare(pos++, NullValue::nullCode<T>());
+			pPreparator->prepare(pos++, Poco::Data::Keywords::null);
 		}
 		else 
 		{
@@ -2106,131 +2083,6 @@ private:
 	TypeHandler& operator = (const TypeHandler&);
 };
 
-
-#if __cplusplus >= 201103L
-
-template<std::size_t N>
-struct TupleBind
-/// Helper for specialization of type handler for std::tuple
-{
-	template<typename... T>
-	static typename std::enable_if<N < sizeof...(T)>::type
-	bind(std::size_t& pos, const std::tuple<T...>& t, AbstractBinder::Ptr pBinder, AbstractBinder::Direction dir)
-	{
-		using Type = typename std::tuple_element<N, std::tuple<T...>>::type;
-		TypeHandler<Type>::bind(pos, std::get<N>(t), pBinder, dir);
-		pos += TypeHandler<Type>::size();
-		TupleBind<N+1>::bind(pos, t, pBinder, dir);
-	}
-
-	template<typename... T>
-	static typename std::enable_if<!(N < sizeof...(T))>::type
-	bind(std::size_t& pos, const std::tuple<T...>& t, AbstractBinder::Ptr pBinder, AbstractBinder::Direction dir)
-	{}
-};
-
-
-template<std::size_t N>
-struct TupleSize
-/// Helper for specialization of type handler for std::tuple
-{
-	template<typename... T>
-	static typename std::enable_if<N < sizeof...(T)>::type
-	size(std::size_t& sz)
-	{
-		using Type = typename std::tuple_element<N, std::tuple<T...>>::type;
-		sz += TypeHandler<Type>::size();
-		TupleSize<N+1>::size(sz);
-	}
-
-	template<typename... T>
-	static typename std::enable_if<!(N < sizeof...(T))>::type
-	size(std::size_t& sz)
-	{}
-};
-
-
-template<std::size_t N>
-struct TupleExtract
-/// Helper for specialization of type handler for std::tuple
-{
-	template<typename... T>
-	static typename std::enable_if<N < sizeof...(T)>::type
-	extract(std::size_t& pos, std::tuple<T...>& t, const std::tuple<T...>& defVal, AbstractExtractor::Ptr pExt)
-	{
-		using Type = typename std::tuple_element<N, std::tuple<T...>>::type;
-		TypeHandler<Type>::extract(pos, std::get<N>(t), std::get<N>(defVal), pExt);
-		pos += TypeHandler<Type>::size();
-		TupleExtract<N+1>::extract(pos, t, defVal, pExt);
-	}
-
-	template<typename... T>
-	static typename std::enable_if<!(N < sizeof...(T))>::type
-	extract(std::size_t& pos, std::tuple<T...>& t, const std::tuple<T...>& defVal, AbstractExtractor::Ptr pExt)
-	{}
-};
-
-
-template<std::size_t N>
-struct TuplePrepare
-/// Helper for specialization of type handler for std::tuple
-{
-	template<typename... T>
-	static typename std::enable_if<N < sizeof...(T)>::type
-	prepare(std::size_t& pos, const std::tuple<T...>& t, AbstractPreparator::Ptr pPreparator)
-	{
-		using Type = typename std::tuple_element<N, std::tuple<T...>>::type;
-		TypeHandler<Type>::prepare(pos, std::get<N>(t), pPreparator);
-		pos += TypeHandler<Type>::size();
-		TuplePrepare<N+1>::prepare(pos, t, pPreparator);
-	}
-
-	template<typename... T>
-	static typename std::enable_if<!(N < sizeof...(T))>::type
-	prepare(std::size_t& pos, const std::tuple<T...>& t, AbstractPreparator::Ptr pPreparator)
-	{}
-};
-
-
-
-template <typename...T>
-class TypeHandler<std::tuple<T...>>
-/// Specialization of type handler for std::tuple
-{
-public:
-	static void bind(std::size_t pos, const std::tuple<T...> & t, AbstractBinder::Ptr pBinder, AbstractBinder::Direction dir)
-	{
-		poco_assert_dbg (!pBinder.isNull());
-		TupleBind<0>::bind(pos, t, pBinder, dir);
-	}
-
-	static std::size_t size()
-	{
-		std::size_t sz = 0;
-		TupleSize<0>::size(sz);
-		return sz;
-	}
-
-	static void extract(std::size_t pos, std::tuple<T...>& t, const std::tuple<T...>& defVal, AbstractExtractor::Ptr pExt)
-	{
-		poco_assert_dbg (!pExt.isNull());
-		TupleExtract<0>::extract(pos, t, defVal, pExt);
-	}
-
-	static void prepare(std::size_t pos, const std::tuple<T...> & t, AbstractPreparator::Ptr pPrepare)
-	{
-		poco_assert_dbg (!pPrepare.isNull());
-		TuplePrepare<0>::prepare(pos, t, pPrepare);
-	}
-
-private:
-	TypeHandler();
-	~TypeHandler();
-	TypeHandler(const TypeHandler&);
-	TypeHandler& operator=(const TypeHandler&);
-};
-
-#endif // __cplusplus >= 201103L
 
 } } // namespace Poco::Data
 

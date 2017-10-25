@@ -1,8 +1,6 @@
 //
 // Mutex_WIN32.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/Mutex_WIN32.h#1 $
-//
 // Library: Foundation
 // Package: Threading
 // Module:  Mutex
@@ -30,15 +28,8 @@ namespace Poco {
 
 class Foundation_API MutexImpl
 {
-public:
-	enum MutexTypeImpl
-	{
-		MUTEX_RECURSIVE_IMPL,
-		MUTEX_NONRECURSIVE_IMPL,
-	};
-
 protected:
-	explicit MutexImpl(MutexTypeImpl type);
+	MutexImpl();
 	~MutexImpl();
 	void lockImpl();
 	bool tryLockImpl();
@@ -47,41 +38,16 @@ protected:
 	
 private:
 	CRITICAL_SECTION _cs;
-	int _lockCount;
-	const bool _recursive;
-
-private:
-	MutexImpl(const MutexImpl&);
-	MutexImpl& operator = (const MutexImpl&);
 };
 
 
-class Foundation_API FastMutexImpl
-{
-protected:
-	FastMutexImpl();
-	~FastMutexImpl();
-	void lockImpl();
-	bool tryLockImpl();
-	bool tryLockImpl(long milliseconds);
-	void unlockImpl();
-	
-private:
-	CRITICAL_SECTION _cs;
-};
+typedef MutexImpl FastMutexImpl;
 
 
 //
 // inlines
 //
-inline void MutexImpl::unlockImpl()
-{
-	--_lockCount;
-	LeaveCriticalSection(&_cs);
-}
-
-
-inline void FastMutexImpl::lockImpl()
+inline void MutexImpl::lockImpl()
 {
 	try
 	{
@@ -94,7 +60,7 @@ inline void FastMutexImpl::lockImpl()
 }
 
 
-inline bool FastMutexImpl::tryLockImpl()
+inline bool MutexImpl::tryLockImpl()
 {
 	try
 	{
@@ -107,7 +73,7 @@ inline bool FastMutexImpl::tryLockImpl()
 }
 
 
-inline void FastMutexImpl::unlockImpl()
+inline void MutexImpl::unlockImpl()
 {
 	LeaveCriticalSection(&_cs);
 }

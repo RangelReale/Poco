@@ -1,8 +1,6 @@
 //
 // Notifier.h
 //
-// $Id: //poco/Main/Data/SQLite/include/Poco/Data/SQLite/Notifier.h#2 $
-//
 // Library: Data/SQLite
 // Package: SQLite
 // Module:  Notifier
@@ -46,7 +44,7 @@ class SQLite_API Notifier
 	/// 
 	/// There can be only one set of callbacks per session (i.e. registering a new
 	/// callback automatically unregisters the previous one). All callbacks are 
-	/// registered and enabled at Notifier construction time and can be disabled
+	/// registered and enabled at Notifier contruction time and can be disabled
 	/// at a later point time.
 {
 public:
@@ -119,9 +117,9 @@ public:
 		/// and triggers the event.
 
 	static int sqliteCommitCallbackFn(void* pVal);
-		/// Commit callback event dispatcher. If an exception occurs, it is caught inside this function,
+		/// Commit callback event dispatcher. If an exception occurs, it is catched inside this function,
 		/// non-zero value is returned, which causes SQLite engine to turn commit into a rollback.
-		/// Therefore, callers should check for return value - if it is zero, callback completed successfully
+		/// Therefore, callers should check for return value - if it is zero, callback completed succesfuly
 		/// and transaction was committed.
 
 	static void sqliteRollbackCallbackFn(void* pVal);
@@ -136,9 +134,6 @@ public:
 
 	void setRow(Poco::Int64 row);
 		/// Sets the row number.
-
-	const std::string& getTable() const;
-		/// Returns the table name.
 
 	const Poco::Dynamic::Var& getValue() const;
 		/// Returns the value.
@@ -158,7 +153,6 @@ private:
 	const Session&     _session;
 	Poco::Dynamic::Var _value;
 	Poco::Int64        _row;
-	std::string        _table;
 	EnabledEventType   _enabledEvents;
 	Poco::Mutex        _mutex;
 };
@@ -172,7 +166,6 @@ inline bool Notifier::operator == (const Notifier& other) const
 {
 	return _value == other._value &&
 		_row == other._row &&
-		_table == other._table &&
 		Utility::dbHandle(_session) == Utility::dbHandle(other._session);
 }
 
@@ -180,12 +173,6 @@ inline bool Notifier::operator == (const Notifier& other) const
 inline Poco::Int64 Notifier::getRow() const
 {
 	return _row;
-}
-
-
-inline const std::string& Notifier::getTable() const
-{
-	return _table;
 }
 
 

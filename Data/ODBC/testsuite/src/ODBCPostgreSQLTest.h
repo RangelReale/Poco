@@ -1,8 +1,6 @@
 //
 // ODBCPostgreSQLTest.h
 //
-// $Id: //poco/Main/Data/ODBC/testsuite/src/ODBCPostgreSQLTest.h#4 $
-//
 // Definition of the ODBCPostgreSQLTest class.
 //
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
@@ -80,9 +78,9 @@ private:
 		/// Alternative is direct database configuration for PL/pgSQL usage.
 
 	static const std::string _libDir;
-		/// Variable determining the location of the library directory
+		/// Varible determining the location of the library directory
 		/// on the database installation system.
-		/// Used to enable PLpgSQL language programmatically when
+		/// Used to enable PLpgSQL language programmaticaly when
 		/// it is not enabled.
 
 	static SessionPtr  _pSession;

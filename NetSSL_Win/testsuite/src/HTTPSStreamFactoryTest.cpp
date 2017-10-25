@@ -1,8 +1,6 @@
 //
 // HTTPSStreamFactoryTest.cpp
 //
-// $Id: //poco/1.4/NetSSL_Win/testsuite/src/HTTPSStreamFactoryTest.cpp#1 $
-//
 // Copyright (c) 2006-2014, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "HTTPSStreamFactoryTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Net/HTTPSStreamFactory.h"
 #include "Poco/Net/NetException.h"
 #include "Poco/Util/Application.h"
@@ -21,7 +19,6 @@
 #include "Poco/Exception.h"
 #include "Poco/StreamCopier.h"
 #include "HTTPSTestServer.h"
-#include <iostream>
 #include <sstream>
 #include <memory>
 
@@ -48,9 +45,13 @@ void HTTPSStreamFactoryTest::testNoRedirect()
 {
 	HTTPSTestServer server;
 	HTTPSStreamFactory factory;
-	URI uri("https://127.0.0.1/large");
+	URI uri("https://localhost/large");
 	uri.setPort(server.port());
+#ifndef POCO_ENABLE_CPP11
 	std::auto_ptr<std::istream> pStr(factory.open(uri));
+#else
+	std::unique_ptr<std::istream> pStr(factory.open(uri));
+#endif // POCO_ENABLE_CPP11
 	std::ostringstream ostr;
 	StreamCopier::copyStream(*pStr.get(), ostr);
 	assert (ostr.str() == HTTPSTestServer::LARGE_BODY);
@@ -61,9 +62,13 @@ void HTTPSStreamFactoryTest::testEmptyPath()
 {
 	HTTPSTestServer server;
 	HTTPSStreamFactory factory;
-	URI uri("https://127.0.0.1");
+	URI uri("https://localhost");
 	uri.setPort(server.port());
+#ifndef POCO_ENABLE_CPP11
 	std::auto_ptr<std::istream> pStr(factory.open(uri));
+#else
+	std::unique_ptr<std::istream> pStr(factory.open(uri));
+#endif // POCO_ENABLE_CPP11
 	std::ostringstream ostr;
 	StreamCopier::copyStream(*pStr.get(), ostr);
 	assert (ostr.str() == HTTPSTestServer::SMALL_BODY);
@@ -74,9 +79,13 @@ void HTTPSStreamFactoryTest::testRedirect()
 {
 	HTTPSTestServer server;
 	HTTPSStreamFactory factory;
-	URI uri("https://127.0.0.1/redirect");
+	URI uri("https://localhost/redirect");
 	uri.setPort(server.port());
+#ifndef POCO_ENABLE_CPP11
 	std::auto_ptr<std::istream> pStr(factory.open(uri));
+#else
+	std::unique_ptr<std::istream> pStr(factory.open(uri));
+#endif // POCO_ENABLE_CPP11
 	std::ostringstream ostr;
 	StreamCopier::copyStream(*pStr.get(), ostr);
 	assert (ostr.str() == HTTPSTestServer::LARGE_BODY);
@@ -85,21 +94,20 @@ void HTTPSStreamFactoryTest::testRedirect()
 
 void HTTPSStreamFactoryTest::testProxy()
 {
-#ifdef FIXME
-	testProxy should use a public proxy server
-	http://www.publicproxyservers.com/proxy/list1.html
-	Really working public proxy servers - page 1 of 6.
-#endif
 	HTTPSTestServer server;
 	HTTPSStreamFactory factory(
-		Application::instance().config().getString("testsuite.proxy.host"),
+		Application::instance().config().getString("testsuite.proxy.host"), 
 		Application::instance().config().getInt("testsuite.proxy.port")
-		);
+	);
 	URI uri("https://secure.appinf.com/public/poco/NetSSL.txt");
+#ifndef POCO_ENABLE_CPP11
 	std::auto_ptr<std::istream> pStr(factory.open(uri));
+#else
+	std::unique_ptr<std::istream> pStr(factory.open(uri));
+#endif // POCO_ENABLE_CPP11
 	std::ostringstream ostr;
 	StreamCopier::copyStream(*pStr.get(), ostr);
-	assert(ostr.str().length() > 0);
+	assert (ostr.str().length() > 0);
 }
 
 
@@ -107,7 +115,7 @@ void HTTPSStreamFactoryTest::testError()
 {
 	HTTPSTestServer server;
 	HTTPSStreamFactory factory;
-	URI uri("https://127.0.0.1/notfound");
+	URI uri("https://localhost/notfound");
 	uri.setPort(server.port());
 	try
 	{

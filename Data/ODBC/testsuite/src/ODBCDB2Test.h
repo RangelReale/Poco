@@ -1,8 +1,6 @@
 //
 // ODBCDB2Test.h
 //
-// $Id: //poco/Main/Data/ODBC/testsuite/src/ODBCDB2Test.h#4 $
-//
 // Definition of the ODBCDB2Test class.
 //
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
@@ -41,7 +39,6 @@ public:
 	void testStoredProcedureAny();
 	void testStoredProcedureDynamicAny();
 	void testStoredFunction();
-	void testXMLColumn();
 
 	static CppUnit::Test* suite();
 
@@ -63,13 +60,13 @@ private:
 	void recreateMiscTable();
 	void recreateLogTable();
 
-	static ODBCTest::SessionPtr _pSession;
-	static ODBCTest::ExecPtr    _pExecutor;
-	static std::string          _driver;
-	static std::string          _dsn;
-	static std::string          _uid;
-	static std::string          _pwd;
-	static std::string          _connectString;
+	static ODBCTest::SessionPtr  _pSession;
+	static ODBCTest::ExecPtr     _pExecutor;
+	static std::string _driver;
+	static std::string _dsn;
+	static std::string _uid;
+	static std::string _pwd;
+	static std::string _connectString;
 };
 
 

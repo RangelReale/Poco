@@ -1,7 +1,5 @@
 #! /bin/bash
 #
-# $Id: //poco/1.4/release/script/mkrelease#8 $
-#
 # mkrelease
 #
 # Create a release for distribution.
@@ -19,7 +17,7 @@ if [ "$1" = "" ] ; then
 	exit 1
 fi
 
-comps="CppUnit CppUnit/WinTestRunner Foundation XML JSON Util Net"
+comps="Foundation XML JSON Util Net"
 internal=0
 specfile=""
 version=""
@@ -115,11 +113,7 @@ mkdir -p ${target}/build/vxconfig
 cp ${POCO_BASE}/build/config/* ${target}/build/config
 cp ${POCO_BASE}/build/rules/* ${target}/build/rules
 cp ${POCO_BASE}/build/vxconfig/* ${target}/build/vxconfig
-cp ${POCO_BASE}/build/script/makedepend.* ${target}/build/script
-cp ${POCO_BASE}/build/script/makeldpath ${target}/build/script
-cp ${POCO_BASE}/build/script/shlibln ${target}/build/script
-cp ${POCO_BASE}/build/script/projname ${target}/build/script
-cp ${POCO_BASE}/build/script/vxprogen ${target}/build/script
+cp ${POCO_BASE}/build/script/* ${target}/build/script
 cp ${POCO_BASE}/buildwin.cmd ${target}
 cp ${POCO_BASE}/configure ${target}
 cp ${POCO_BASE}/libversion ${target}
@@ -128,6 +122,43 @@ if [ $internal = 1 ] ; then
 	cp ${POCO_BASE}/build/script/testall ${target}/build/script
 	cp ${POCO_BASE}/build/script/waitfortest ${target}/build/script
 fi
+
+
+#
+# CppUnit
+#
+mkdir -p ${target}/CppUnit
+mkdir -p ${target}/CppUnit/doc
+mkdir -p ${target}/CppUnit/include/CppUnit
+mkdir -p ${target}/CppUnit/src
+mkdir -p ${target}/CppUnit/WinTestRunner
+mkdir -p ${target}/CppUnit/WinTestRunner/include/WinTestRunner
+mkdir -p ${target}/CppUnit/WinTestRunner/src
+mkdir -p ${target}/CppUnit/WinTestRunner/res
+
+cp ${POCO_BASE}/CppUnit/doc/* ${target}/CppUnit/doc >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/include/CppUnit/* ${target}/CppUnit/include/CppUnit >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/src/* ${target}/CppUnit/src >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/*.sln ${target}/CppUnit >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/*.vcproj ${target}/CppUnit >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/*.vcxproj ${target}/CppUnit >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/*.vcxproj.filters ${target}/CppUnit >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/*.vcxproj.user ${target}/CppUnit >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/Makefile ${target}/CppUnit >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/*.vmsbuild ${target}/CppUnit >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/*.vxbuild ${target}/CppUnit >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/*.progen ${target}/CppUnit >/dev/null 2>&1
+
+cp ${POCO_BASE}/CppUnit/WinTestRunner/include/WinTestRunner/* ${target}/CppUnit/WinTestRunner/include/WinTestRunner >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/WinTestRunner/src/* ${target}/CppUnit/WinTestRunner/src >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/WinTestRunner/res/WinTestRunner.rc ${target}/CppUnit/WinTestRunner/res >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/WinTestRunner/res/Resource.h ${target}/CppUnit/WinTestRunner/res >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/WinTestRunner/*.vcproj ${target}/CppUnit/WinTestRunner >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/WinTestRunner/*.vcxproj ${target}/CppUnit/WinTestRunner >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/WinTestRunner/*.vcxproj.filters ${target}/CppUnit/WinTestRunner >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/WinTestRunner/*.vcxproj.user ${target}/CppUnit/WinTestRunner >/dev/null 2>&1
+cp ${POCO_BASE}/CppUnit/WinTestRunner/*.progen ${target}/CppUnit/WinTestRunner >/dev/null 2>&1
+
 
 #
 # Copy components
@@ -141,6 +172,8 @@ done
 #
 # Create components file
 #
+echo "CppUnit" >${target}/components
+echo "CppUnit/WinTestRunner" >>${target}/components
 for comp in $comps ;
 do
 	echo $comp >>${target}/components
@@ -186,7 +219,7 @@ endif
 #
 POCO_HOST_OSNAME = $(shell uname)
 ifeq ($(findstring CYGWIN,$(POCO_HOST_OSNAME)),CYGWIN)
-POCO_HOST_OSNAME = Cygwin
+POCO_HOST_OSNAME = CYGWIN
 endif
 
 ifeq ($(findstring MINGW,$(POCO_HOST_OSNAME)),MINGW)
@@ -250,6 +283,12 @@ echo "COMPONENTS = $comps" >>${target}/Makefile
 
 cat >>${target}/Makefile <<'ENDOFSCRIPT'
 
+cppunit:
+	$(MAKE) -C $(POCO_BASE)/CppUnit 
+
+CppUnit-clean:
+	$(MAKE) -C $(POCO_BASE)/CppUnit clean
+
 install: libexecs
 	mkdir -p $(INSTALLDIR)/include/Poco
 	mkdir -p $(INSTALLDIR)/lib
@@ -262,7 +301,7 @@ install: libexecs
 			find $(POCO_BUILD)/$$comp/bin -perm -700 -type f -exec cp -f {} $(INSTALLDIR)/bin \; ; \
 		fi ; \
 	done
-ifeq ($(OSNAME), Cygwin)
+ifeq ($(OSNAME), CYGWIN)
 	find $(POCO_BUILD)/lib/$(OSNAME)/$(OSARCH) -name "cygPoco*" -type f -exec cp -f  {} $(INSTALLDIR)/bin \;
 	find $(POCO_BUILD)/lib/$(OSNAME)/$(OSARCH) -name "cygPoco*" -type l -exec cp -Rf {} $(INSTALLDIR)/bin \;
 endif
@@ -277,15 +316,13 @@ samples=""
 cleans=""
 for comp in $comps ;
 do
-	if [ -f "${POCO_BASE}/${comp}/Makefile" ] ; then
-		libexecs="$libexecs ${comp}-libexec"
-		cleans="$cleans ${comp}-clean"
-		if [ -d "${POCO_BASE}/${comp}/testsuite" ] ; then
-			tests="$tests ${comp}-tests"
-		fi
-		if [ -d "${POCO_BASE}/${comp}/samples" ] ; then
-			samples="$samples ${comp}-samples"
-		fi
+	libexecs="$libexecs ${comp}-libexec"
+	cleans="$cleans ${comp}-clean"
+	if [ -d "${POCO_BASE}/${comp}/testsuite" ] ; then
+		tests="$tests ${comp}-tests"
+	fi
+	if [ -d "${POCO_BASE}/${comp}/samples" ] ; then
+		samples="$samples ${comp}-samples"
 	fi
 done
 
@@ -306,11 +343,10 @@ echo 'cleans: $(filter-out $(foreach f,$(OMIT),$f%),$(cleans))' >>${target}/Make
 
 for comp in $comps ;
 do
-	dependencies=""
-	if [ -f "${POCO_BASE}/${comp}/Makefile" ] ; then
-		if [ "`grep -c POCO_LICENSING "${POCO_BASE}/${comp}/Makefile"`" != 0 ] ; then
-			dependencies=$licensingDep
-		fi
+	if [ "`grep -c POCO_LICENSING "${POCO_BASE}/${comp}/Makefile"`" != 0 ] ; then
+		dependencies=$licensingDep
+	else
+		dependencies=""
 	fi
 	if [ -f "${POCO_BASE}/${comp}/dependencies" ] ; then
 		for dep in `cat "${POCO_BASE}/${comp}/dependencies"` ;
@@ -372,7 +408,7 @@ done
 
 cat >>${target}/Makefile <<ENDOFSCRIPT
 
-clean: cleans
+clean: cleans CppUnit-clean
 
 distclean:
 	rm -rf \$(POCO_BUILD)/lib
@@ -398,9 +434,7 @@ ENDOFSCRIPT
 #
 cat >${target}/build_vs100.cmd <<'ENDOFSCRIPT'
 @echo off
-if defined VS100COMNTOOLS (
-call "%VS100COMNTOOLS%\vsvars32.bat")
-buildwin 100 build shared both Win32 samples devenv
+buildwin 100 build shared both Win32 samples
 ENDOFSCRIPT
 
 
@@ -409,9 +443,7 @@ ENDOFSCRIPT
 #
 cat >${target}/build_vs110.cmd <<'ENDOFSCRIPT'
 @echo off
-if defined VS110COMNTOOLS (
-call "%VS110COMNTOOLS%\vsvars32.bat")
-buildwin 110 build shared both Win32 samples devenv
+buildwin 110 build shared both Win32 samples
 ENDOFSCRIPT
 
 
@@ -420,19 +452,25 @@ ENDOFSCRIPT
 #
 cat >${target}/build_vs120.cmd <<'ENDOFSCRIPT'
 @echo off
-if defined VS120COMNTOOLS (
-call "%VS120COMNTOOLS%\vsvars32.bat")
-buildwin 120 build shared both Win32 samples devenv
+buildwin 120 build shared both Win32 samples
 ENDOFSCRIPT
+
 
 #
 # Create Visual Studio 14 build script
 #
 cat >${target}/build_vs140.cmd <<'ENDOFSCRIPT'
 @echo off
-if defined VS140COMNTOOLS (
-call "%VS140COMNTOOLS%\vsvars32.bat")
-buildwin 140 build shared both Win32 samples devenv
+buildwin 140 build shared both Win32 samples
+ENDOFSCRIPT
+
+
+#
+# Create Visual Studio 15 build script
+#
+cat >${target}/build_vs150.cmd <<'ENDOFSCRIPT'
+@echo off
+buildwin 150 build shared both Win32 samples
 ENDOFSCRIPT
 
 
@@ -464,37 +502,20 @@ ENDOFSCRIPT
 
 
 #
-# Create Visual C++ Express 2012 build script
-#
-cat >${target}/build_vdexpress2012.cmd <<'ENDOFSCRIPT'
-@echo off
-buildwin 110 build shared both Win32 samples tests vdexpress
-ENDOFSCRIPT
-
-
-#
-# Create Visual C++ Express 2013 build script
-#
-cat >${target}/build_vdexpress2013.cmd <<'ENDOFSCRIPT'
-@echo off
-buildwin 120 build shared both Win32 samples tests vdexpress
-ENDOFSCRIPT
-
-
-#
 # Fix line endings
 #
 if [ "$lineEndConv" != "" ] ; then
+	$lineEndConv ${target}/build_vs71.cmd
+	$lineEndConv ${target}/build_vs80.cmd
 	$lineEndConv ${target}/build_vs90.cmd
 	$lineEndConv ${target}/build_vs100.cmd
 	$lineEndConv ${target}/build_vs110.cmd
 	$lineEndConv ${target}/build_vs120.cmd
 	$lineEndConv ${target}/build_vs140.cmd
+	$lineEndConv ${target}/build_vs150.cmd
 	$lineEndConv ${target}/build_CE_vs90.cmd
 	$lineEndConv ${target}/build_vcexpress2008.cmd
 	$lineEndConv ${target}/build_vcexpress2010.cmd
-	$lineEndConv ${target}/build_vdexpress2012.cmd
-	$lineEndConv ${target}/build_vdexpress2013.cmd
 	$lineEndConv ${target}/Makefile
 	$lineEndConv ${target}/components
 fi

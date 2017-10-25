@@ -1,8 +1,6 @@
 //
 // FileChannelTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/FileChannelTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "FileChannelTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/FileChannel.h"
 #include "Poco/Message.h"
 #include "Poco/AutoPtr.h"
@@ -48,7 +46,7 @@ using Poco::DirectoryIterator;
 using Poco::InvalidArgumentException;
 
 
-FileChannelTest::FileChannelTest(const std::string& rName): CppUnit::TestCase(rName)
+FileChannelTest::FileChannelTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

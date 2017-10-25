@@ -1,8 +1,6 @@
 //
 // Utility.h
 //
-// $Id: //poco/Main/Data/SQLite/include/Poco/Data/SQLite/Utility.h#2 $
-//
 // Library: Data/SQLite
 // Package: SQLite
 // Module:  Utility
@@ -56,22 +54,14 @@ public:
 	static const int OPERATION_DELETE;
 	static const int OPERATION_UPDATE;
 
-	static void addColumnType(std::string sqliteType, MetaColumn::ColumnDataType pocoType);
-		/// Adds or replaces the mapping for SQLite column type sqliteType 
-		/// to a Poco type pocoType.
-		/// 
-		/// sqliteType is a case-insensitive description of the column type with
-		/// any value pocoType value but MetaColumn::FDT_UNKNOWN. 
-		/// A Poco::Data::NotSupportedException is thrown if pocoType is invalid.
-
 	static sqlite3* dbHandle(const Session& session);
 		/// Returns native DB handle.
 
 	static std::string lastError(sqlite3* pDb);
-		/// Retrieves the last error code from sqlite and converts it to a string.
+		/// Retreives the last error code from sqlite and converts it to a string.
 
 	static std::string lastError(const Session& session);
-		/// Retrieves the last error code from sqlite and converts it to a string.
+		/// Retreives the last error code from sqlite and converts it to a string.
 
 	static void throwException(int rc, const std::string& addErrMsg = std::string());
 		/// Throws for an error code the appropriate exception
@@ -83,37 +73,37 @@ public:
 		/// Loads the contents of a database file on disk into an opened
 		/// database in memory.
 		/// 
-		/// Returns true if successful.
+		/// Returns true if succesful.
 
 	static bool fileToMemory(const Session& session, const std::string& fileName);
 		/// Loads the contents of a database file on disk into an opened
 		/// database in memory.
 		/// 
-		/// Returns true if successful.
+		/// Returns true if succesful.
 
 	static bool memoryToFile(const std::string& fileName, sqlite3* pInMemory);
 		/// Saves the contents of an opened database in memory to the
 		/// database on disk.
 		/// 
-		/// Returns true if successful.
+		/// Returns true if succesful.
 
 	static bool memoryToFile(const std::string& fileName, const Session& session);
 		/// Saves the contents of an opened database in memory to the
 		/// database on disk.
 		/// 
-		/// Returns true if successful.
+		/// Returns true if succesful.
 
 	static bool isThreadSafe();
 		/// Returns true if SQLite was compiled in multi-thread or serialized mode.
 		/// See http://www.sqlite.org/c3ref/threadsafe.html for details.
 		/// 
-		/// Returns true if successful
+		/// Returns true if succesful
 
 	static bool setThreadMode(int mode);
 		/// Sets the threading mode to single, multi or serialized.
 		/// See http://www.sqlite.org/threadsafe.html for details.
 		/// 
-		/// Returns true if successful
+		/// Returns true if succesful
 
 	static int getThreadMode();
 		/// Returns the thread mode.
@@ -197,8 +187,6 @@ private:
 
 	Utility(const Utility&);
 	Utility& operator = (const Utility&);
-
-	static void initializeDefaultTypes();
 
 	static void* eventHookRegister(sqlite3* pDB, UpdateCallbackType callbackFn, void* pParam);
 	static void* eventHookRegister(sqlite3* pDB, CommitCallbackType callbackFn, void* pParam);

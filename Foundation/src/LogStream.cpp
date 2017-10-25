@@ -1,8 +1,6 @@
 //
 // LogStream.cpp
 //
-// $Id: //poco/1.4/Foundation/src/LogStream.cpp#1 $
-//
 // Library: Foundation
 // Package: Logging
 // Module:  LogStream
@@ -25,8 +23,8 @@ namespace Poco {
 //
 
 
-LogStreamBuf::LogStreamBuf(Logger& rLogger, Message::Priority priority):
-	_logger(rLogger),
+LogStreamBuf::LogStreamBuf(Logger& logger, Message::Priority priority):
+	_logger(logger),
 	_priority(priority)
 {
 }
@@ -87,15 +85,15 @@ LogStreamBuf* LogIOS::rdbuf()
 //
 
 
-LogStream::LogStream(Logger& logger, Message::Priority messagePriority):
-	LogIOS(logger, messagePriority),
+LogStream::LogStream(Logger& logger, Message::Priority priority):
+	LogIOS(logger, priority),
 	std::ostream(&_buf)
 {
 }
 
 
-LogStream::LogStream(const std::string& loggerName, Message::Priority messagePriority):
-	LogIOS(Logger::get(loggerName), messagePriority),
+LogStream::LogStream(const std::string& loggerName, Message::Priority priority):
+	LogIOS(Logger::get(loggerName), priority),
 	std::ostream(&_buf)
 {
 }
@@ -210,9 +208,9 @@ LogStream& LogStream::trace(const std::string& message)
 }
 
 
-LogStream& LogStream::priority(Message::Priority messagePriority)
+LogStream& LogStream::priority(Message::Priority priority)
 {
-	_buf.setPriority(messagePriority);
+	_buf.setPriority(priority);
 	return *this;
 }
 

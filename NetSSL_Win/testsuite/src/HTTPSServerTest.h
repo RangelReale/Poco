@@ -17,7 +17,7 @@
 
 
 #include "Poco/Net/Net.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 
 
 class HTTPSServerTest: public CppUnit::TestCase

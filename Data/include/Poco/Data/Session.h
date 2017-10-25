@@ -1,8 +1,6 @@
 //
 // Session.h
 //
-// $Id: //poco/Main/Data/include/Poco/Data/Session.h#9 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  Session
@@ -78,7 +76,7 @@ class Data_API Session
 	/// The above example assigns the variable i to the ":data" placeholder in the SQL query. The query is parsed and compiled exactly
 	/// once, but executed 100 times. At the end the values 0 to 99 will be present in the Table "DUMMY".
 	///
-	/// A faster implementation of the above code will simply create a vector of int
+	/// A faster implementaton of the above code will simply create a vector of int
 	/// and use the vector as parameter to the use clause (you could also use set or multiset instead):
 	///    
 	///     std::vector<int> data;
@@ -202,7 +200,7 @@ public:
 		/// reconnect a disconnected session.
 		/// If the connection is not established, 
 		/// a ConnectionFailedException is thrown. 
-		/// Zero timeout means indefinite
+		/// Zero timout means indefinite
 
 	void close();
 		/// Closes the session.
@@ -262,7 +260,7 @@ public:
 
 	static std::string uri(const std::string& connector,
 		const std::string& connectionString);
-		/// Utility function that returns the URI formatted from supplied 
+		/// Utility function that teturns the URI formatted from supplied 
 		/// arguments as "connector:///connectionString".
 
 	void setFeature(const std::string& name, bool state);
@@ -486,7 +484,7 @@ namespace std
 	template<>
 	inline void swap<Poco::Data::Session>(Poco::Data::Session& s1, 
 		Poco::Data::Session& s2)
-		/// Full template specialization of std:::swap for Session
+		/// Full template specalization of std:::swap for Session
 	{
 		s1.swap(s2);
 	}

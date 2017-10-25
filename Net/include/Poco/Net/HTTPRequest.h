@@ -1,8 +1,6 @@
 //
 // HTTPRequest.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/HTTPRequest.h#3 $
-//
 // Library: Net
 // Package: HTTP
 // Module:  HTTPRequest
@@ -104,15 +102,7 @@ public:
 	void setCredentials(const std::string& scheme, const std::string& authInfo);
 		/// Sets the authentication scheme and information for
 		/// this request.
-		
-	bool getExpectContinue() const;
-		/// Returns true if the request contains an
-		/// "Expect: 100-continue" header.
 
-	void setExpectContinue(bool expectContinue);
-		/// Adds a "Expect: 100-continue" header to the request if
-		/// expectContinue is true, otherwise removes the Expect header.
-		
 	bool hasProxyCredentials() const;
 		/// Returns true iff the request contains proxy authentication
 		/// information in the form of an Proxy-Authorization header.
@@ -151,7 +141,6 @@ public:
 	static const std::string AUTHORIZATION;
 	static const std::string PROXY_AUTHORIZATION;
 	static const std::string UPGRADE;
-	static const std::string EXPECT;
 
 protected:
 	void getCredentials(const std::string& header, std::string& scheme, std::string& authInfo) const;

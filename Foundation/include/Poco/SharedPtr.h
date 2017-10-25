@@ -1,8 +1,6 @@
 //
 // SharedPtr.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/SharedPtr.h#1 $
-//
 // Library: Foundation
 // Package: Core
 // Module:  SharedPtr
@@ -378,7 +376,7 @@ public:
 		return _pCounter->referenceCount();
 	}
 
-protected:
+private:
 	C* deref() const
 	{
 		if (!_ptr)
@@ -408,7 +406,7 @@ protected:
 		_pCounter->duplicate();
 	}
 
-protected:
+private:
 	RC* _pCounter;
 	C*  _ptr;
 

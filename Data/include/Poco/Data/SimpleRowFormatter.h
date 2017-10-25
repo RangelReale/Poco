@@ -1,8 +1,6 @@
 //
 // RowFormatter.h
 //
-// $Id: //poco/Main/Data/include/Poco/Data/SimpleRowFormatter.h#1 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  SimpleRowFormatter
@@ -32,6 +30,9 @@ class Data_API SimpleRowFormatter: public RowFormatter
 	/// A simple row formatting class.
 {
 public:
+	//typedef RowFormatter::NameVec    NameVec;
+	//typedef RowFormatter::NameVecPtr NameVecPtr;
+	//typedef RowFormatter::ValueVec   ValueVec;
 
 	static const int DEFAULT_COLUMN_WIDTH = 16;
 	static const int DEFAULT_SPACING = 1;
@@ -111,7 +112,7 @@ namespace std
 	template<>
 	inline void swap<Poco::Data::SimpleRowFormatter>(Poco::Data::SimpleRowFormatter& s1, 
 		Poco::Data::SimpleRowFormatter& s2)
-		/// Full template specialization of std:::swap for SimpleRowFormatter
+		/// Full template specalization of std:::swap for SimpleRowFormatter
 	{
 		s1.swap(s2);
 	}

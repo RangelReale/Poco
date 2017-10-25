@@ -20,3 +20,4 @@ docker stop poco-test-mysql > /dev/null
 
 echo "removing poco-test-mysql docker container"
 docker rm poco-test-mysql > /dev/null
+

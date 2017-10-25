@@ -23,9 +23,9 @@
 #include "Poco/MongoDB/Binary.h"
 #include "Poco/Net/NetException.h"
 #include "Poco/UUIDGenerator.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
 #include "MongoDBTest.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include <iostream>
 
 
@@ -226,7 +226,7 @@ void MongoDBTest::testCursorRequest()
 	
 	Poco::SharedPtr<Poco::MongoDB::DeleteRequest> deleteRequest = db.createDeleteRequest("numbers");
 	_mongo->sendRequest(*deleteRequest);
-
+	
 	Poco::SharedPtr<Poco::MongoDB::InsertRequest> insertRequest = db.createInsertRequest("numbers");
 	for(int i = 0; i < 10000; ++i)
 	{

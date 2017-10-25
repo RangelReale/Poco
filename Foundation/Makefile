@@ -1,8 +1,6 @@
 #
 # Makefile
 #
-# $Id: //poco/1.4/Foundation/Makefile#4 $
-#
 # Makefile for Poco Foundation
 #
 
@@ -13,17 +11,17 @@ objects = ArchiveStrategy Ascii ASCIIEncoding AsyncChannel \
 	BinaryReader BinaryWriter Bugcheck ByteOrder Channel Checksum Clock Configurable ConsoleChannel \
 	Condition CountingStream DateTime LocalDateTime DateTimeFormat DateTimeFormatter DateTimeParser \
 	Debugger DeflatingStream DigestEngine DigestStream DirectoryIterator DirectoryWatcher \
-	Environment Event Error EventArgs EventChannel ErrorHandler Exception FIFOBufferStream FPEnvironment  \
-	File FileChannel Formatter FormattingChannel Glob HexBinaryDecoder LineEndingConverter \
-	HexBinaryEncoder InflatingStream JSONString Latin1Encoding Latin2Encoding Latin9Encoding \
-	LogFile Logger LoggingFactory LoggingRegistry LogStream NamedEvent NamedMutex NullChannel \
+	Environment Event EventChannel Error EventArgs ErrorHandler Exception FIFOBufferStream FPEnvironment File \
+	FileChannel Formatter FormattingChannel Glob HexBinaryDecoder LineEndingConverter \
+	HexBinaryEncoder InflatingStream JSONString Latin1Encoding Latin2Encoding Latin9Encoding LogFile \
+	Logger LoggingFactory LoggingRegistry LogStream NamedEvent NamedMutex NullChannel \
 	MemoryPool MD4Engine MD5Engine Manifest Message Mutex \
 	NestedDiagnosticContext Notification NotificationCenter \
 	NotificationQueue PriorityNotificationQueue TimedNotificationQueue \
 	NullStream NumberFormatter NumberParser NumericString AbstractObserver \
 	Path PatternFormatter Process PurgeStrategy RWLock Random RandomStream \
 	DirectoryIteratorStrategy RegularExpression RefCountedObject Runnable RotateStrategy \
-	SHA1Engine SHA2Engine SHA3Engine BLAKE2Engine Semaphore SharedLibrary SimpleFileChannel \
+	SHA1Engine Semaphore SharedLibrary SimpleFileChannel \
 	SignalHandler SplitterChannel SortedDirectoryIterator Stopwatch StreamChannel \
 	StreamConverter StreamCopier StreamTokenizer String StringTokenizer SynchronizedObject \
 	Task TaskManager TaskNotification TeeStream Hash HashStatistic \
@@ -32,8 +30,7 @@ objects = ArchiveStrategy Ascii ASCIIEncoding AsyncChannel \
 	FileStreamFactory URIStreamFactory URIStreamOpener UTF32Encoding UTF16Encoding UTF8Encoding UTF8String \
 	Unicode UnicodeConverter Windows1250Encoding Windows1251Encoding Windows1252Encoding \
 	UUID UUIDGenerator Void Var VarHolder VarIterator Format Pipe PipeImpl PipeStream SharedMemory \
-	MemoryStream FileStream AtomicCounter ASN1 ASN1Codec ASN1FactoryDefault ASN1Types \
-	ByteRateCounter ByteRateLimiter ByteRateLimiterStream NumericSizeFormat NumericSizeFormatter
+	MemoryStream FileStream AtomicCounter 
 
 zlib_objects = adler32 compress crc32 deflate \
 	infback inffast inflate inftrees trees zutil
@@ -56,10 +53,6 @@ ifeq ($(findstring MinGW, $(POCO_CONFIG)), MinGW)
 	objects += EventLogChannel WindowsConsoleChannel
 else
 	objects += SyslogChannel
-endif
-
-ifeq ($(findstring Android, $(POCO_CONFIG)), Android)
-	objects += AndroidLogChannel
 endif
 
 target         = PocoFoundation

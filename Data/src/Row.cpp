@@ -1,8 +1,6 @@
 //
 // Row.cpp
 //
-// $Id: //poco/Main/Data/src/Row.cpp#1 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  Row
@@ -94,20 +92,7 @@ Poco::Dynamic::Var& Row::get(std::size_t col)
 }
 
 
-const Poco::Dynamic::Var& Row::get(std::size_t col) const
-{
-	try
-	{
-		return _values.at(col);
-	}
-	catch (std::out_of_range& re)
-	{
-		throw RangeException(re.what());
-	}
-}
-
-
-std::size_t Row::getPosition(const std::string& name) const
+std::size_t Row::getPosition(const std::string& name)
 {
 	if (!_pNames)
 		throw NullPointerException();

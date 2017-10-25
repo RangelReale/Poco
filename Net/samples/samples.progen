@@ -14,5 +14,4 @@ vc.solution.include = \
 	TimeServer\\TimeServer;\
 	WebSocketServer\\WebSocketServer;\
 	SMTPLogger\\SMTPLogger;\
-	ifconfig\\ifconfig;\
-	SNMP\\SNMP
+	ifconfig\\ifconfig

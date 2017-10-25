@@ -1,8 +1,6 @@
 //
 // NumberFormatterTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/NumberFormatterTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "NumberFormatterTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/NumberFormatter.h"
 #include <sstream>
 
@@ -22,7 +20,7 @@ using Poco::Int64;
 using Poco::UInt64;
 
 
-NumberFormatterTest::NumberFormatterTest(const std::string& rName): CppUnit::TestCase(rName)
+NumberFormatterTest::NumberFormatterTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

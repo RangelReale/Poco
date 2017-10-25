@@ -1,8 +1,6 @@
 //
 // SecureSMTPClientSession.h
 //
-// $Id: //poco/1.4/NetSSL_Win/include/Poco/Net/SecureSMTPClientSession.h#1 $
-//
 // Library: NetSSL_Win
 // Package: Mail
 // Module:  SecureSMTPClientSession
@@ -31,7 +29,7 @@ namespace Net {
 
 class NetSSL_Win_API SecureSMTPClientSession: public SMTPClientSession
 	/// This class implements an Simple Mail
-	/// Transfer Protocol (SMTP, RFC 2821)
+	/// Transfer Procotol (SMTP, RFC 2821)
 	/// client for sending e-mail messages that
 	/// supports the STARTTLS command for secure
 	/// connections.

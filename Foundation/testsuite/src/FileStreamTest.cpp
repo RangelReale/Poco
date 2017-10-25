@@ -1,8 +1,6 @@
 //
 // FileStreamTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/FileStreamTest.cpp#1 $
-//
 // Copyright (c) 2007, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,15 +9,15 @@
 
 
 #include "FileStreamTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/FileStream.h"
 #include "Poco/File.h"
 #include "Poco/TemporaryFile.h"
 #include "Poco/Exception.h"
 
 
-FileStreamTest::FileStreamTest(const std::string& rName): CppUnit::TestCase(rName)
+FileStreamTest::FileStreamTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

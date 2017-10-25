@@ -1,8 +1,6 @@
 //
 // Process_WIN32U.cpp
 //
-// $Id: //poco/1.4/Foundation/src/Process_WIN32U.cpp#4 $
-//
 // Library: Foundation
 // Package: Processes
 // Module:  Process
@@ -323,6 +321,8 @@ void ProcessImpl::killImpl(PIDImpl pid)
 		{
 		case ERROR_ACCESS_DENIED:
 			throw NoPermissionException("cannot kill process");
+		case ERROR_NOT_FOUND: 
+			throw NotFoundException("cannot kill process");
 		case ERROR_INVALID_PARAMETER:
 			throw NotFoundException("cannot kill process");
 		default:

@@ -1,8 +1,6 @@
 //
 // ListMap.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/ListMap.h#1 $
-//
 // Library: Foundation
 // Package: Hashing
 // Module:  ListMap
@@ -109,12 +107,12 @@ public:
 		/// not found.
 	{
 		typename Container::const_iterator it = _list.begin();
-		typename Container::const_iterator end = _list.end();
-		for(; it != end; ++it)
+		typename Container::const_iterator itEnd = _list.end();
+		for(; it != itEnd; ++it)
 		{
 			if (isEqual(it->first, key)) return it;
 		}
-		return end;
+		return itEnd;
 	}
 
 	Iterator find(const KeyType& key)
@@ -124,12 +122,12 @@ public:
 		/// not found.
 	{
 		typename Container::iterator it = _list.begin();
-		typename Container::iterator end = _list.end();
-		for(; it != end; ++it)
+		typename Container::iterator itEnd = _list.end();
+		for(; it != itEnd; ++it)
 		{
 			if (isEqual(it->first, key)) return it;
 		}
-		return end;
+		return itEnd;
 	}
 
 	Iterator insert(const ValueType& val)
@@ -203,8 +201,8 @@ public:
 		else
 		{
 			ValueType value(key, Mapped());
-			Iterator it = insert(value);
-			return it->second;
+			Iterator itInsert = insert(value);
+			return itInsert->second;
 		}
 	}
 

@@ -1,8 +1,6 @@
 //
 // Date.cpp
 //
-// $Id: //poco/Main/Data/src/Date.cpp#5 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  Date
@@ -37,9 +35,9 @@ Date::Date()
 }
 
 
-Date::Date(int dateYear, int dateMonth, int dateDay)
+Date::Date(int year, int month, int day)
 {
-	assign(dateYear, dateMonth, dateDay);
+	assign(year, month, day);
 }
 
 
@@ -54,36 +52,36 @@ Date::~Date()
 }
 
 
-void Date::assign(int dateYear, int dateMonth, int dateDay)
+void Date::assign(int year, int month, int day)
 {
-	if (dateYear < 0 || dateYear > 9999)
+	if (year < 0 || year > 9999)
 		throw InvalidArgumentException("Year must be between 0 and 9999");
 
-	if (dateMonth < 1 || dateMonth > 12)
+	if (month < 1 || month > 12)
 		throw InvalidArgumentException("Month must be between 1 and 12");
 
-	if (dateDay < 1 || dateDay > DateTime::daysOfMonth(dateYear, dateMonth))
+	if (day < 1 || day > DateTime::daysOfMonth(year, month))
 		throw InvalidArgumentException("Month must be between 1 and " + 
-			NumberFormatter::format(DateTime::daysOfMonth(dateYear, dateMonth)));
+			NumberFormatter::format(DateTime::daysOfMonth(year, month)));
 
-	_year = dateYear;
-	_month = dateMonth;
-	_day = dateDay;
+	_year = year;
+	_month = month;
+	_day = day;
 }
 
 
 bool Date::operator < (const Date& date) const
 {
-	int dateYear = date.year();
+	int year = date.year();
 
-	if (_year < dateYear) return true;
-	else if (_year > dateYear) return false;
+	if (_year < year) return true;
+	else if (_year > year) return false;
 	else // years equal
 	{
-		int dateMonth = date.month();
-		if (_month < dateMonth) return true;
+		int month = date.month();
+		if (_month < month) return true;
 		else 
-		if (_month > dateMonth) return false;
+		if (_month > month) return false;
 		else // months equal
 		if (_day < date.day()) return true;
 	}

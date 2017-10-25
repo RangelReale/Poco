@@ -1,8 +1,6 @@
 //
 // TaskManagerTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/TaskManagerTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "TaskManagerTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Exception.h"
 #include "Poco/TaskManager.h"
 #include "Poco/Task.h"
@@ -234,7 +232,7 @@ namespace
 }
 
 
-TaskManagerTest::TaskManagerTest(const std::string& rName): CppUnit::TestCase(rName)
+TaskManagerTest::TaskManagerTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 
@@ -246,7 +244,7 @@ TaskManagerTest::~TaskManagerTest()
 
 void TaskManagerTest::testFinish()
 {
-	TaskManager tm(ThreadPool::TAP_UNIFORM_DISTRIBUTION);
+	TaskManager tm;
 	TaskObserver to;
 	tm.addObserver(Observer<TaskObserver, TaskStartedNotification>(to, &TaskObserver::taskStarted));
 	tm.addObserver(Observer<TaskObserver, TaskCancelledNotification>(to, &TaskObserver::taskCancelled));
@@ -281,7 +279,7 @@ void TaskManagerTest::testFinish()
 
 void TaskManagerTest::testCancel()
 {
-	TaskManager tm(ThreadPool::TAP_UNIFORM_DISTRIBUTION);
+	TaskManager tm;
 	TaskObserver to;
 	tm.addObserver(Observer<TaskObserver, TaskStartedNotification>(to, &TaskObserver::taskStarted));
 	tm.addObserver(Observer<TaskObserver, TaskCancelledNotification>(to, &TaskObserver::taskCancelled));
@@ -315,7 +313,7 @@ void TaskManagerTest::testCancel()
 
 void TaskManagerTest::testError()
 {
-	TaskManager tm(ThreadPool::TAP_UNIFORM_DISTRIBUTION);
+	TaskManager tm;
 	TaskObserver to;
 	tm.addObserver(Observer<TaskObserver, TaskStartedNotification>(to, &TaskObserver::taskStarted));
 	tm.addObserver(Observer<TaskObserver, TaskCancelledNotification>(to, &TaskObserver::taskCancelled));
@@ -348,7 +346,7 @@ void TaskManagerTest::testError()
 
 void TaskManagerTest::testCustom()
 {
-	TaskManager tm(ThreadPool::TAP_UNIFORM_DISTRIBUTION);
+	TaskManager tm;
 	
 	CustomTaskObserver<int> ti(0);
 	tm.addObserver(
@@ -431,7 +429,7 @@ void TaskManagerTest::testCustom()
 
 void TaskManagerTest::testMultiTasks()
 {
-	TaskManager tm(ThreadPool::TAP_UNIFORM_DISTRIBUTION);
+	TaskManager tm;
 	tm.start(new SimpleTask);
 	tm.start(new SimpleTask);
 	tm.start(new SimpleTask);
@@ -447,7 +445,7 @@ void TaskManagerTest::testMultiTasks()
 
 void TaskManagerTest::testCustomThreadPool()
 {
-	ThreadPool  tp(2, 5, 120, POCO_THREAD_STACK_SIZE, ThreadPool::TAP_UNIFORM_DISTRIBUTION);
+	ThreadPool  tp(2, 5, 120);
 	TaskManager tm(tp);
 
 	// fill up the thread pool

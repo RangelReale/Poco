@@ -1,8 +1,6 @@
 //
 // Binder.h
 //
-// $Id: //poco/Main/Data/SQLite/include/Poco/Data/SQLite/Binder.h#4 $
-//
 // Library: Data/SQLite
 // Package: SQLite
 // Module:  Binder
@@ -43,72 +41,72 @@ public:
 	~Binder();
 		/// Destroys the Binder.
 
-	void bind(std::size_t pos, const Poco::Int8 &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const Poco::Int8 &val, Direction dir);
 		/// Binds an Int8.
 
-	void bind(std::size_t pos, const Poco::UInt8 &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const Poco::UInt8 &val, Direction dir);
 		/// Binds an UInt8.
 
-	void bind(std::size_t pos, const Poco::Int16 &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const Poco::Int16 &val, Direction dir);
 		/// Binds an Int16.
 
-	void bind(std::size_t pos, const Poco::UInt16 &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const Poco::UInt16 &val, Direction dir);
 		/// Binds an UInt16.
 
-	void bind(std::size_t pos, const Poco::Int32 &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const Poco::Int32 &val, Direction dir);
 		/// Binds an Int32.
 
-	void bind(std::size_t pos, const Poco::UInt32 &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const Poco::UInt32 &val, Direction dir);
 		/// Binds an UInt32.
 
-	void bind(std::size_t pos, const Poco::Int64 &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const Poco::Int64 &val, Direction dir);
 		/// Binds an Int64.
 
-	void bind(std::size_t pos, const Poco::UInt64 &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const Poco::UInt64 &val, Direction dir);
 		/// Binds an UInt64.
 
 #ifndef POCO_LONG_IS_64_BIT
-	void bind(std::size_t pos, const long &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const long &val, Direction dir);
 		/// Binds a long
 
-	void bind(std::size_t pos, const unsigned long &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const unsigned long &val, Direction dir);
 		/// Binds an unsigned long
 #endif
 
-	void bind(std::size_t pos, const bool &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const bool &val, Direction dir);
 		/// Binds a boolean.
 
-	void bind(std::size_t pos, const float &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const float &val, Direction dir);
 		/// Binds a float.
 
-	void bind(std::size_t pos, const double &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const double &val, Direction dir);
 		/// Binds a double.
 
-	void bind(std::size_t pos, const char &val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const char &val, Direction dir);
 		/// Binds a single character.
 
-	void bind(std::size_t pos, const char* const &pVal, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const char* const &pVal, Direction dir);
 		/// Binds a const char ptr.
 
-	void bind(std::size_t pos, const std::string& val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const std::string& val, Direction dir);
 		/// Binds a string.
 
-	void bind(std::size_t pos, const Poco::Data::BLOB& val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const Poco::Data::BLOB& val, Direction dir);
 		/// Binds a BLOB.
 
-	void bind(std::size_t pos, const Poco::Data::CLOB& val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const Poco::Data::CLOB& val, Direction dir);
 		/// Binds a CLOB.
 
-	void bind(std::size_t pos, const Date& val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const Date& val, Direction dir);
 		/// Binds a Date.
 
-	void bind(std::size_t pos, const Time& val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const Time& val, Direction dir);
 		/// Binds a Time.
 
-	void bind(std::size_t pos, const DateTime& val, Direction dir, const WhenNullCb& nullCb);
+	void bind(std::size_t pos, const DateTime& val, Direction dir);
 		/// Binds a DateTime.
 
-	void bind(std::size_t pos, const NullData& val, Direction dir, const std::type_info& bindType);
+	void bind(std::size_t pos, const NullData& val, Direction dir);
 		/// Binds a null.
 
 private:
@@ -117,7 +115,7 @@ private:
 		/// if error has occurred.
 
 	template <typename T>
-	void bindLOB(std::size_t pos, const Poco::Data::LOB<T>& val, Direction dir, const WhenNullCb& nullCb)
+	void bindLOB(std::size_t pos, const Poco::Data::LOB<T>& val, Direction dir)
 	{
 		// convert a blob to a an unsigned char* array
 		const T* pData = reinterpret_cast<const T*>(val.rawContent());
@@ -134,85 +132,85 @@ private:
 //
 // inlines
 //
-inline void Binder::bind(std::size_t pos, const Poco::Int8 &val, Direction dir, const WhenNullCb& nullCb)
+inline void Binder::bind(std::size_t pos, const Poco::Int8 &val, Direction dir)
 {
 	Poco::Int32 tmp = val;
-	bind(pos, tmp, dir, nullCb);
+	bind(pos, tmp, dir);
 }
 
 
-inline void Binder::bind(std::size_t pos, const Poco::UInt8 &val, Direction dir, const WhenNullCb& nullCb)
+inline void Binder::bind(std::size_t pos, const Poco::UInt8 &val, Direction dir)
 {
 	Poco::Int32 tmp = val;
-	bind(pos, tmp, dir, nullCb);
+	bind(pos, tmp, dir);
 }
 
 
-inline void Binder::bind(std::size_t pos, const Poco::Int16 &val, Direction dir, const WhenNullCb& nullCb)
+inline void Binder::bind(std::size_t pos, const Poco::Int16 &val, Direction dir)
 {
 	Poco::Int32 tmp = val;
-	bind(pos, tmp, dir, nullCb);
+	bind(pos, tmp, dir);
 }
 
 
-inline void Binder::bind(std::size_t pos, const Poco::UInt16 &val, Direction dir, const WhenNullCb& nullCb)
+inline void Binder::bind(std::size_t pos, const Poco::UInt16 &val, Direction dir)
 {
 	Poco::Int32 tmp = val;
-	bind(pos, tmp, dir, nullCb);
+	bind(pos, tmp, dir);
 }
 
 
-inline void Binder::bind(std::size_t pos, const Poco::UInt32 &val, Direction dir, const WhenNullCb& nullCb)
+inline void Binder::bind(std::size_t pos, const Poco::UInt32 &val, Direction dir)
 {
 	Poco::Int32 tmp = static_cast<Poco::Int32>(val);
-	bind(pos, tmp, dir, nullCb);
+	bind(pos, tmp, dir);
 }
 
 
-inline void Binder::bind(std::size_t pos, const Poco::UInt64 &val, Direction dir, const WhenNullCb& nullCb)
+inline void Binder::bind(std::size_t pos, const Poco::UInt64 &val, Direction dir)
 {
 	Poco::Int64 tmp = static_cast<Poco::Int64>(val);
-	bind(pos, tmp, dir, nullCb);
+	bind(pos, tmp, dir);
 }
 
 
-inline void Binder::bind(std::size_t pos, const bool &val, Direction dir, const WhenNullCb& nullCb)
+inline void Binder::bind(std::size_t pos, const bool &val, Direction dir)
 {
 	Poco::Int32 tmp = (val ? 1 : 0);
-	bind(pos, tmp, dir, nullCb);
+	bind(pos, tmp, dir);
 }
 
 
-inline void Binder::bind(std::size_t pos, const float &val, Direction dir, const WhenNullCb& nullCb)
+inline void Binder::bind(std::size_t pos, const float &val, Direction dir)
 {
 	double tmp = val;
-	bind(pos, tmp, dir, nullCb);
+	bind(pos, tmp, dir);
 }
 
 
-inline void Binder::bind(std::size_t pos, const char &val, Direction dir, const WhenNullCb& nullCb)
+inline void Binder::bind(std::size_t pos, const char &val, Direction dir)
 {
 	Poco::Int32 tmp = val;
-	bind(pos, tmp, dir, nullCb);
+	bind(pos, tmp, dir);
 }
 
 
-inline void Binder::bind(std::size_t pos, const char* const &pVal, Direction dir, const WhenNullCb& nullCb)
+inline void Binder::bind(std::size_t pos, const char* const &pVal, Direction dir)
 {
 	std::string val(pVal);
-	bind(pos, val, dir, nullCb);
+	bind(pos, val, dir);
 }
 
 
-inline void Binder::bind(std::size_t pos, const Poco::Data::BLOB& val, Direction dir, const WhenNullCb& nullCb)
+inline void Binder::bind(std::size_t pos, const Poco::Data::BLOB& val, Direction dir)
 {
-	bindLOB<Poco::Data::BLOB::ValueType>(pos, val, dir, nullCb);
+	bindLOB<Poco::Data::BLOB::ValueType>(pos, val, dir);
 }
 
 
-inline void Binder::bind(std::size_t pos, const Poco::Data::CLOB& val, Direction dir, const WhenNullCb& nullCb)
+inline void Binder::bind(std::size_t pos, const Poco::Data::CLOB& val, Direction dir)
 {
-	bindLOB<Poco::Data::CLOB::ValueType>(pos, val, dir, nullCb);
+	bindLOB<Poco::Data::CLOB::ValueType>(pos, val, dir);
 }
 
 

@@ -1,8 +1,6 @@
 //
 // NetworkInterface.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/NetworkInterface.h#4 $
-//
 // Library: Net
 // Package: Sockets
 // Module:  NetworkInterface
@@ -250,7 +248,8 @@ public:
 		/// Returns the NetworkInterface for the given interface index.
 		///
 		/// Throws an InterfaceNotFoundException if an interface
-		/// with the given index does not exist.
+		/// with the given index does not exist (or IPv6 is not
+		/// available).
 		
 	static List list(bool ipOnly = true, bool upOnly = true);
 		/// Returns a list with all network interfaces

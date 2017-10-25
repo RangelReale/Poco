@@ -1,8 +1,6 @@
 //
 // DataTest.h
 //
-// $Id: //poco/Main/Data/testsuite/src/DataTest.h#6 $
-//
 // Definition of the DataTest class.
 //
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
@@ -20,7 +18,7 @@
 #include "Poco/BinaryReader.h"
 #include "Poco/BinaryWriter.h"
 #include "Poco/Data/Row.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 
 
 class DataTest: public CppUnit::TestCase
@@ -42,14 +40,9 @@ public:
 	void testColumnList();
 	void testRow();
 	void testRowSort();
-	void testSimpleRowFormatter();
-	void testJSONRowFormatter();
+	void testRowFormat();
 	void testDateAndTime();
 	void testExternalBindingAndExtraction();
-
-#if __cplusplus >= 201103L
-	void testStdTuple();
-#endif
 
 	void setUp();
 	void tearDown();

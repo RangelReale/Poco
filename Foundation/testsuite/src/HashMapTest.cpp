@@ -1,8 +1,6 @@
 //
 // HashMapTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/HashMapTest.cpp#1 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "HashMapTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/HashMap.h"
 #include "Poco/Exception.h"
 #include <map>
@@ -21,7 +19,7 @@
 using Poco::HashMap;
 
 
-HashMapTest::HashMapTest(const std::string& rName): CppUnit::TestCase(rName)
+HashMapTest::HashMapTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 
@@ -191,7 +189,7 @@ void HashMapTest::testIndex()
 	try
 	{
 		const IntMap& im = hm;
-		int x = im[4];
+		int POCO_UNUSED x = im[4];
 		fail("no such key - must throw");
 	}
 	catch (Poco::NotFoundException&)

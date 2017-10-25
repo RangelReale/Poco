@@ -1,8 +1,6 @@
 //
 // TestApp.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/TestApp.cpp#2 $
-//
 // Copyright (c) 2005-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -18,7 +16,7 @@
 #include <string>
 #include <iostream>
 #include <cstdlib>
-#include <csignal>
+#include <signal.h>
 
 
 int main(int argc, char** argv)
@@ -49,8 +47,8 @@ int main(int argc, char** argv)
 		}
 		else if (arg == "-raise-int")
 		{
-			std::signal(SIGINT, SIG_DFL);
-			std::raise(SIGINT);
+			signal(SIGINT, SIG_DFL);
+			raise(SIGINT);
 		}
 		else if (arg == "-echo-args")
 		{

@@ -12,7 +12,7 @@ objects = Driver JSONTest JSONTestSuite
 
 target         = testrunner
 target_version = 1
-target_libs    = PocoJSON PocoFoundation PocoCppUnit
+target_libs    = PocoJSON PocoFoundation CppUnit
 
 include $(POCO_BASE)/build/rules/exec
 

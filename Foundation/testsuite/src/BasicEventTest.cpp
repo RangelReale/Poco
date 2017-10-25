@@ -1,8 +1,6 @@
 //
 // BasicEventTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/BasicEventTest.cpp#2 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -12,8 +10,8 @@
 
 #include "BasicEventTest.h"
 #include "DummyDelegate.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Expire.h"
 #include "Poco/Delegate.h"
 #include "Poco/FunctionDelegate.h"
@@ -27,7 +25,7 @@ using namespace Poco;
 #define LARGEINC 100
 
 
-BasicEventTest::BasicEventTest(const std::string& rName): CppUnit::TestCase(rName)
+BasicEventTest::BasicEventTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

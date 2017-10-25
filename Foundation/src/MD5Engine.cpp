@@ -1,8 +1,6 @@
 //
 // MD5Engine.cpp
 //
-// $Id: //poco/1.4/Foundation/src/MD5Engine.cpp#1 $
-//
 // Library: Foundation
 // Package: Crypt
 // Module:  MD5Engine
@@ -129,11 +127,11 @@ const DigestEngine::Digest& MD5Engine::digest()
 	/* Append length (before padding) */
 	update(bits, 8);
 
-	/* Store state in digestArray */
-	unsigned char digestArray[16];
-	encode(digestArray, _context.state, 16);
+	/* Store state in digest */
+	unsigned char digest[16];
+	encode(digest, _context.state, 16);
 	_digest.clear();
-	_digest.insert(_digest.begin(), digestArray, digestArray + sizeof(digestArray));
+	_digest.insert(_digest.begin(), digest, digest + sizeof(digest));
 
 	/* Zeroize sensitive information. */
 	std::memset(&_context, 0, sizeof (_context));

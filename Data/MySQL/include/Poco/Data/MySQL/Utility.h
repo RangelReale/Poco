@@ -1,8 +1,6 @@
 //
 // Utility.h
 //
-// $Id: //poco/Main/Data/MySQL/include/Poco/Data/MySQL/Utility.h#2 $
-//
 // Library: Data/MySQL
 // Package: MySQL
 // Module:  Utility
@@ -57,7 +55,7 @@ public:
 		/// Returns host info.
 
 	static bool hasMicrosecond();
-		/// Returns true if microseconds are supported.
+		/// Rturns true if microseconds are suported.
 
 	static MYSQL* handle(Poco::Data::Session& session);
 		/// Returns native MySQL handle for the session.

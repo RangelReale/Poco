@@ -1,8 +1,6 @@
 //
 // Event_WIN32.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/Event_WIN32.h#1 $
-//
 // Library: Foundation
 // Package: Threading
 // Module:  Event
@@ -30,15 +28,8 @@ namespace Poco {
 
 class Foundation_API EventImpl
 {
-public:
-	enum EventTypeImpl
-	{
-		EVENT_MANUALRESET_IMPL,
-		EVENT_AUTORESET_IMPL,
-	};
-
 protected:
-	EventImpl(EventTypeImpl type);
+	EventImpl(bool autoReset);		
 	~EventImpl();
 	void setImpl();
 	void waitImpl();

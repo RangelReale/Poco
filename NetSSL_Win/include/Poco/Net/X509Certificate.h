@@ -24,7 +24,6 @@
 #include "Poco/DateTime.h"
 #include <set>
 #include <istream>
-#include <Poco/UnWindows.h>
 #include <wincrypt.h>
 
 

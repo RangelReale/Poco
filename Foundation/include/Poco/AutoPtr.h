@@ -1,8 +1,6 @@
 //
 // AutoPtr.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/AutoPtr.h#1 $
-//
 // Library: Foundation
 // Package: Core
 // Module:  AutoPtr
@@ -83,12 +81,6 @@ public:
 
 	template <class Other> 
 	AutoPtr(const AutoPtr<Other>& ptr): _ptr(const_cast<Other*>(ptr.get()))
-	{
-		if (_ptr) _ptr->duplicate();
-	}
-
-	template <class Other> 
-	AutoPtr(const AutoPtr<Other>& ptr, bool castStatic): _ptr(castStatic ? static_cast<C*>(const_cast<Other*>(ptr.get())) : dynamic_cast<C*>(const_cast<Other*>(ptr.get())))
 	{
 		if (_ptr) _ptr->duplicate();
 	}

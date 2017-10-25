@@ -1,8 +1,6 @@
 //
 // NumericString.h
 //
-// $Id: //poco/1.4/Foundation/src/NumericString.cpp#1 $
-//
 // Library: Foundation
 // Package: Core
 // Module:  NumericString
@@ -18,7 +16,6 @@
 
 
 // +++ double conversion +++
-#define double_conversion poco_double_conversion	// don't collide with standalone double_conversion library
 #define UNREACHABLE poco_bugcheck
 #define UNIMPLEMENTED poco_bugcheck
 #include "diy-fp.cc"
@@ -60,11 +57,11 @@ void pad(std::string& str, int precision, int width, char prefix = ' ', char dec
 	std::string::size_type frac = str.length() - decSepPos - 1;
 
 	std::string::size_type ePos = str.find_first_of("eE");
-#if __cplusplus < 201103L
+#ifndef POCO_ENABLE_CPP11
 	std::auto_ptr<std::string> eStr;
 #else
 	std::unique_ptr<std::string> eStr;
-#endif
+#endif // POCO_ENABLE_CPP11
 	if (ePos != std::string::npos)
 	{
 		eStr.reset(new std::string(str.substr(ePos, std::string::npos)));
@@ -75,46 +72,9 @@ void pad(std::string& str, int precision, int width, char prefix = ' ', char dec
 	if (frac != precision)
 	{
 		if (frac < precision)
-		{
 			str.append(precision - frac, '0');
-		}
-		else if ((frac > precision) && (decSepPos != std::string::npos))
-		{
-			int pos = decSepPos + 1 + precision;
-			if (str[pos] >= '5') // we must round up
-			{
-				char carry = 0;
-				if(str[--pos] == '9')
-				{
-					str[pos] = '0';
-					carry = 1;
-				}
-				else
-				{
-					++str[pos];
-					carry = 0;
-				}
-				while (--pos >= 0)
-				{
-					if(str[pos] == decSep) continue;
-					if(carry)
-					{
-						if((str[pos] + carry) <= '9')
-						{
-							++str[pos];
-							carry = 0;
-						}
-						else
-						{
-							str[pos] = '0';
-							carry = 1;
-						}
-					}
-				}
-				if (carry) str.insert(str.begin(), 1, '1');
-			}
+		else if ((frac > precision) && (decSepPos != std::string::npos)) 
 			str = str.substr(0, decSepPos + 1 + precision);
-		}
 	}
 
 	if (eStr.get()) str += *eStr;

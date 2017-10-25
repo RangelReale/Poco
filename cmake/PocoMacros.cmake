@@ -202,10 +202,19 @@ write_basic_package_version_file(
   VERSION ${PROJECT_VERSION}
   COMPATIBILITY AnyNewerVersion
 )
-export(EXPORT "${target_name}Targets"
-  FILE "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}${target_name}Targets.cmake"
-  NAMESPACE "${PROJECT_NAME}::"
-)
+if ("${CMAKE_VERSION}" VERSION_LESS "3.0.0")
+    if (NOT EXISTS "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}${target_name}Targets.cmake")
+    export(TARGETS "${target_name}" APPEND
+      FILE "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}${target_name}Targets.cmake"
+      NAMESPACE "${PROJECT_NAME}::"
+    )
+    endif ()
+else ()
+    export(EXPORT "${target_name}Targets"
+      FILE "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}${target_name}Targets.cmake"
+      NAMESPACE "${PROJECT_NAME}::"
+    )
+endif ()
 configure_file("cmake/Poco${target_name}Config.cmake"
   "${CMAKE_BINARY_DIR}/${PROJECT_NAME}/${PROJECT_NAME}${target_name}Config.cmake"
   @ONLY
@@ -241,37 +250,6 @@ endmacro()
 macro(POCO_INSTALL target_name)
 install(
     DIRECTORY include/Poco
-    DESTINATION include
-    COMPONENT Devel
-    PATTERN ".svn" EXCLUDE
-    )
-
-install(
-    TARGETS "${target_name}" EXPORT "${target_name}Targets"
-    LIBRARY DESTINATION lib${LIB_SUFFIX}
-    ARCHIVE DESTINATION lib${LIB_SUFFIX}
-    RUNTIME DESTINATION bin
-    INCLUDES DESTINATION include
-    )
-
-if (MSVC)
-# install the targets pdb
-  POCO_INSTALL_PDB(${target_name})
-endif()
-  
-endmacro()
-
-#===============================================================================
-# Macros for simplified installation of package not following the Poco standard as CppUnit
-#
-#  SIMPLE_INSTALL - Install the given target
-#    Usage: SIMPLE_INSTALL(target_name)
-#      INPUT:
-#           target_name             the name of the target. e.g. CppUnit
-#    Example: SIMPLE_INSTALL(Foundation)
-macro(SIMPLE_INSTALL target_name)
-install(
-    DIRECTORY include
     DESTINATION include
     COMPONENT Devel
     PATTERN ".svn" EXCLUDE

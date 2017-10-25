@@ -1,8 +1,6 @@
 //
 // DatagramSocketTest.h
 //
-// $Id: //poco/1.4/Net/testsuite/src/DatagramSocketTest.h#1 $
-//
 // Definition of the DatagramSocketTest class.
 //
 // Copyright (c) 2005-2006, Applied Informatics Software Engineering GmbH.
@@ -17,7 +15,7 @@
 
 
 #include "Poco/Net/Net.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 
 
 class DatagramSocketTest: public CppUnit::TestCase
@@ -28,7 +26,6 @@ public:
 
 	void testEcho();
 	void testSendToReceiveFrom();
-	void testUnbound();
 	void testBroadcast();
 
 	void setUp();

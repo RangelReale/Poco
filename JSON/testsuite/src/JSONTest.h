@@ -1,8 +1,6 @@
 //
 // JSONTest.h
 //
-// $Id: //poco/1.4/JSON/testsuite/src/JSONTest.h#1 $
-//
 // Definition of the JSONTest class.
 //
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
@@ -17,7 +15,7 @@
 
 
 #include "Poco/JSON/JSON.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 #include "Poco/JSON/Object.h"
 #include "Poco/JSON/Parser.h"
 #include "Poco/JSON/Query.h"

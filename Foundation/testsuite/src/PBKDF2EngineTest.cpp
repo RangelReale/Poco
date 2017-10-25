@@ -1,8 +1,6 @@
 //
 // PBKDF2EngineTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/PBKDF2EngineTest.cpp#1 $
-//
 // Copyright (c) 2014, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "PBKDF2EngineTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/PBKDF2Engine.h"
 #include "Poco/HMACEngine.h"
 #include "Poco/SHA1Engine.h"
@@ -24,7 +22,7 @@ using Poco::SHA1Engine;
 using Poco::DigestEngine;
 
 
-PBKDF2EngineTest::PBKDF2EngineTest(const std::string& rName): CppUnit::TestCase(rName)
+PBKDF2EngineTest::PBKDF2EngineTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

@@ -1,11 +1,9 @@
 //
 // CppUnitException.cpp
 //
-// $Id: //poco/1.4/CppUnit/src/CppUnitException.cpp#1 $
-//
 
 
-#include "Poco/CppUnit/CppUnitException.h"
+#include "CppUnit/CppUnitException.h"
 
 
 namespace CppUnit {

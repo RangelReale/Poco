@@ -1,8 +1,6 @@
 //
 // Activity.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/Activity.h#1 $
-//
 // Library: Foundation
 // Package: Threading
 // Module:  ActiveObjects
@@ -84,7 +82,7 @@ public:
 		_runnable(*pOwner, method),
 		_stopped(true),
 		_running(false),
-		_done(Event::EVENT_MANUALRESET)
+		_done(false)
 		/// Creates the activity. Call start() to
 		/// start it.
 	{

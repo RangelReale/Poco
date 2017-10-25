@@ -1,8 +1,6 @@
 //
 // UUID.cpp
 //
-// $Id: //poco/1.4/Foundation/src/UUID.cpp#2 $
-//
 // Library: Foundation
 // Package: UUID
 // Module:  UUID
@@ -67,7 +65,7 @@ UUID::UUID(UInt32 timeLow, UInt32 timeMid, UInt32 timeHiAndVersion, UInt16 clock
 }
 
 
-UUID::UUID(const char* bytes, Version uuidVersion)
+UUID::UUID(const char* bytes, Version version)
 {
 	UInt32 i32;
 	UInt16 i16;
@@ -86,7 +84,7 @@ UUID::UUID(const char* bytes, Version uuidVersion)
 	std::memcpy(_node, bytes, sizeof(_node));
 
 	_timeHiAndVersion &= 0x0FFF;
-	_timeHiAndVersion |= (uuidVersion << 12);
+	_timeHiAndVersion |= (version << 12);
 	_clockSeq &= 0x3FFF;
 	_clockSeq |= 0x8000;
 }

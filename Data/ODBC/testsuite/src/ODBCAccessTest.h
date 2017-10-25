@@ -1,8 +1,6 @@
 //
 // ODBCAccessTest.h
 //
-// $Id: //poco/Main/Data/ODBC/testsuite/src/ODBCAccessTest.h#4 $
-//
 // Definition of the ODBCAccessTest class.
 //
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
@@ -20,7 +18,7 @@
 #include "Poco/Data/Session.h"
 #include "Poco/Data/ODBC/Utility.h"
 #include "Poco/SharedPtr.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 #include "SQLExecutor.h"
 
 

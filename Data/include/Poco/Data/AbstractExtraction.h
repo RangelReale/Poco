@@ -1,8 +1,6 @@
 //
 // AbstractExtraction.h
 //
-// $Id: //poco/Main/Data/include/Poco/Data/AbstractExtraction.h#5 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  AbstractExtraction
@@ -49,7 +47,7 @@ public:
 	typedef SharedPtr<AbstractExtractor>  ExtractorPtr;
 	typedef SharedPtr<AbstractPreparator> PreparatorPtr;
 
-	AbstractExtraction(const std::string& type, Poco::UInt32 limit = Limit::LIMIT_UNLIMITED,
+	AbstractExtraction(Poco::UInt32 limit = Limit::LIMIT_UNLIMITED,
 		Poco::UInt32 position = 0, bool bulk = false);
 		/// Creates the AbstractExtraction. A limit value equal to EXTRACT_UNLIMITED (0xffffffffu) 
 		/// means that we extract as much data as possible during one execute.
@@ -140,7 +138,7 @@ public:
 	bool isValueNull(const std::string& str, bool deflt);
 		/// Overload for const reference to std::string.
 		///
-		/// Returns true when following conditions are met:
+		/// Returns true when folowing conditions are met:
 		///
 		/// - string is empty 
 		/// - getEmptyStringIsNull() returns true
@@ -148,15 +146,10 @@ public:
 	bool isValueNull(const Poco::UTF16String& str, bool deflt);
 		/// Overload for const reference to UTF16String.
 		///
-		/// Returns true when following conditions are met:
+		/// Returns true when folowing conditions are met:
 		///
 		/// - string is empty 
 		/// - getEmptyStringIsNull() returns true
-
-	const std::string& type() const
-	{
-		return _type;
-	}
 
 private:
 	template <typename S>
@@ -170,7 +163,6 @@ private:
 		return deflt;
 	}
 
-	std::string _type;
 	ExtractorPtr _pExtractor;
 	Poco::UInt32 _limit;
 	Poco::UInt32 _position;
@@ -182,6 +174,11 @@ private:
 
 typedef std::vector<AbstractExtraction::Ptr> AbstractExtractionVec;
 typedef std::vector<AbstractExtractionVec>   AbstractExtractionVecVec;
+typedef std::deque<AbstractExtraction::Ptr>  AbstractExtractionDeq;
+typedef std::vector<AbstractExtractionDeq>   AbstractExtractionDeqVec;
+typedef std::list<AbstractExtraction::Ptr>   AbstractExtractionLst;
+typedef std::vector<AbstractExtractionLst>   AbstractExtractionLstVec;
+
 
 //
 // inlines

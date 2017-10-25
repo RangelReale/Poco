@@ -1,8 +1,6 @@
 //
 // ClassLoaderTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/ClassLoaderTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "ClassLoaderTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/ClassLoader.h"
 #include "Poco/Manifest.h"
 #include "Poco/Exception.h"
@@ -27,7 +25,7 @@ using Poco::NotFoundException;
 using Poco::InvalidAccessException;
 
 
-ClassLoaderTest::ClassLoaderTest(const std::string& rName): CppUnit::TestCase(rName)
+ClassLoaderTest::ClassLoaderTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 
@@ -52,7 +50,7 @@ void ClassLoaderTest::testClassLoader1()
 	
 	try
 	{
-		const ClassLoader<TestPlugin>::Meta& meta = cl.classFor("PluginA");
+		const ClassLoader<TestPlugin>::Meta& POCO_UNUSED meta = cl.classFor("PluginA");
 		fail("not found - must throw exception");
 	}
 	catch (NotFoundException&)
@@ -65,7 +63,7 @@ void ClassLoaderTest::testClassLoader1()
 
 	try
 	{
-		const ClassLoader<TestPlugin>::Manif& manif = cl.manifestFor(path);
+		const ClassLoader<TestPlugin>::Manif& POCO_UNUSED manif = cl.manifestFor(path);
 		fail("not found - must throw exception");
 	}
 	catch (NotFoundException&)
@@ -124,7 +122,7 @@ void ClassLoaderTest::testClassLoader2()
 	
 	try
 	{
-		TestPlugin& plgB = cl.instance("PluginB");
+		TestPlugin& POCO_UNUSED plgB = cl.instance("PluginB");
 		fail("not a singleton - must throw");
 	}
 	catch (InvalidAccessException&)
@@ -133,7 +131,7 @@ void ClassLoaderTest::testClassLoader2()
 	
 	try
 	{
-		TestPlugin* pPluginC = cl.create("PluginC");
+		TestPlugin* POCO_UNUSED pPluginC = cl.create("PluginC");
 		fail("cannot create a singleton - must throw");
 	}
 	catch (InvalidAccessException&)
@@ -206,11 +204,9 @@ CppUnit::Test* ClassLoaderTest::suite()
 {
 	CppUnit::TestSuite* pSuite = new CppUnit::TestSuite("ClassLoaderTest");
 
-#ifndef _DEBUG
-	// FIXME exclude from the Debug build temporarly for AppVeyor stability
 	CppUnit_addTest(pSuite, ClassLoaderTest, testClassLoader1);
 	CppUnit_addTest(pSuite, ClassLoaderTest, testClassLoader2);
 	CppUnit_addTest(pSuite, ClassLoaderTest, testClassLoader3);
-#endif
+
 	return pSuite;
 }

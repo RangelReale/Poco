@@ -57,7 +57,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/FORCE:MULTIPLE "
-				AdditionalDependencies="PocoCppUnitd.lib "
+				AdditionalDependencies="CppUnitd.lib "
 				OutputFile="bin\$(PlatformName)\shared\TestSuited.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib\$(PlatformName)"
@@ -130,7 +130,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/FORCE:MULTIPLE "
-				AdditionalDependencies="PocoCppUnit.lib "
+				AdditionalDependencies="CppUnit.lib "
 				OutputFile="bin\$(PlatformName)\shared\TestSuite.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib\$(PlatformName)"
@@ -204,7 +204,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/FORCE:MULTIPLE "
-				AdditionalDependencies="PocoCppUnitmtd.lib iphlpapi.lib "
+				AdditionalDependencies="CppUnitmtd.lib iphlpapi.lib "
 				OutputFile="bin\$(PlatformName)\static_mt\TestSuited.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib\$(PlatformName)"
@@ -280,7 +280,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/FORCE:MULTIPLE "
-				AdditionalDependencies="PocoCppUnitmt.lib iphlpapi.lib "
+				AdditionalDependencies="CppUnitmt.lib iphlpapi.lib "
 				OutputFile="bin\$(PlatformName)\static_mt\TestSuite.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib\$(PlatformName)"
@@ -354,7 +354,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/FORCE:MULTIPLE "
-				AdditionalDependencies="PocoCppUnitmdd.lib iphlpapi.lib "
+				AdditionalDependencies="CppUnitmdd.lib iphlpapi.lib "
 				OutputFile="bin\$(PlatformName)\static_md\TestSuited.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\lib\$(PlatformName)"
@@ -430,7 +430,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/FORCE:MULTIPLE "
-				AdditionalDependencies="PocoCppUnitmd.lib iphlpapi.lib "
+				AdditionalDependencies="CppUnitmd.lib iphlpapi.lib "
 				OutputFile="bin\$(PlatformName)\static_md\TestSuite.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\lib\$(PlatformName)"
@@ -471,8 +471,6 @@
 				<File
 					RelativePath=".\src\NameTest.h"/>
 				<File
-					RelativePath=".\src\XMLStreamParserTest.h"/>
-				<File
 					RelativePath=".\src\XMLWriterTest.h"/>
 			</Filter>
 			<Filter
@@ -481,8 +479,6 @@
 					RelativePath=".\src\NamePoolTest.cpp"/>
 				<File
 					RelativePath=".\src\NameTest.cpp"/>
-				<File
-					RelativePath=".\src\XMLStreamParserTest.cpp"/>
 				<File
 					RelativePath=".\src\XMLWriterTest.cpp"/>
 			</Filter>

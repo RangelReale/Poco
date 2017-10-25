@@ -1,8 +1,6 @@
 //
 // WebSocketTest.h
 //
-// $Id: //poco/1.4/Net/testsuite/src/WebSocketTest.h#1 $
-//
 // Definition of the WebSocketTest class.
 //
 // Copyright (c) 2012, Applied Informatics Software Engineering GmbH.
@@ -17,7 +15,7 @@
 
 
 #include "Poco/Net/Net.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 
 
 class WebSocketTest: public CppUnit::TestCase
@@ -28,7 +26,6 @@ public:
 
 	void testWebSocket();
 	void testWebSocketLarge();
-	void testWebSocketLargeInOneFrame();
 
 	void setUp();
 	void tearDown();
@@ -36,7 +33,6 @@ public:
 	static CppUnit::Test* suite();
 
 private:
-	void testOneLargeFrame(int msgSize);
 };
 
 

@@ -1,8 +1,6 @@
 //
 // CipherKeyImpl.h
 //
-// $Id: //poco/1.4/Crypto/include/Poco/Crypto/CipherKeyImpl.h#3 $
-//
 // Library: Crypto
 // Package: Cipher
 // Module:  CipherKeyImpl
@@ -53,19 +51,18 @@ public:
 		MODE_OFB			/// Output feedback
 	};
 
-	CipherKeyImpl(const std::string& name,
-		const std::string& passphrase,
+	CipherKeyImpl(const std::string& name, 
+		const std::string& passphrase, 
 		const std::string& salt,
 		int iterationCount,
-		const std::string &digest);
+		const std::string& digest);
 		/// Creates a new CipherKeyImpl object, using
 		/// the given cipher name, passphrase, salt value
 		/// and iteration count.
 
 	CipherKeyImpl(const std::string& name, 
 		const ByteVec& key, 
-		const ByteVec& iv
-	);
+		const ByteVec& iv);
 		/// Creates a new CipherKeyImpl object, using the 
 		/// given cipher name, key and initialization vector.
 

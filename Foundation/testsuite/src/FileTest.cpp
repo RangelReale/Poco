@@ -1,8 +1,6 @@
 //
 // FileTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/FileTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "FileTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/File.h"
 #include "Poco/TemporaryFile.h"
 #include "Poco/Path.h"
@@ -30,7 +28,7 @@ using Poco::Timestamp;
 using Poco::Thread;
 
 
-FileTest::FileTest(const std::string& rName): CppUnit::TestCase(rName)
+FileTest::FileTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 
@@ -47,7 +45,7 @@ void FileTest::testFileAttributes1()
 
 	try
 	{
-		bool flag = f.canRead();
+		bool POCO_UNUSED flag = f.canRead();
 		failmsg("file does not exist - must throw exception");
 	}
 	catch (Exception&)
@@ -56,7 +54,7 @@ void FileTest::testFileAttributes1()
 
 	try
 	{
-		bool flag = f.canWrite();
+		bool POCO_UNUSED flag = f.canWrite();
 		failmsg("file does not exist - must throw exception");
 	}
 	catch (Exception&)
@@ -65,7 +63,7 @@ void FileTest::testFileAttributes1()
 
 	try
 	{
-		bool flag = f.isFile();
+		bool POCO_UNUSED flag = f.isFile();
 		failmsg("file does not exist - must throw exception");
 	}
 	catch (Exception&)
@@ -74,7 +72,7 @@ void FileTest::testFileAttributes1()
 
 	try
 	{
-		bool flag = f.isDirectory();
+		bool POCO_UNUSED flag = f.isDirectory();
 		failmsg("file does not exist - must throw exception");
 	}
 	catch (Exception&)
@@ -83,7 +81,7 @@ void FileTest::testFileAttributes1()
 
 	try
 	{
-		Timestamp ts = f.created();
+		Timestamp POCO_UNUSED ts = f.created();
 		failmsg("file does not exist - must throw exception");
 	}
 	catch (Exception&)
@@ -92,7 +90,7 @@ void FileTest::testFileAttributes1()
 
 	try
 	{
-		Timestamp ts = f.getLastModified();
+		Timestamp POCO_UNUSED ts = f.getLastModified();
 		failmsg("file does not exist - must throw exception");
 	}
 	catch (Exception&)
@@ -111,7 +109,7 @@ void FileTest::testFileAttributes1()
 
 	try
 	{
-		File::FileSize fs = f.getSize();
+		File::FileSize POCO_UNUSED fs = f.getSize();
 		failmsg("file does not exist - must throw exception");
 	}
 	catch (Exception&)
@@ -180,33 +178,6 @@ void FileTest::testFileAttributes1()
 	catch (Exception&)
 	{
 	}
-
-	try
-	{
-		f.totalSpace();
-		failmsg("file does not exist - must throw exception");
-	}
-	catch (Exception&)
-	{
-	}
-
-	try
-	{
-		f.usableSpace();
-		failmsg("file does not exist - must throw exception");
-	}
-	catch (Exception&)
-	{
-	}
-
-	try
-	{
-		f.freeSpace();
-		failmsg("file does not exist - must throw exception");
-	}
-	catch (Exception&)
-	{
-	}
 }
 
 
@@ -258,7 +229,7 @@ void FileTest::testFileAttributes3()
 #if POCO_OS==POCO_OS_CYGWIN
 	File f("/dev/tty");
 #else
-	File f("/dev/null");
+ 	File f("/dev/console");
 #endif
 #elif defined(POCO_OS_FAMILY_WINDOWS) && !defined(_WIN32_WCE)
 	File f("CON");
@@ -341,15 +312,6 @@ void FileTest::testSize()
 	assert (f.getSize() > 0);
 	f.setSize(0);
 	assert (f.getSize() == 0);
-}
-
-
-void FileTest::testSpace()
-{
-	File f(Path::home());
-	assert(f.totalSpace() > 0);
-	assert(f.usableSpace() > 0);
-	assert(f.freeSpace() > 0);
 }
 
 
@@ -585,7 +547,6 @@ CppUnit::Test* FileTest::suite()
 	CppUnit_addTest(pSuite, FileTest, testCompare);
 	CppUnit_addTest(pSuite, FileTest, testSwap);
 	CppUnit_addTest(pSuite, FileTest, testSize);
-	CppUnit_addTest(pSuite, FileTest, testSpace);
 	CppUnit_addTest(pSuite, FileTest, testDirectory);
 	CppUnit_addTest(pSuite, FileTest, testCopy);
 	CppUnit_addTest(pSuite, FileTest, testMove);

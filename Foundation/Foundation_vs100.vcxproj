@@ -79,7 +79,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros"/>
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='debug_shared|Win32'">..\bin\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='debug_shared|Win32'">obj\Foundation\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='debug_shared|Win32'">true</LinkIncremental>
@@ -1153,9 +1153,6 @@
     <ClInclude Include="include\Poco\Random.h"/>
     <ClInclude Include="include\Poco\RandomStream.h"/>
     <ClInclude Include="include\Poco\SHA1Engine.h"/>
-    <ClInclude Include="include\Poco\SHA2Engine.h"/>
-    <ClInclude Include="include\Poco\SHA3Engine.h"/>
-    <ClInclude Include="include\Poco\BLAKE2Engine.h"/>
     <ClInclude Include="include\Poco\ClassLibrary.h"/>
     <ClInclude Include="include\Poco\ClassLoader.h"/>
     <ClInclude Include="include\Poco\Manifest.h"/>

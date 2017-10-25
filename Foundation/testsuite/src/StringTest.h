@@ -1,8 +1,6 @@
 //
 // StringTest.h
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/StringTest.h#1 $
-//
 // Definition of the StringTest class.
 //
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
@@ -17,7 +15,7 @@
 
 
 #include "Poco/Foundation.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 #include "Poco/NumericString.h"
 #include "Poco/MemoryStream.h"
 
@@ -44,13 +42,10 @@ public:
 	void testReplace();
 	void testReplaceInPlace();
 	void testCat();
-	void testStartsWith();
-	void testEndsWith();
 
 	void testStringToInt();
 	void testStringToFloat();
 	void testStringToDouble();
-	void testNumericStringPadding();
 	void testStringToFloatError();
 	void testNumericLocale();
 	void benchmarkStrToFloat();
@@ -59,8 +54,6 @@ public:
 	void testIntToString();
 	void testFloatToString();
 	void benchmarkFloatToStr();
-
-	void testJSONString();
 
 	void setUp();
 	void tearDown();

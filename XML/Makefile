@@ -1,8 +1,6 @@
 #
 # Makefile
 #
-# $Id: //poco/1.4/XML/Makefile#1 $
-#
 # Makefile for Poco XML
 #
 
@@ -19,10 +17,10 @@ objects = AbstractContainerNode AbstractNode Attr AttrMap Attributes \
 	EntityResolverImpl ErrorHandler Event EventDispatcher EventException \
 	EventListener EventTarget InputSource LexicalHandler Locator LocatorImpl \
 	MutationEvent Name NamePool NamedNodeMap NamespaceStrategy \
-	NamespaceSupport NodeAppender Node NodeFilter NodeIterator NodeList Notation \
-	ParserEngine ProcessingInstruction QName SAXException SAXParser Text \
+	NamespaceSupport Node NodeFilter NodeIterator NodeList Notation \
+	ParserEngine ProcessingInstruction SAXException SAXParser Text \
 	TreeWalker WhitespaceFilter XMLException XMLFilter XMLFilterImpl XMLReader \
-	XMLString XMLWriter XMLStreamParser XMLStreamParserException ValueTraits
+	XMLString XMLWriter NodeAppender 
 
 expat_objects = xmlparse xmlrole xmltok
 

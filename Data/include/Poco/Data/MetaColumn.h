@@ -1,8 +1,6 @@
 //
 // MetaColumn.h
 //
-// $Id: //poco/Main/Data/include/Poco/Data/MetaColumn.h#5 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  MetaColumn
@@ -154,27 +152,27 @@ inline bool MetaColumn::isNullable() const
 }
 
 
-inline void MetaColumn::setName(const std::string& rName)
+inline void MetaColumn::setName(const std::string& name)
 {
-	_name = rName;
+	_name = name;
 }
 
 
-inline void MetaColumn::setLength(std::size_t columnLength)
+inline void MetaColumn::setLength(std::size_t length)
 {
-	_length = columnLength;
+	_length = length;
 }
 
 
-inline void MetaColumn::setPrecision(std::size_t columnPrecision)
+inline void MetaColumn::setPrecision(std::size_t precision)
 {
-	_precision = columnPrecision;
+	_precision = precision;
 }
 
 
-inline void MetaColumn::setType(ColumnDataType columnType)
+inline void MetaColumn::setType(ColumnDataType type)
 {
-	_type = columnType;
+	_type = type;
 }
 
 

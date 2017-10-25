@@ -1,8 +1,6 @@
 //
 // PathTest.h
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/PathTest.h#2 $
-//
 // Definition of the PathTest class.
 //
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
@@ -17,7 +15,7 @@
 
 
 #include "Poco/Foundation.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 
 
 class PathTest: public CppUnit::TestCase

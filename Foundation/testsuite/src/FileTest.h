@@ -1,8 +1,6 @@
 //
 // FileTest.h
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/FileTest.h#1 $
-//
 // Definition of the FileTest class.
 //
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
@@ -17,7 +15,7 @@
 
 
 #include "Poco/Foundation.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 
 
 class FileTest: public CppUnit::TestCase
@@ -33,7 +31,6 @@ public:
 	void testCompare();
 	void testSwap();
 	void testSize();
-	void testSpace();
 	void testDirectory();
 	void testCopy();
 	void testMove();

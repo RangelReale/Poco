@@ -1,8 +1,6 @@
 //
 // Path.cpp
 //
-// $Id: //poco/1.4/Foundation/src/Path.cpp#5 $
-//
 // Library: Foundation
 // Package: Filesystem
 // Module:  Path
@@ -48,7 +46,7 @@ Path::Path(): _absolute(false)
 }
 
 
-Path::Path(bool absolutePath): _absolute(absolutePath)
+Path::Path(bool absolute): _absolute(absolute)
 {
 }
 
@@ -90,39 +88,39 @@ Path::Path(const Path& path):
 }
 
 
-Path::Path(const Path& rParent, const std::string& fileName):
-	_node(rParent._node), 
-	_device(rParent._device),
-	_name(rParent._name),
-	_version(rParent._version),
-	_dirs(rParent._dirs),
-	_absolute(rParent._absolute)
+Path::Path(const Path& parent, const std::string& fileName):
+	_node(parent._node), 
+	_device(parent._device),
+	_name(parent._name),
+	_version(parent._version),
+	_dirs(parent._dirs),
+	_absolute(parent._absolute)
 {	
 	makeDirectory();
 	_name = fileName;
 }
 
 
-Path::Path(const Path& rParent, const char* fileName):
-	_node(rParent._node), 
-	_device(rParent._device),
-	_name(rParent._name),
-	_version(rParent._version),
-	_dirs(rParent._dirs),
-	_absolute(rParent._absolute)
+Path::Path(const Path& parent, const char* fileName):
+	_node(parent._node), 
+	_device(parent._device),
+	_name(parent._name),
+	_version(parent._version),
+	_dirs(parent._dirs),
+	_absolute(parent._absolute)
 {	
 	makeDirectory();
 	_name = fileName;
 }
 
 
-Path::Path(const Path& rParent, const Path& relative):
-	_node(rParent._node), 
-	_device(rParent._device),
-	_name(rParent._name),
-	_version(rParent._version),
-	_dirs(rParent._dirs),
-	_absolute(rParent._absolute)
+Path::Path(const Path& parent, const Path& relative):
+	_node(parent._node), 
+	_device(parent._device),
+	_name(parent._name),
+	_version(parent._version),
+	_dirs(parent._dirs),
+	_absolute(parent._absolute)
 {	
 	resolve(relative);
 }
@@ -595,50 +593,11 @@ std::string Path::home()
 }
 
 	
-std::string Path::configHome()
-{
-#if defined(POCO_OS_FAMILY_UNIX) || defined(POCO_OS_FAMILY_WINDOWS)
-	return PathImpl::configHomeImpl();
-#else
-	return PathImpl::homeImpl();
-#endif
-}
-
-	
-std::string Path::dataHome()
-{
-#if defined(POCO_OS_FAMILY_UNIX) || defined(POCO_OS_FAMILY_WINDOWS)
-	return PathImpl::dataHomeImpl();
-#else
-	return PathImpl::homeImpl();
-#endif
-}
-
-	
-std::string Path::cacheHome()
-{
-#if defined(POCO_OS_FAMILY_UNIX) || defined(POCO_OS_FAMILY_WINDOWS)
-	return PathImpl::cacheHomeImpl();
-#else
-	return PathImpl::homeImpl();
-#endif
-}
-
-	
 std::string Path::temp()
 {
 	return PathImpl::tempImpl();
 }
 
-	
-std::string Path::config()
-{
-#if defined(POCO_OS_FAMILY_UNIX) || defined(POCO_OS_FAMILY_WINDOWS)
-	return PathImpl::configImpl();
-#else
-	return PathImpl::currentImpl();
-#endif
-}
 
 std::string Path::null()
 {

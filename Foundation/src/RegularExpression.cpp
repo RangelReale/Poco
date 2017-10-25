@@ -1,8 +1,6 @@
 //
 // RegularExpression.h
 //
-// $Id: //poco/1.4/Foundation/src/RegularExpression.cpp#1 $
-//
 // Library: Foundation
 // Package: RegExp
 // Module:  RegularExpression
@@ -35,10 +33,6 @@ RegularExpression::RegularExpression(const std::string& pattern, int options, bo
 {
 	const char* error;
 	int offs;
-	unsigned nmcount;
-	unsigned nmentrysz;
-	unsigned char* nmtbl;
-
 	_pcre = pcre_compile(pattern.c_str(), options, &error, &offs, 0);
 	if (!_pcre)
 	{
@@ -48,17 +42,6 @@ RegularExpression::RegularExpression(const std::string& pattern, int options, bo
 	}
 	if (study)
 		_extra = pcre_study(reinterpret_cast<pcre*>(_pcre), 0, &error);
-
-	pcre_fullinfo(reinterpret_cast<const pcre*>(_pcre), reinterpret_cast<const pcre_extra*>(_extra), PCRE_INFO_NAMECOUNT, &nmcount);
-	pcre_fullinfo(reinterpret_cast<const pcre*>(_pcre), reinterpret_cast<const pcre_extra*>(_extra), PCRE_INFO_NAMEENTRYSIZE, &nmentrysz);
-	pcre_fullinfo(reinterpret_cast<const pcre*>(_pcre), reinterpret_cast<const pcre_extra*>(_extra), PCRE_INFO_NAMETABLE, &nmtbl);
-
-	for (int i = 0; i < nmcount; i++)
-	{
-		unsigned char* group = nmtbl + 2 + (nmentrysz * i);
-		int n = pcre_get_stringnumber(reinterpret_cast<const pcre*>(_pcre), (char*) group);
-		_groups[n] = std::string((char*) group);
-	}
 }
 
 
@@ -131,17 +114,8 @@ int RegularExpression::match(const std::string& subject, std::string::size_type 
 	for (int i = 0; i < rc; ++i)
 	{
 		Match m;
-		GroupMap::const_iterator it;
-
 		m.offset = ovec[i*2] < 0 ? std::string::npos : ovec[i*2] ;
 		m.length = ovec[i*2 + 1] - m.offset;
-
-		it = _groups.find(i);
-		if (it != _groups.end())
-		{
-			m.name = (*it).second;
-		}
-
 		matches.push_back(m);
 	}
 	return rc;

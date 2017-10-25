@@ -1,8 +1,6 @@
 //
 // TextIterator.cpp
 //
-// $Id: //poco/1.4/Foundation/src/TextIterator.cpp#1 $
-//
 // Library: Foundation
 // Package: Text
 // Module:  TextIterator
@@ -36,10 +34,10 @@ TextIterator::TextIterator(const std::string& str, const TextEncoding& encoding)
 }
 
 
-TextIterator::TextIterator(const std::string::const_iterator& begin, const std::string::const_iterator& rEnd, const TextEncoding& encoding):
+TextIterator::TextIterator(const std::string::const_iterator& begin, const std::string::const_iterator& end, const TextEncoding& encoding):
 	_pEncoding(&encoding),
 	_it(begin),
-	_end(rEnd)
+	_end(end)
 {
 }
 
@@ -52,10 +50,10 @@ TextIterator::TextIterator(const std::string& str):
 }
 
 
-TextIterator::TextIterator(const std::string::const_iterator& rEnd):
+TextIterator::TextIterator(const std::string::const_iterator& end):
 	_pEncoding(0),
-	_it(rEnd),
-	_end(rEnd)
+	_it(end),
+	_end(end)
 {
 }
 

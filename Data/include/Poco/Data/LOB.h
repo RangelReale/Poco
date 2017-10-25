@@ -1,8 +1,6 @@
 //
 // LOB.h
 //
-// $Id: //poco/Main/Data/include/Poco/Data/LOB.h#12 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  LOB
@@ -53,20 +51,20 @@ public:
 	{
 	}
 
-	LOB(const std::vector<T>& rContent):
-		_pContent(new std::vector<T>(rContent))
+	LOB(const std::vector<T>& content):
+		_pContent(new std::vector<T>(content))
 		/// Creates the LOB, content is deep-copied.
 	{
 	}
 
-	LOB(const T* const pContent, std::size_t objectSize):
-		_pContent(new std::vector<T>(pContent, pContent + objectSize))
+	LOB(const T* const pContent, std::size_t size):
+		_pContent(new std::vector<T>(pContent, pContent + size))
 		/// Creates the LOB by deep-copying pContent.
 	{
 	}
 
-	LOB(const std::basic_string<T>& rContent):
-		_pContent(new std::vector<T>(rContent.begin(), rContent.end()))
+	LOB(const std::basic_string<T>& content):
+		_pContent(new std::vector<T>(content.begin(), content.end()))
 		/// Creates a LOB from a string.
 	{
 	}
@@ -205,7 +203,7 @@ namespace std
 	template<>
 	inline void swap<Poco::Data::BLOB>(Poco::Data::BLOB& b1, 
 		Poco::Data::BLOB& b2)
-		/// Full template specialization of std:::swap for BLOB
+		/// Full template specalization of std:::swap for BLOB
 	{
 		b1.swap(b2);
 	}
@@ -213,7 +211,7 @@ namespace std
 	template<>
 	inline void swap<Poco::Data::CLOB>(Poco::Data::CLOB& c1, 
 		Poco::Data::CLOB& c2)
-		/// Full template specialization of std:::swap for CLOB
+		/// Full template specalization of std:::swap for CLOB
 	{
 		c1.swap(c2);
 	}

@@ -1,8 +1,6 @@
 //
 // File.cpp
 //
-// $Id: //poco/1.4/Foundation/src/File.cpp#3 $
-//
 // Library: Foundation
 // Package: Filesystem
 // Module:  File
@@ -45,17 +43,17 @@ File::File()
 }
 
 
-File::File(const std::string& rPath): FileImpl(rPath)
+File::File(const std::string& path): FileImpl(path)
 {
 }
 
 
-File::File(const char* pPath): FileImpl(std::string(pPath))
+File::File(const char* path): FileImpl(std::string(path))
 {
 }
 
 
-File::File(const Path& rPath): FileImpl(rPath.toString())
+File::File(const Path& path): FileImpl(path.toString())
 {
 }
 
@@ -77,24 +75,24 @@ File& File::operator = (const File& file)
 }
 
 
-File& File::operator = (const std::string& rPath)
+File& File::operator = (const std::string& path)
 {
-	setPathImpl(rPath);
+	setPathImpl(path);
 	return *this;
 }
 
 
-File& File::operator = (const char* pPath)
+File& File::operator = (const char* path)
 {
-	poco_check_ptr (pPath);
-	setPathImpl(pPath);
+	poco_check_ptr (path);
+	setPathImpl(path);
 	return *this;
 }
 
 
-File& File::operator = (const Path& rPath)
+File& File::operator = (const Path& path)
 {
-	setPathImpl(rPath.toString());
+	setPathImpl(path.toString());
 	return *this;
 }
 
@@ -212,11 +210,11 @@ File& File::setExecutable(bool flag)
 }
 
 	
-void File::copyTo(const std::string& rPath) const
+void File::copyTo(const std::string& path) const
 {
 	Path src(getPathImpl());
-	Path dest(rPath);
-	File destFile(rPath);
+	Path dest(path);
+	File destFile(path);
 	if ((destFile.exists() && destFile.isDirectory()) || dest.isDirectory())
 	{
 		dest.makeDirectory();
@@ -229,9 +227,9 @@ void File::copyTo(const std::string& rPath) const
 }
 
 
-void File::copyDirectory(const std::string& rPath) const
+void File::copyDirectory(const std::string& path) const
 {
-	File target(rPath);
+	File target(path);
 	target.createDirectories();
 
 	Path src(getPathImpl());
@@ -240,23 +238,23 @@ void File::copyDirectory(const std::string& rPath) const
 	DirectoryIterator end;
 	for (; it != end; ++it)
 	{
-		it->copyTo(rPath);
+		it->copyTo(path);
 	}
 }
 
 
-void File::moveTo(const std::string& rPath)
+void File::moveTo(const std::string& path)
 {
-	copyTo(rPath);
+	copyTo(path);
 	remove(true);
-	setPathImpl(rPath);
+	setPathImpl(path);
 }
 
 	
-void File::renameTo(const std::string& rPath)
+void File::renameTo(const std::string& path)
 {
-	renameToImpl(rPath);
-	setPathImpl(rPath);
+	renameToImpl(path);
+	setPathImpl(path);
 }
 
 	
@@ -349,24 +347,6 @@ void File::list(std::vector<std::string>& files) const
 		files.push_back(it.name());
 		++it;
 	}
-}
-
-
-File::FileSize File::totalSpace() const
-{
-	return totalSpaceImpl();
-}
-
-
-File::FileSize File::usableSpace() const
-{
-	return usableSpaceImpl();
-}
-
-
-File::FileSize File::freeSpace() const
-{
-	return freeSpaceImpl();
 }
 
 

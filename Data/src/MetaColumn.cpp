@@ -1,8 +1,6 @@
 //
 // MetaColumn.cpp
 //
-// $Id: //poco/Main/Data/src/MetaColumn.cpp#2 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  MetaColumn
@@ -31,17 +29,17 @@ MetaColumn::MetaColumn():
 }
 
 
-MetaColumn::MetaColumn(std::size_t columnPosition,
-	const std::string& rName,
-	ColumnDataType columnType,
-	std::size_t columnLength,
-	std::size_t columnPrecision,
+MetaColumn::MetaColumn(std::size_t position,
+	const std::string& name,
+	ColumnDataType type,
+	std::size_t length,
+	std::size_t precision,
 	bool nullable): 
-	_name(rName),
-	_length(columnLength),
-	_precision(columnPrecision),
-	_position(columnPosition),
-	_type(columnType),
+	_name(name),
+	_length(length),
+	_precision(precision),
+	_position(position),
+	_type(type),
 	_nullable(nullable)
 {
 }

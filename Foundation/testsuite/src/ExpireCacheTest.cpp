@@ -1,8 +1,6 @@
 //
 // ExpireCacheTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/ExpireCacheTest.cpp#1 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "ExpireCacheTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Exception.h"
 #include "Poco/ExpireCache.h"
 #include "Poco/AccessExpireCache.h"
@@ -28,7 +26,7 @@ using namespace Poco;
 #define DURWAIT  300
 
 
-ExpireCacheTest::ExpireCacheTest(const std::string& rName): CppUnit::TestCase(rName)
+ExpireCacheTest::ExpireCacheTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

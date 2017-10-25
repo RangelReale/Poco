@@ -1,8 +1,6 @@
 //
 // FIFOEventTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/FIFOEventTest.cpp#2 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -12,8 +10,8 @@
 
 #include "FIFOEventTest.h"
 #include "DummyDelegate.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Delegate.h"
 #include "Poco/Expire.h"
 #include "Poco/Thread.h"
@@ -26,7 +24,7 @@ using namespace Poco;
 #define LARGEINC 100
 
 
-FIFOEventTest::FIFOEventTest(const std::string& rName): CppUnit::TestCase(rName)
+FIFOEventTest::FIFOEventTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

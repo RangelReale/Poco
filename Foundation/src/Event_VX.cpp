@@ -1,8 +1,6 @@
 //
 // Event_POSIX.cpp
 //
-// $Id: //poco/1.4/Foundation/src/Event_VX.cpp#1 $
-//
 // Library: Foundation
 // Package: Threading
 // Module:  Event
@@ -21,7 +19,7 @@
 namespace Poco {
 
 
-EventImpl::EventImpl(EventTypeImpl type): _auto(type == EVENT_AUTORESET_IMPL), _state(false)
+EventImpl::EventImpl(bool autoReset): _auto(autoReset), _state(false)
 {
 	_sem = semCCreate(SEM_Q_PRIORITY, 0);
 	if (_sem == 0)

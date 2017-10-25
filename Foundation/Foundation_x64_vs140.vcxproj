@@ -85,7 +85,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros"/>
   <PropertyGroup>
-    <_ProjectFileVersion>14.0.23107.0</_ProjectFileVersion>
+    <_ProjectFileVersion>14.0.25123.0</_ProjectFileVersion>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'">PocoFoundation64d</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_md|x64'">PocoFoundationmdd</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|x64'">PocoFoundationmtd</TargetName>
@@ -832,9 +832,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\SHA1Engine.cpp"/>
-    <ClCompile Include="src\SHA2Engine.cpp"/>
-    <ClCompile Include="src\SHA3Engine.cpp"/>
-    <ClCompile Include="src\BLAKE2Engine.cpp"/>
     <ClCompile Include="src\SharedLibrary.cpp"/>
     <ClCompile Include="src\SharedLibrary_HPUX.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'">true</ExcludedFromBuild>
@@ -1250,9 +1247,6 @@
     <ClInclude Include="include\Poco\Semaphore_POSIX.h"/>
     <ClInclude Include="include\Poco\Semaphore_WIN32.h"/>
     <ClInclude Include="include\Poco\SHA1Engine.h"/>
-    <ClInclude Include="include\Poco\SHA2Engine.h"/>
-    <ClInclude Include="include\Poco\SHA3Engine.h"/>
-    <ClInclude Include="include\Poco\BLAKE2Engine.h"/>
     <ClInclude Include="include\Poco\SharedLibrary.h"/>
     <ClInclude Include="include\Poco\SharedLibrary_HPUX.h"/>
     <ClInclude Include="include\Poco\SharedLibrary_UNIX.h"/>

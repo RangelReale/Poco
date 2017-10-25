@@ -1,8 +1,6 @@
 //
 // ODBCMySQLTest.h
 //
-// $Id: //poco/1.4/Data/MySQL/testsuite/src/ODBCMySQLTest.h#1 $
-//
 // Definition of the MySQLTest class.
 //
 // Copyright (c) 2008, Applied Informatics Software Engineering GmbH.
@@ -19,7 +17,7 @@
 #include "Poco/Data/MySQL/MySQL.h"
 #include "Poco/Data/Session.h"
 #include "Poco/SharedPtr.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 #include "SQLExecutor.h"
 
 
@@ -81,7 +79,6 @@ public:
 	void testDateTime();
 	void testBLOB();
 	void testBLOBStmt();
-	void testLongText();
 
 	void testUnsignedInts();
 	void testFloat();
@@ -89,13 +86,6 @@ public:
 
 	void testTuple();
 	void testTupleVector();
-
-#if __cplusplus >= 201103L
-
-	void testStdTuple();
-	void testStdTupleVector();
-
-#endif
 
 	void testInternalExtraction();
 
@@ -122,7 +112,6 @@ private:
 	void dropTable(const std::string& tableName);
 	void recreatePersonTable();
 	void recreatePersonBLOBTable();
-	void recreatePersonLongTextTable();
 	void recreatePersonDateTimeTable();
 	void recreatePersonDateTable();
 	void recreatePersonTimeTable();
@@ -137,11 +126,6 @@ private:
 
 	static void dbInfo(Poco::Data::Session& session);
 
-	static std::string getHost();
-	static std::string getPort();
-	static std::string getUser();
-	static std::string getPass();
-	static std::string getBase();
 	static std::string _dbConnString;
 	static Poco::SharedPtr<Poco::Data::Session> _pSession;
 	static Poco::SharedPtr<SQLExecutor> _pExecutor;

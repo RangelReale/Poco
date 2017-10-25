@@ -21,6 +21,6 @@ target_include_directories( "${LIBNAME}"
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
 
-if (ENABLE_SAMPLES)
+if (ENABLE_TESTS)
   add_subdirectory(samples)
 endif ()

@@ -1,8 +1,6 @@
 //
 // Event.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/Event.h#2 $
-//
 // Library: Foundation
 // Package: Threading
 // Module:  Event
@@ -46,21 +44,11 @@ class Foundation_API Event: private EventImpl
 	/// for an event to become signalled.
 {
 public:
-	enum EventType
-	{
-		EVENT_MANUALRESET = EVENT_MANUALRESET_IMPL, /// Manual reset event
-		EVENT_AUTORESET = EVENT_AUTORESET_IMPL      /// Auto-reset event
-	};
-
-	explicit Event(EventType type = EVENT_AUTORESET);
-		/// Creates the event. If type is EVENT_AUTORESET,
+	Event(bool autoReset = true);
+		/// Creates the event. If autoReset is true,
 		/// the event is automatically reset after
 		/// a wait() successfully returns.
-
-	//@ deprecated
-	explicit Event(bool autoReset);
-		/// Please use Event::Event(EventType) instead.
-
+		
 	~Event();
 		/// Destroys the event.
 

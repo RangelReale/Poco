@@ -1,8 +1,6 @@
 //
 // Application.cpp
 //
-// $Id: //poco/1.4/Util/src/Application.cpp#6 $
-//
 // Library: Util
 // Package: Application
 // Module:  Application
@@ -71,23 +69,21 @@ Application::Application():
 	_initialized(false),
 	_unixOptions(true),
 	_pLogger(&Logger::get("ApplicationStartup")),
-	_stopOptionsProcessing(false),
-	_loadedConfigs(0)
+	_stopOptionsProcessing(false)
 {
 	setup();
 }
 
 
-Application::Application(int argc, char* pArgv[]):
+Application::Application(int argc, char* argv[]):
 	_pConfig(new LayeredConfiguration),
 	_initialized(false),
 	_unixOptions(true),
 	_pLogger(&Logger::get("ApplicationStartup")),
-	_stopOptionsProcessing(false),
-	_loadedConfigs(0)
+	_stopOptionsProcessing(false)
 {
 	setup();
-	init(argc, pArgv);
+	init(argc, argv);
 }
 
 
@@ -131,9 +127,9 @@ void Application::addSubsystem(Subsystem* pSubsystem)
 }
 
 
-void Application::init(int argc, char* pArgv[])
+void Application::init(int argc, char* argv[])
 {
-	setArgs(argc, pArgv);
+	setArgs(argc, argv);
 	init();
 }
 
@@ -168,9 +164,7 @@ void Application::init()
 	_pConfig->setString("application.name", appPath.getFileName());
 	_pConfig->setString("application.baseName", appPath.getBaseName());
 	_pConfig->setString("application.dir", appPath.parent().toString());
-	_pConfig->setString("application.configDir", Path::configHome() + appPath.getBaseName() + Path::separator());
-	_pConfig->setString("application.cacheDir", Path::cacheHome() + appPath.getBaseName() + Path::separator());
-	_pConfig->setString("application.dataDir", Path::dataHome() + appPath.getBaseName() + Path::separator());
+	_pConfig->setString("application.configDir", appPath.parent().toString());
 	processOptions();
 }
 
@@ -254,14 +248,13 @@ int Application::loadConfiguration(int priority)
 		++n;
 	}
 #endif
-	if (n > 0 && _loadedConfigs == 0)
+	if (n > 0)
 	{
 		if (!confPath.isAbsolute())
 			_pConfig->setString("application.configDir", confPath.absolute().parent().toString());
 		else
 			_pConfig->setString("application.configDir", confPath.parent().toString());
 	}
-	_loadedConfigs += n;
 	return n;
 }
 
@@ -299,14 +292,13 @@ void Application::loadConfiguration(const std::string& path, int priority)
 #endif
 	else throw Poco::InvalidArgumentException("Unsupported configuration file type", ext);
 
-	if (n > 0 && _loadedConfigs == 0)
+	if (n > 0 && !_pConfig->has("application.configDir"))
 	{
 		if (!confPath.isAbsolute())
 			_pConfig->setString("application.configDir", confPath.absolute().parent().toString());
 		else
 			_pConfig->setString("application.configDir", confPath.parent().toString());
 	}
-	_loadedConfigs += n;
 }
 
 
@@ -362,15 +354,15 @@ int Application::main(const ArgVec& args)
 }
 
 
-void Application::setArgs(int argc, char* pArgv[])
+void Application::setArgs(int argc, char* argv[])
 {
-	_command = pArgv[0];
+	_command = argv[0];
 	_pConfig->setInt("application.argc", argc);
 	_unprocessedArgs.reserve(argc);
 	std::string argvKey = "application.argv[";
 	for (int i = 0; i < argc; ++i)
 	{
-		std::string arg(pArgv[i]);
+		std::string arg(argv[i]);
 		_pConfig->setString(argvKey + NumberFormatter::format(i) + "]", arg);
 		_unprocessedArgs.push_back(arg);
 	}
@@ -402,13 +394,13 @@ void Application::processOptions()
 	ArgVec::iterator it = _unprocessedArgs.begin();
 	while (it != _unprocessedArgs.end() && !_stopOptionsProcessing)
 	{
-		std::string argName;
+		std::string name;
 		std::string value;
-		if (processor.process(*it, argName, value))
+		if (processor.process(*it, name, value))
 		{
-			if (!argName.empty()) // "--" option to end options processing or deferred argument
+			if (!name.empty()) // "--" option to end options processing or deferred argument
 			{
-				handleOption(argName, value);
+				handleOption(name, value);
 			}
 			it = _unprocessedArgs.erase(it);
 		}
@@ -437,7 +429,7 @@ void Application::getApplicationPath(Poco::Path& appPath) const
 	}
 	else
 	{
-		if (!Environment::has("PATH") || !Path::find(Environment::get("PATH"), _command, appPath))
+		if (!Path::find(Environment::get("PATH"), _command, appPath))
 			appPath = Path(_workingDirAtLaunch, _command);
 		appPath.makeAbsolute();
 	}
@@ -512,41 +504,18 @@ bool Application::findAppConfigFile(const std::string& appName, const std::strin
 }
 
 
-bool Application::findAppConfigFile(const Path& basePath, const std::string& appName, const std::string& extension, Path& path) const
-{
-	poco_assert (!appName.empty());
-	
-	Path p(basePath,appName);
-	p.setExtension(extension);
-	bool found = findFile(p);
-	if (!found)
-	{
-#if defined(_DEBUG)
-		if (appName[appName.length() - 1] == 'd')
-		{
-			p.setBaseName(appName.substr(0, appName.length() - 1));
-			found = findFile(p);
-		}
-#endif
-	}
-	if (found)
-		path = p;
-	return found;
-}
-
-
-void Application::defineOptions(OptionSet& rOptions)
+void Application::defineOptions(OptionSet& options)
 {
 	for (SubsystemVec::iterator it = _subsystems.begin(); it != _subsystems.end(); ++it)
 	{
-		(*it)->defineOptions(rOptions);
+		(*it)->defineOptions(options);
 	}
 }
 
 
-void Application::handleOption(const std::string& rName, const std::string& value)
+void Application::handleOption(const std::string& name, const std::string& value)
 {
-	const Option& option = _options.getOption(rName);
+	const Option& option = _options.getOption(name);
 	if (option.validator())
 	{
 		option.validator()->validate(option, value);
@@ -559,14 +528,14 @@ void Application::handleOption(const std::string& rName, const std::string& valu
 	}
 	if (option.callback())
 	{
-		option.callback()->invoke(rName, value);
+		option.callback()->invoke(name, value);
 	}
 }
 
 
-void Application::setLogger(Logger& rLogger)
+void Application::setLogger(Logger& logger)
 {
-	_pLogger = &rLogger;
+	_pLogger = &logger;
 }
 
 

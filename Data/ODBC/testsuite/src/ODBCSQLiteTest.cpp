@@ -1,8 +1,6 @@
 //
 // ODBCSQLiteTest.cpp
 //
-// $Id: //poco/Main/Data/ODBC/testsuite/src/ODBCSQLiteTest.cpp#5 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "ODBCSQLiteTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/String.h"
 #include "Poco/Format.h"
 #include "Poco/Exception.h"
@@ -64,7 +62,7 @@ ODBCSQLiteTest::~ODBCSQLiteTest()
 
 void ODBCSQLiteTest::testBareboneODBC()
 {
-	std::string tableCreateString = "CREATE TABLE " + ExecUtil::test_tbl() +
+	std::string tableCreateString = "CREATE TABLE Test "
 		"(First VARCHAR(30),"
 		"Second VARCHAR(30),"
 		"Third BLOB,"
@@ -77,7 +75,7 @@ void ODBCSQLiteTest::testBareboneODBC()
 	executor().bareboneODBCTest(dbConnString(), tableCreateString, SQLExecutor::PB_AT_EXEC, SQLExecutor::DE_MANUAL);
 	executor().bareboneODBCTest(dbConnString(), tableCreateString, SQLExecutor::PB_AT_EXEC, SQLExecutor::DE_BOUND);
 
-	tableCreateString = "CREATE TABLE " + ExecUtil::test_tbl() +
+	tableCreateString = "CREATE TABLE Test "
 		"(First VARCHAR(30),"
 		"Second VARCHAR(30),"
 		"Third BLOB,"
@@ -90,7 +88,7 @@ void ODBCSQLiteTest::testBareboneODBC()
 	executor().bareboneODBCTest(dbConnString(), tableCreateString, SQLExecutor::PB_AT_EXEC, SQLExecutor::DE_MANUAL);
 	executor().bareboneODBCTest(dbConnString(), tableCreateString, SQLExecutor::PB_AT_EXEC, SQLExecutor::DE_BOUND);
 
-	tableCreateString = "CREATE TABLE " + ExecUtil::test_tbl() +
+	tableCreateString = "CREATE TABLE Test "
 		"(First VARCHAR(30),"
 		"Second VARCHAR(30),"
 		"Third BLOB,"
@@ -169,8 +167,8 @@ void ODBCSQLiteTest::dropObject(const std::string& type, const std::string& name
 
 void ODBCSQLiteTest::recreateNullableTable()
 {
-	dropObject("TABLE", ExecUtil::nullabletest());
-	try { *_pSession << "CREATE TABLE " << ExecUtil::nullabletest() << " (EmptyString VARCHAR(30) NULL, EmptyInteger INTEGER NULL, EmptyFloat REAL NULL , EmptyDateTime TIMESTAMP NULL)", now; }
+	dropObject("TABLE", "NullableTest");
+	try { *_pSession << "CREATE TABLE NullableTest (EmptyString VARCHAR(30) NULL, EmptyInteger INTEGER NULL, EmptyFloat REAL NULL , EmptyDateTime TIMESTAMP NULL)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreatePersonTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreatePersonTable()"); }
 }
@@ -178,8 +176,8 @@ void ODBCSQLiteTest::recreateNullableTable()
 
 void ODBCSQLiteTest::recreatePersonTable()
 {
-	dropObject("TABLE", ExecUtil::person());
-	try { session() << "CREATE TABLE " << ExecUtil::person() << " (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), Age INTEGER)", now; }
+	dropObject("TABLE", "Person");
+	try { session() << "CREATE TABLE Person (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), Age INTEGER)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreatePersonTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreatePersonTable()"); }
 }
@@ -187,8 +185,8 @@ void ODBCSQLiteTest::recreatePersonTable()
 
 void ODBCSQLiteTest::recreatePersonBLOBTable()
 {
-	dropObject("TABLE", ExecUtil::person());
-	try { session() << "CREATE TABLE " << ExecUtil::person() << " (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), Image BLOB)", now; }
+	dropObject("TABLE", "Person");
+	try { session() << "CREATE TABLE Person (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), Image BLOB)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreatePersonBLOBTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreatePersonBLOBTable()"); }
 }
@@ -196,8 +194,8 @@ void ODBCSQLiteTest::recreatePersonBLOBTable()
 
 void ODBCSQLiteTest::recreatePersonDateTimeTable()
 {
-	dropObject("TABLE", ExecUtil::person());
-	try { session() << "CREATE TABLE " << ExecUtil::person() << " (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), Born TIMESTAMP)", now; }
+	dropObject("TABLE", "Person");
+	try { session() << "CREATE TABLE Person (LastName VARCHAR(30), FirstName VARCHAR(30), Address VARCHAR(30), Born TIMESTAMP)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreatePersonDateTimeTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreatePersonDateTimeTable()"); }
 }
@@ -205,8 +203,8 @@ void ODBCSQLiteTest::recreatePersonDateTimeTable()
 
 void ODBCSQLiteTest::recreateIntsTable()
 {
-	dropObject("TABLE", ExecUtil::ints());
-	try { session() << "CREATE TABLE " << ExecUtil::ints() <<" (str INTEGER)", now; }
+	dropObject("TABLE", "Strings");
+	try { session() << "CREATE TABLE Strings (str INTEGER)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreateIntsTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreateIntsTable()"); }
 }
@@ -214,8 +212,8 @@ void ODBCSQLiteTest::recreateIntsTable()
 
 void ODBCSQLiteTest::recreateStringsTable()
 {
-	dropObject("TABLE", ExecUtil::strings());
-	try { session() << "CREATE TABLE " << ExecUtil::strings() <<" (str VARCHAR(30))", now; }
+	dropObject("TABLE", "Strings");
+	try { session() << "CREATE TABLE Strings (str VARCHAR(30))", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreateStringsTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreateStringsTable()"); }
 }
@@ -223,8 +221,8 @@ void ODBCSQLiteTest::recreateStringsTable()
 
 void ODBCSQLiteTest::recreateFloatsTable()
 {
-	dropObject("TABLE", ExecUtil::strings());
-	try { session() << "CREATE TABLE " << ExecUtil::strings() <<" (str REAL)", now; }
+	dropObject("TABLE", "Strings");
+	try { session() << "CREATE TABLE Strings (str REAL)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreateFloatsTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreateFloatsTable()"); }
 }
@@ -232,8 +230,8 @@ void ODBCSQLiteTest::recreateFloatsTable()
 
 void ODBCSQLiteTest::recreateTuplesTable()
 {
-	dropObject("TABLE", ExecUtil::tuples());
-	try { session() << "CREATE TABLE  " <<  ExecUtil::tuples()  <<
+	dropObject("TABLE", "Tuples");
+	try { session() << "CREATE TABLE Tuples "
 		"(int0 INTEGER, int1 INTEGER, int2 INTEGER, int3 INTEGER, int4 INTEGER, int5 INTEGER, int6 INTEGER, "
 		"int7 INTEGER, int8 INTEGER, int9 INTEGER, int10 INTEGER, int11 INTEGER, int12 INTEGER, int13 INTEGER,"
 		"int14 INTEGER, int15 INTEGER, int16 INTEGER, int17 INTEGER, int18 INTEGER, int19 INTEGER)", now; }
@@ -244,8 +242,8 @@ void ODBCSQLiteTest::recreateTuplesTable()
 
 void ODBCSQLiteTest::recreateVectorsTable()
 {
-	dropObject("TABLE", ExecUtil::vectors() );
-	try { session() << "CREATE TABLE " << ExecUtil::vectors() << " (int0 INTEGER, flt0 REAL, str0 VARCHAR)", now; }
+	dropObject("TABLE", "Vectors");
+	try { session() << "CREATE TABLE Vectors (int0 INTEGER, flt0 REAL, str0 VARCHAR)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreateVectorsTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreateVectorsTable()"); }
 }
@@ -253,8 +251,8 @@ void ODBCSQLiteTest::recreateVectorsTable()
 
 void ODBCSQLiteTest::recreateAnysTable()
 {
-	dropObject("TABLE", ExecUtil::anys() );
-	try { session() << "CREATE TABLE " << ExecUtil::anys() << " (int0 INTEGER, flt0 REAL, str0 VARCHAR)", now; }
+	dropObject("TABLE", "Anys");
+	try { session() << "CREATE TABLE Anys (int0 INTEGER, flt0 REAL, str0 VARCHAR)", now; }
 	catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreateAnysTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreateAnysTable()"); }
 }
@@ -262,8 +260,8 @@ void ODBCSQLiteTest::recreateAnysTable()
 
 void ODBCSQLiteTest::recreateNullsTable(const std::string& notNull)
 {
-	dropObject("TABLE", ExecUtil::nulltest());
-	try { session() << format("CREATE TABLE %s (i INTEGER %s, r REAL %s, v VARCHAR(30) %s)",ExecUtil::nulltest(),
+	dropObject("TABLE", "NullTest");
+	try { session() << format("CREATE TABLE NullTest (i INTEGER %s, r REAL %s, v VARCHAR(30) %s)",
 		notNull,
 		notNull,
 		notNull), now; }
@@ -274,11 +272,11 @@ void ODBCSQLiteTest::recreateNullsTable(const std::string& notNull)
 
 void ODBCSQLiteTest::recreateMiscTable()
 {
-	dropObject("TABLE", ExecUtil::misctest());
+	dropObject("TABLE", "MiscTest");
 	try 
 	{ 
 		// SQLite fails with BLOB bulk operations
-		session() << "CREATE TABLE "<< ExecUtil::misctest() <<
+		session() << "CREATE TABLE MiscTest "
 			"(First VARCHAR(30),"
 			//"Second BLOB,"
 			"Third INTEGER,"
@@ -291,8 +289,8 @@ void ODBCSQLiteTest::recreateMiscTable()
 
 void ODBCSQLiteTest::recreateLogTable()
 {
-	dropObject("TABLE", ExecUtil::pocolog());;
-	dropObject("TABLE", ExecUtil::pocolog_a());;
+	dropObject("TABLE", "T_POCO_LOG");
+	dropObject("TABLE", "T_POCO_LOG_ARCHIVE");
 
 	try 
 	{ 
@@ -306,8 +304,8 @@ void ODBCSQLiteTest::recreateLogTable()
 			"Text VARCHAR,"
 			"DateTime DATETIME)";
 
-		session() << sql, ExecUtil::pocolog(), now; 
-		session() << sql, ExecUtil::pocolog_a(), now; 
+		session() << sql, "T_POCO_LOG", now; 
+		session() << sql, "T_POCO_LOG_ARCHIVE", now; 
 
 	} catch(ConnectionException& ce){ std::cout << ce.toString() << std::endl; fail ("recreateLogTable()"); }
 	catch(StatementException& se){ std::cout << se.toString() << std::endl; fail ("recreateLogTable()"); }
@@ -326,7 +324,6 @@ CppUnit::Test* ODBCSQLiteTest::suite()
 
 		CppUnit_addTest(pSuite, ODBCSQLiteTest, testBareboneODBC);
 		CppUnit_addTest(pSuite, ODBCSQLiteTest, testZeroRows);
-		CppUnit_addTest(pSuite, ODBCSQLiteTest, testSyntaxError);
 		CppUnit_addTest(pSuite, ODBCSQLiteTest, testSimpleAccess);
 		CppUnit_addTest(pSuite, ODBCSQLiteTest, testComplexType);
 		CppUnit_addTest(pSuite, ODBCSQLiteTest, testSimpleAccessVector);

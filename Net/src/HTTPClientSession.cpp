@@ -1,8 +1,6 @@
 //
 // HTTPClientSession.cpp
 //
-// $Id: //poco/1.4/Net/src/HTTPClientSession.cpp#15 $
-//
 // Library: Net
 // Package: HTTPClient
 // Module:  HTTPClientSession
@@ -46,8 +44,7 @@ HTTPClientSession::HTTPClientSession():
 	_keepAliveTimeout(DEFAULT_KEEP_ALIVE_TIMEOUT, 0),
 	_reconnect(false),
 	_mustReconnect(false),
-	_expectResponseBody(false),
-	_responseReceived(false)
+	_expectResponseBody(false)
 {
 }
 
@@ -59,8 +56,7 @@ HTTPClientSession::HTTPClientSession(const StreamSocket& socket):
 	_keepAliveTimeout(DEFAULT_KEEP_ALIVE_TIMEOUT, 0),
 	_reconnect(false),
 	_mustReconnect(false),
-	_expectResponseBody(false),
-	_responseReceived(false)
+	_expectResponseBody(false)
 {
 }
 
@@ -72,8 +68,7 @@ HTTPClientSession::HTTPClientSession(const SocketAddress& address):
 	_keepAliveTimeout(DEFAULT_KEEP_ALIVE_TIMEOUT, 0),
 	_reconnect(false),
 	_mustReconnect(false),
-	_expectResponseBody(false),
-	_responseReceived(false)
+	_expectResponseBody(false)
 {
 }
 
@@ -85,8 +80,7 @@ HTTPClientSession::HTTPClientSession(const std::string& host, Poco::UInt16 port)
 	_keepAliveTimeout(DEFAULT_KEEP_ALIVE_TIMEOUT, 0),
 	_reconnect(false),
 	_mustReconnect(false),
-	_expectResponseBody(false),
-	_responseReceived(false)
+	_expectResponseBody(false)
 {
 }
 
@@ -98,8 +92,7 @@ HTTPClientSession::HTTPClientSession(const std::string& host, Poco::UInt16 port,
 	_keepAliveTimeout(DEFAULT_KEEP_ALIVE_TIMEOUT, 0),
 	_reconnect(false),
 	_mustReconnect(false),
-	_expectResponseBody(false),
-	_responseReceived(false)
+	_expectResponseBody(false)
 {
 }
 
@@ -197,10 +190,9 @@ std::ostream& HTTPClientSession::sendRequest(HTTPRequest& request)
 {
 	clearException();
 	_pResponseStream = 0;
-	_responseReceived = false;
 
 	bool keepAlive = getKeepAlive();
-	if (((connected() && !keepAlive) || mustReconnect()) && !_host.empty())
+	if ((connected() && !keepAlive) || mustReconnect())
 	{
 		close();
 		_mustReconnect = false;
@@ -211,7 +203,7 @@ std::ostream& HTTPClientSession::sendRequest(HTTPRequest& request)
 			reconnect();
 		if (!keepAlive)
 			request.setKeepAlive(false);
-		if (!request.has(HTTPRequest::HOST) && !_host.empty())
+		if (!request.has(HTTPRequest::HOST))
 			request.setHost(_host, _port);
 		if (!_proxyConfig.host.empty() && !bypassProxy())
 		{
@@ -266,28 +258,25 @@ std::istream& HTTPClientSession::receiveResponse(HTTPResponse& response)
 	_pRequestStream = 0;
 	if (networkException()) networkException()->rethrow();
 
-	if (!_responseReceived)
+	do
 	{
-		do
+		response.clear();
+		HTTPHeaderInputStream his(*this);
+		try
 		{
-			response.clear();
-			HTTPHeaderInputStream his(*this);
-			try
-			{
-				response.read(his);
-			}
-			catch (Exception&)
-			{
-				close();
-				if (networkException())
-					networkException()->rethrow();
-				else
-					throw;
-				throw;
-			}
+			response.read(his);
 		}
-		while (response.getStatus() == HTTPResponse::HTTP_CONTINUE);
+		catch (Exception&)
+		{
+			close();
+			if (networkException())
+				networkException()->rethrow();
+			else
+				throw;
+			throw;
+		}
 	}
+	while (response.getStatus() == HTTPResponse::HTTP_CONTINUE);
 
 	_mustReconnect = getKeepAlive() && !response.getKeepAlive();
 
@@ -305,34 +294,6 @@ std::istream& HTTPClientSession::receiveResponse(HTTPResponse& response)
 		_pResponseStream = new HTTPInputStream(*this);
 		
 	return *_pResponseStream;
-}
-
-
-bool HTTPClientSession::peekResponse(HTTPResponse& response)
-{
-	poco_assert (!_responseReceived);
-
-	_pRequestStream->flush();
-
-	if (networkException()) networkException()->rethrow();
-
-	response.clear();
-	HTTPHeaderInputStream his(*this);
-	try
-	{
-		response.read(his);
-	}
-	catch (Exception&)
-	{
-		close();
-		if (networkException())
-			networkException()->rethrow();
-		else
-			throw;
-		throw;
-	}
-	_responseReceived = response.getStatus() != HTTPResponse::HTTP_CONTINUE;
-	return !_responseReceived;
 }
 
 

@@ -1,8 +1,6 @@
 //
 // AbstractBinding.cpp
 //
-// $Id: //poco/Main/Data/src/AbstractBinding.cpp#5 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  AbstractBinding
@@ -21,13 +19,13 @@ namespace Poco {
 namespace Data {
 
 
-AbstractBinding::AbstractBinding(const std::string& rName, 
+AbstractBinding::AbstractBinding(const std::string& name, 
 	Direction direction, 
-	Poco::UInt32 bindingBulkSize): 
+	Poco::UInt32 bulkSize): 
 	_pBinder(0),
-	_name(rName),
+	_name(name),
 	_direction(direction),
-	_bulkSize(bindingBulkSize)
+	_bulkSize(bulkSize)
 {
 }
 

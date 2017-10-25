@@ -1,8 +1,6 @@
 //
 // Statement.cpp
 //
-// $Id: //poco/Main/Data/src/Statement.cpp#11 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  Statement
@@ -37,10 +35,10 @@ Statement::Statement(StatementImpl::Ptr pImpl):
 }
 
 
-Statement::Statement(Session& rSession):
+Statement::Statement(Session& session):
 	_async(false)
 {
-	reset(rSession);
+	reset(session);
 }
 
 
@@ -81,15 +79,15 @@ void Statement::swap(Statement& other)
 }
 
 
-Statement& Statement::reset(Session& rSession)
+Statement& Statement::reset(Session& session)
 {
-	Statement stmt(rSession.createStatementImpl());
+	Statement stmt(session.createStatementImpl());
 	swap(stmt);
 	return *this;
 }
 
 
-std::size_t Statement::execute(bool doReset)
+std::size_t Statement::execute(bool reset)
 {
 	Mutex::ScopedLock lock(_mutex);
 	bool isDone = done();
@@ -104,7 +102,7 @@ std::size_t Statement::execute(bool doReset)
 		if (!isAsync())
 		{
 			if (isDone) _pImpl->reset();
-			return _pImpl->execute(doReset);
+			return _pImpl->execute(reset);
 		}
 		else
 		{
@@ -116,22 +114,22 @@ std::size_t Statement::execute(bool doReset)
 }
 
 
-const Statement::Result& Statement::executeAsync(bool doReset)
+const Statement::Result& Statement::executeAsync(bool reset)
 {
 	Mutex::ScopedLock lock(_mutex);
 	if (initialized() || paused() || done())
-		return doAsyncExec(doReset);
+		return doAsyncExec(reset);
 	else
 		throw InvalidAccessException("Statement still executing.");
 }
 
 
-const Statement::Result& Statement::doAsyncExec(bool doReset)
+const Statement::Result& Statement::doAsyncExec(bool reset)
 {
 	if (done()) _pImpl->reset();
 	if (!_pAsyncExec)
 		_pAsyncExec = new AsyncExecMethod(_pImpl, &StatementImpl::execute);
-	_pResult = new Result((*_pAsyncExec)(doReset));
+	_pResult = new Result((*_pAsyncExec)(reset));
 	return *_pResult;
 }
 

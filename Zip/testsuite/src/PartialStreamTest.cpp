@@ -1,8 +1,6 @@
 //
 // PartialStreamTest.cpp
 //
-// $Id: //poco/1.4/Zip/testsuite/src/PartialStreamTest.cpp#1 $
-//
 // Copyright (c) 2007, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "PartialStreamTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Zip/PartialStream.h"
 #include "Poco/Zip/AutoDetectStream.h"
 #include "Poco/Zip/ZipUtil.h"

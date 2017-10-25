@@ -1,8 +1,6 @@
 #
 # Makefile
 #
-# $Id: //poco/Main/template/TestSuite.make#3 $
-#
 # Makefile for Poco NetSSL testsuite
 #
 
@@ -17,11 +15,10 @@ endif
 
 objects = NetSSLTestSuite Driver \
 	HTTPSClientSessionTest HTTPSClientTestSuite HTTPSServerTest HTTPSServerTestSuite \
-	HTTPSStreamFactoryTest HTTPSTestServer TCPServerTest TCPServerTestSuite \
-	WebSocketTest WebSocketTestSuite
+	HTTPSStreamFactoryTest HTTPSTestServer TCPServerTest TCPServerTestSuite
 
 target         = testrunner
 target_version = 1
-target_libs    = PocoNetSSL PocoNet PocoCrypto PocoUtil PocoJSON PocoXML PocoFoundation PocoCppUnit
+target_libs    = PocoNetSSL PocoNet PocoCrypto PocoUtil PocoJSON PocoXML PocoFoundation CppUnit
 
 include $(POCO_BASE)/build/rules/exec

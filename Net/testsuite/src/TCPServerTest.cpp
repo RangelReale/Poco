@@ -1,8 +1,6 @@
 //
 // TCPServerTest.cpp
 //
-// $Id: //poco/1.4/Net/testsuite/src/TCPServerTest.cpp#1 $
-//
 // Copyright (c) 2005-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "TCPServerTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Net/TCPServer.h"
 #include "Poco/Net/TCPServerConnection.h"
 #include "Poco/Net/TCPServerConnectionFactory.h"
@@ -24,7 +22,6 @@
 
 
 using Poco::Net::TCPServer;
-using Poco::Net::TCPServerConnectionFilter;
 using Poco::Net::TCPServerConnection;
 using Poco::Net::TCPServerConnectionFactory;
 using Poco::Net::TCPServerConnectionFactoryImpl;
@@ -63,15 +60,6 @@ namespace
 			}
 		}
 	};
-	
-	class RejectFilter: public TCPServerConnectionFilter
-	{
-	public:
-		bool accept(const StreamSocket&)
-		{
-			return false;
-		}
-	};
 }
 
 
@@ -94,7 +82,7 @@ void TCPServerTest::testOneConnection()
 	assert (srv.queuedConnections() == 0);
 	assert (srv.totalConnections() == 0);
 	
-	SocketAddress sa("127.0.0.1", srv.socket().address().port());
+	SocketAddress sa("localhost", srv.socket().address().port());
 	StreamSocket ss1(sa);
 	std::string data("hello, world");
 	ss1.sendBytes(data.data(), (int) data.size());
@@ -121,7 +109,7 @@ void TCPServerTest::testTwoConnections()
 	assert (srv.queuedConnections() == 0);
 	assert (srv.totalConnections() == 0);
 	
-	SocketAddress sa("127.0.0.1", srv.socket().address().port());
+	SocketAddress sa("localhost", srv.socket().address().port());
 	StreamSocket ss1(sa);
 	StreamSocket ss2(sa);
 	std::string data("hello, world");
@@ -169,7 +157,7 @@ void TCPServerTest::testMultiConnections()
 	assert (srv.queuedConnections() == 0);
 	assert (srv.totalConnections() == 0);
 	
-	SocketAddress sa("127.0.0.1", svs.address().port());
+	SocketAddress sa("localhost", svs.address().port());
 	StreamSocket ss1(sa);
 	StreamSocket ss2(sa);
 	StreamSocket ss3(sa);
@@ -243,9 +231,7 @@ void TCPServerTest::testMultiConnections()
 	assert (srv.currentConnections() == 0);
 }
 
-
-void TCPServerTest::testThreadCapacity()
-{
+void TCPServerTest::testThreadCapacity(){
 	ServerSocket svs(0);
 	TCPServerParams* pParams = new TCPServerParams;
 	pParams->setMaxThreads(64);
@@ -254,29 +240,6 @@ void TCPServerTest::testThreadCapacity()
 	assert (srv.maxThreads() >= 64);
 }
 
-
-void TCPServerTest::testFilter()
-{
-	TCPServer srv(new TCPServerConnectionFactoryImpl<EchoConnection>());
-	srv.setConnectionFilter(new RejectFilter);
-	srv.start();
-	assert (srv.currentConnections() == 0);
-	assert (srv.currentThreads() == 0);
-	assert (srv.queuedConnections() == 0);
-	assert (srv.totalConnections() == 0);
-	
-	SocketAddress sa("127.0.0.1", srv.socket().address().port());
-	StreamSocket ss(sa);
-
-	char buffer[256];
-	int n = ss.receiveBytes(buffer, sizeof(buffer));
-
-	assert (n == 0);
-	assert (srv.currentConnections() == 0);
-	assert (srv.currentThreads() == 0);
-	assert (srv.queuedConnections() == 0);
-	assert (srv.totalConnections() == 0);
-}
 
 
 void TCPServerTest::setUp()
@@ -297,7 +260,6 @@ CppUnit::Test* TCPServerTest::suite()
 	CppUnit_addTest(pSuite, TCPServerTest, testTwoConnections);
 	CppUnit_addTest(pSuite, TCPServerTest, testMultiConnections);
 	CppUnit_addTest(pSuite, TCPServerTest, testThreadCapacity);
-	CppUnit_addTest(pSuite, TCPServerTest, testFilter);
 
 	return pSuite;
 }

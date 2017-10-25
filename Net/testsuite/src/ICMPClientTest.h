@@ -1,8 +1,6 @@
 //
 // ICMPClientTest.h
 //
-// $Id: //poco/1.4/Net/testsuite/src/ICMPClientTest.h#1 $
-//
 // Definition of the ICMPClientTest class.
 //
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
@@ -17,7 +15,7 @@
 
 
 #include "Poco/Net/Net.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 #include "Poco/Net/ICMPClient.h"
 #include "Poco/Net/ICMPEventArgs.h"
 
@@ -29,7 +27,6 @@ public:
 	~ICMPClientTest();
 
 	void testPing();
-	void testPingNonRaw();
 
 	void setUp();
 	void tearDown();

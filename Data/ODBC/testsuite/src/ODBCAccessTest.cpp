@@ -1,8 +1,6 @@
 //
 // ODBCAccessTest.cpp
 //
-// $Id: //poco/Main/Data/ODBC/testsuite/src/ODBCAccessTest.cpp#5 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "ODBCAccessTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/String.h"
 #include "Poco/Format.h"
 #include "Poco/Exception.h"
@@ -45,7 +43,6 @@ Poco::Data::ODBC::Utility::DriverMap ODBCAccessTest::_drivers;
 ODBCAccessTest::ODBCAccessTest(const std::string& name): 
 	CppUnit::TestCase(name)
 {
-	Poco::Data::ODBC::Connector::registerConnector();
 }
 
 
@@ -114,8 +111,8 @@ void ODBCAccessTest::dropTable(const std::string& tableName)
 
 void ODBCAccessTest::recreatePersonTable()
 {
-	dropTable(ExecUtil::person());
-	*_pSession << "CREATE TABLE " << ExecUtil::person() << " (LastName TEXT(30), FirstName TEXT(30), Address TEXT(30), Age INTEGER)", now;
+	dropTable("Person");
+	*_pSession << "CREATE TABLE Person (LastName TEXT(30), FirstName TEXT(30), Address TEXT(30), Age INTEGER)", now;
 }
 
 
@@ -176,7 +173,7 @@ void ODBCAccessTest::setUp()
 
 void ODBCAccessTest::tearDown()
 {
-	dropTable(ExecUtil::person());
+	dropTable("Person");
 }
 
 
@@ -185,7 +182,6 @@ bool ODBCAccessTest::init(const std::string& driver, const std::string& dsn)
 	Utility::drivers(_drivers);
 	if (!canConnect(driver, dsn)) return false;
 
-	Poco::Data::ODBC::Connector::registerConnector();
 	try
 	{
 		_pSession = new Session(Poco::Data::ODBC::Connector::KEY, _dbConnString);
@@ -195,7 +191,7 @@ bool ODBCAccessTest::init(const std::string& driver, const std::string& dsn)
 		return false;
 	}
 
-	//N.B. Access driver does not support check for connection.
+	//N.B. Access driver does not suport check for connection.
 	std::cout << "*** Connected to [" << driver << "] test database." << std::endl;
 
 	return true;

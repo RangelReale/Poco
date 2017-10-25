@@ -1,8 +1,6 @@
 //
 // ThreadingTestSuite.h
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/ThreadingTestSuite.h#1 $
-//
 // Definition of the ThreadingTestSuite class.
 //
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
@@ -16,7 +14,7 @@
 #define ThreadingTestSuite_INCLUDED
 
 
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestSuite.h"
 
 
 class ThreadingTestSuite

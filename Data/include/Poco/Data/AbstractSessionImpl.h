@@ -1,8 +1,6 @@
 //
 // AbstractSessionImpl.h
 //
-// $Id: //poco/Main/Data/include/Poco/Data/AbstractSessionImpl.h#5 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  AbstractSessionImpl
@@ -52,8 +50,8 @@ public:
 	typedef Poco::Any (C::*PropertyGetter)(const std::string&);
 		/// The getter method for a property.
 
-	AbstractSessionImpl(const std::string& rConnectionString,
-		std::size_t timeout = LOGIN_TIMEOUT_DEFAULT): SessionImpl(rConnectionString, timeout),
+	AbstractSessionImpl(const std::string& connectionString,
+		std::size_t timeout = LOGIN_TIMEOUT_DEFAULT): SessionImpl(connectionString, timeout),
 			_storage(std::string("deque")),
 			_bulk(false),
 			_emptyStringIsNull(false),

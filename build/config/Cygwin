@@ -1,9 +1,9 @@
 #
 # $Id$
 #
-# Cygwin
+# CYGWIN
 #
-# Make settings for Cygwin on WinXP/gcc 3.4
+# Make settings for Cygwin
 #
 #
 
@@ -11,8 +11,6 @@
 # General Settings, note that strip doesn't do anything on Cygwin, thus empty
 #
 LINKMODE ?= SHARED
-
-OMIT    += Data/PostgreSQL
 
 #
 # Define Tools
@@ -22,7 +20,7 @@ CXX     = g++
 LINK    = $(CXX)
 LIB     = ar -cr
 RANLIB  = ranlib
-SHLIB   = $(CXX) -shared -o $@ 
+SHLIB   = $(CXX) -shared -o $@
 SHLIBLN = $(POCO_BASE)/build/script/shlibln
 STRIP   =
 DEP     = $(POCO_BASE)/build/script/makedepend.gcc 
@@ -46,19 +44,19 @@ IMPLIBLINKEXT    = .dll.a
 # Compiler and Linker Flags
 #
 CFLAGS          = 
-CFLAGS32        =
+CFLAGS32        = 
 CFLAGS64        = 
-CXXFLAGS        = -DPOCO_NO_FPENVIRONMENT -DPOCO_NO_WSTRING
-CXXFLAGS32      = -Wa,-mbig-obj
+CXXFLAGS        = -Wa,-mbig-obj -DPOCO_NO_FPENVIRONMENT -DPOCO_NO_WSTRING
+CXXFLAGS32      =
 CXXFLAGS64      = -Wa,-mbig-obj
 SHLIBFLAGS      = -Wl,--out-implib=$(dir $@)$(subst cyg,lib,$(notdir $@)).a -Wl,--export-all-symbols -Wl,--enable-auto-import
 SHLIBFLAGS32    = 
 SHLIBFLAGS64    = 
-LINKFLAGS       =
-LINKFLAGS32     =
+LINKFLAGS       = 
+LINKFLAGS32     = 
 LINKFLAGS64     = 
-STATICOPT_CC    =
-STATICOPT_CXX   =
+STATICOPT_CC    = 
+STATICOPT_CXX   = 
 STATICOPT_LINK  = -static
 SHAREDOPT_CC    = 
 SHAREDOPT_CXX   = 
@@ -75,7 +73,19 @@ RELEASEOPT_LINK =
 #
 SYSFLAGS = -D_XOPEN_SOURCE=500
 
+# give visibility of old BSD typedef like u_short, u_int, u_long...
+# used in some networking system includes, needed when using PocoNet
+SYSFLAGS += -D__BSD_VISIBLE
+
+
 #
 # System Specific Libraries
 #
 SYSLIBS  = 
+
+# commented out until OSARCH_POSTFIX be fixed 
+#ifeq ($(findstring x86_64,$(shell uname -m)),x86_64)
+#    OSARCH_64BITS = 1
+#else
+#    OSARCH_64BITS = 0
+#endif

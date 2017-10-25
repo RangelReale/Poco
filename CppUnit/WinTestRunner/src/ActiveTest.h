@@ -1,16 +1,14 @@
 //
 // ActiveTest.h
 //
-// $Id: //poco/1.4/CppUnit/WinTestRunner/src/ActiveTest.h#1 $
-//
 
 
 #ifndef ActiveTest_INCLUDED
 #define ActiveTest_INCLUDED
 
 
-#include "Poco/CppUnit/CppUnit.h"
-#include "Poco/CppUnit/TestDecorator.h"
+#include "CppUnit/CppUnit.h"
+#include "CppUnit/TestDecorator.h"
 #include <afxmt.h>
 
 

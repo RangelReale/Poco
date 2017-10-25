@@ -1,8 +1,6 @@
 //
 // XMLConfiguration.cpp
 //
-// $Id: //poco/1.4/Util/src/XMLConfiguration.cpp#2 $
-//
 // Library: Util
 // Package: Configuration
 // Module:  XMLConfiguration
@@ -268,7 +266,7 @@ void XMLConfiguration::enumerate(const std::string& key, Keys& range) const
 {
 	using Poco::NumberFormatter;
 	
-	std::multiset<std::string> keySet;
+	std::multiset<std::string> keys;
 	const Poco::XML::Node* pNode = findNode(key);
 	if (pNode)
 	{
@@ -278,12 +276,12 @@ void XMLConfiguration::enumerate(const std::string& key, Keys& range) const
 			if (pChild->nodeType() == Poco::XML::Node::ELEMENT_NODE)
 			{
 				const std::string& nodeName = pChild->nodeName();
-				int n = (int) keySet.count(nodeName);
+				int n = (int) keys.count(nodeName);
 				if (n)
 					range.push_back(nodeName + "[" + NumberFormatter::format(n) + "]");
 				else
 					range.push_back(nodeName);
-				keySet.insert(nodeName);
+				keys.insert(nodeName);
 			}
 			pChild = pChild->nextSibling();
 		}

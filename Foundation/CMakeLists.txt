@@ -16,9 +16,6 @@ POCO_HEADERS_AUTO( SRCS include/Poco/OpcomChannel.h )
 POCO_SOURCES_AUTO_PLAT( SRCS UNIX src/SyslogChannel.cpp )
 POCO_HEADERS_AUTO( SRCS include/Poco/SyslogChannel.h )
 
-POCO_SOURCES_AUTO_PLAT( SRCS ANDROID src/AndroidLogChannel.cpp )
-POCO_HEADERS_AUTO( SRCS include/Poco/AndroidLogChannel.h )
-
 # For Windows CE we need to disable these
 if(WINCE)
 POCO_SOURCES_AUTO_PLAT( SRCS OFF
@@ -51,6 +48,9 @@ if (POCO_UNBUNDLED)
 	find_package(ZLIB REQUIRED)
 	set(SYSLIBS ${SYSLIBS} ${ZLIB_LIBRARIES})
 	include_directories(${ZLIB_INCLUDE_DIRS})
+
+	add_definitions(-DPOCO_UNBUNDLED)
+
 else()
 	# pcre
 	POCO_SOURCES( SRCS pcre
@@ -111,18 +111,16 @@ endif(ANDROID)
 # TODO: Why is this here?
 add_definitions( -DPCRE_STATIC)
 
-# For POSIX threads on Unix
+# For SetAffinity
 if(UNIX AND NOT APPLE)
-	# We still need pthreads on Unix
-	set(SYSLIBS ${SYSLIBS} ${CMAKE_THREAD_LIBS_INIT})
 	INCLUDE (CheckFunctionExists)
 	INCLUDE (CheckCXXSourceCompiles)
 	INCLUDE (CheckLibraryExists)
 	CHECK_LIBRARY_EXISTS(pthread pthread_setaffinity_np "pthread.h" HAVE_PTHREAD_SETAFFINITY_NP)
+	#set(CMAKE_EXTRA_INCLUDE_FILES pthread.h)
+	#CHECK_FUNCTION_EXISTS(pthread_setaffinity_np HAVE_PTHREAD_SETAFFINITY_NP)
 	if(NOT HAVE_PTHREAD_SETAFFINITY_NP)
-        if(POCO_VERBOSE_MESSAGES)
-            message(STATUS "Platform has not PTHREAD_SETAFFINITY_NP")
-        endif()
+		message(STATUS "Platform has not PTHREAD_SETAFFINITY_NP")
 	else(HAVE_PTHREAD_SETAFFINITY_NP)
 		add_definitions(-DHAVE_PTHREAD_SETAFFINITY_NP)
 		CHECK_CXX_SOURCE_COMPILES("
@@ -134,9 +132,7 @@ if(UNIX AND NOT APPLE)
 		}" HAVE_THREE_PARAM_SCHED_SETAFFINITY)
 
 		if(HAVE_THREE_PARAM_SCHED_SETAFFINITY)
-            if(POCO_VERBOSE_MESSAGES)
-                message(STATUS "Platform has THREE PARAM at PTHREAD_SETAFFINITY_NP")
-            endif()
+			message(STATUS "Platform has THREE PARAM at PTHREAD_SETAFFINITY_NP")
 			add_definitions(-DHAVE_THREE_PARAM_SCHED_SETAFFINITY)
 		else(HAVE_THREE_PARAM_SCHED_SETAFFINITY)
 			CHECK_CXX_SOURCE_COMPILES("
@@ -148,9 +144,7 @@ if(UNIX AND NOT APPLE)
 			}" HAVE_TWO_PARAM_SCHED_SETAFFINITY)
 
 			if(HAVE_TWO_PARAM_SCHED_SETAFFINITY)
-                if(POCO_VERBOSE_MESSAGES)
-                    message(STATUS "Platform has TWO PARAM at PTHREAD_SETAFFINITY_NP")
-                endif()
+				message(STATUS "Platform has TWO PARAM at PTHREAD_SETAFFINITY_NP")
 				add_definitions(-DHAVE_TWO_PARAM_SCHED_SETAFFINITY)
 			endif(HAVE_TWO_PARAM_SCHED_SETAFFINITY)
 
@@ -180,9 +174,7 @@ POCO_INSTALL("${LIBNAME}")
 POCO_GENERATE_PACKAGE("${LIBNAME}")
 
 if (ENABLE_TESTS)
-	add_subdirectory( testsuite )
-endif ()
-if (ENABLE_SAMPLES)
 	add_subdirectory( samples )
+	add_subdirectory( testsuite )
 endif ()
 

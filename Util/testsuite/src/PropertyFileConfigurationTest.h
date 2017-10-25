@@ -1,8 +1,6 @@
 //
 // PropertyFileConfigurationTest.h
 //
-// $Id: //poco/1.4/Util/testsuite/src/PropertyFileConfigurationTest.h#1 $
-//
 // Definition of the PropertyFileConfigurationTest class.
 //
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
@@ -27,10 +25,7 @@ public:
 	virtual ~PropertyFileConfigurationTest();
 
 	void testLoad();
-   void testLoadEmpty();
-   void testLoadWithPreserveComment();
 	void testSave();
-   void testLoadSaveWithPreserveComment();
 
 	void setUp();
 	void tearDown();
@@ -39,8 +34,6 @@ public:
 
 private:
 	virtual Poco::Util::AbstractConfiguration* allocConfiguration() const;
-
-   void testLoad(bool preserveComment);
 };
 
 

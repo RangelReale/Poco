@@ -1,8 +1,6 @@
 //
 // ODBCTest.h
 //
-// $Id: //poco/Main/Data/ODBC/testsuite/src/ODBCTest.h#4 $
-//
 // Definition of the ODBCTest class.
 //
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
@@ -17,7 +15,7 @@
 
 
 #include "Poco/Data/ODBC/ODBC.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 #include "Poco/Data/Session.h"
 #include "Poco/Data/ODBC/Utility.h"
 #include "Poco/SharedPtr.h"
@@ -141,7 +139,6 @@ public:
 	virtual void testDynamicAny();
 
 	virtual void testMultipleResults();
-	virtual void testMultipleResultsNoProj();
 
 	virtual void testSQLChannel();
 	virtual void testSQLLogger();
@@ -154,8 +151,6 @@ public:
 	virtual void testUnicode();
 
 	virtual void testReconnect();
-	virtual void testSyntaxError();
-	virtual void testInsertStatReuse();
 
 protected:
 	typedef Poco::Data::ODBC::Utility::DriverMap Drivers;
@@ -179,9 +174,6 @@ protected:
 	virtual void recreateMiscTable();
 	virtual void recreateLogTable();
 	virtual void recreateUnicodeTable();
-	virtual void recreateNumericTable();
-	virtual bool emptyStringIsSpace() { return false; }
-	virtual std::string str2NumExpr(const std::string& num, unsigned len, unsigned dec) { return num; }
 
 	static SessionPtr init(const std::string& driver,
 		std::string& dsn,
@@ -268,11 +260,6 @@ inline void ODBCTest::dropObject(const std::string& type, const std::string& nam
 inline void ODBCTest::recreateNullableTable()
 { 
 	throw Poco::NotImplementedException("ODBCTest::recreateNullableTable()");
-}
-
-inline void ODBCTest::recreateNumericTable()
-{
-	throw Poco::NotImplementedException("ODBCTest::recreateNumericTable()");
 }
 
 

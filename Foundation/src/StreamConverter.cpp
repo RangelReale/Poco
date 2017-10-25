@@ -1,8 +1,6 @@
 //
 // StreamConverter.cpp
 //
-// $Id: //poco/1.4/Foundation/src/StreamConverter.cpp#1 $
-//
 // Library: Foundation
 // Package: Text
 // Module:  StreamConverter
@@ -113,10 +111,10 @@ int StreamConverterBuf::writeToDevice(char c)
 				++_errors;
 				return -1;
 			}
-			int number = _outEncoding.convert(uc, _buffer, sizeof(_buffer));
-			if (number == 0) number = _outEncoding.convert(_defaultChar, _buffer, sizeof(_buffer));
-			poco_assert_dbg (number <= sizeof(_buffer));
-			_pOstr->write((char*) _buffer, number);
+			int n = _outEncoding.convert(uc, _buffer, sizeof(_buffer));
+			if (n == 0) n = _outEncoding.convert(_defaultChar, _buffer, sizeof(_buffer));
+			poco_assert_dbg (n <= sizeof(_buffer));
+			_pOstr->write((char*) _buffer, n);
 			_sequenceLength = 0;
 			_pos = 0;
 		}

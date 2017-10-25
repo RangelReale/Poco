@@ -1,8 +1,6 @@
 //
 // XMLConfigurationTest.cpp
 //
-// $Id: //poco/1.4/Util/testsuite/src/XMLConfigurationTest.cpp#2 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "XMLConfigurationTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Util/XMLConfiguration.h"
 #include "Poco/AutoPtr.h"
 #include "Poco/Exception.h"

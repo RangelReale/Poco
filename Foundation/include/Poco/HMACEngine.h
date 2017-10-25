@@ -1,8 +1,6 @@
 //
 // HMACEngine.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/HMACEngine.h#1 $
-//
 // Library: Foundation
 // Package: Crypt
 // Module:  HMACEngine
@@ -30,7 +28,7 @@ namespace Poco {
 
 template <class Engine>
 class HMACEngine: public DigestEngine
-	/// This class implements the HMAC message
+	/// This class implementes the HMAC message
 	/// authentication code algorithm, as specified
 	/// in RFC 2104. The underlying DigestEngine
 	/// (MD5Engine, SHA1Engine, etc.) must be given as 

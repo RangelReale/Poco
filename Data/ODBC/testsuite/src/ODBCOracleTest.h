@@ -1,8 +1,6 @@
 //
 // ODBCOracleTest.h
 //
-// $Id: //poco/Main/Data/ODBC/testsuite/src/ODBCOracleTest.h#4 $
-//
 // Definition of the ODBCOracleTest class.
 //
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
@@ -35,8 +33,6 @@ public:
 	~ODBCOracleTest();
 
 	void testBareboneODBC();
-
-	void testInternalExtraction();
 
 	void testBLOB();
 

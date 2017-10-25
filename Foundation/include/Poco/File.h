@@ -1,8 +1,6 @@
 //
 // File.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/File.h#3 $
-//
 // Library: Foundation
 // Package: Filesystem
 // Module:  File
@@ -220,15 +218,6 @@ public:
 	void list(std::vector<File>& files) const;
 		/// Fills the vector with the names of all
 		/// files in the directory.
-
-	FileSize totalSpace() const;
-		/// Returns the total size in bytes of the partition containing this path.
-
-	FileSize usableSpace() const;
-		/// Returns the number of usable free bytes on the partition containing this path.
-
-	FileSize freeSpace() const;
-		/// Returns the number of free bytes on the partition containing this path.
 
 	bool operator == (const File& file) const;
 	bool operator != (const File& file) const;

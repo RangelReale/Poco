@@ -1,8 +1,6 @@
 //
 // DateTimeParserTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/DateTimeParserTest.cpp#5 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "DateTimeParserTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTimeFormat.h"
 #include "Poco/DateTime.h"
@@ -27,7 +25,7 @@ using Poco::Timestamp;
 using Poco::SyntaxException;
 
 
-DateTimeParserTest::DateTimeParserTest(const std::string& rName): CppUnit::TestCase(rName)
+DateTimeParserTest::DateTimeParserTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

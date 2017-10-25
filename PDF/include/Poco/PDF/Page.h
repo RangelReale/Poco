@@ -1,8 +1,6 @@
 //
 // Page.h
 //
-// $Id: //poco/Main/PDF/include/Poco/PDF/Page.h#4 $
-//
 // Library: PDF
 // Package: PDFCore
 // Module:  Page
@@ -321,7 +319,7 @@ public:
 		/// Draws an arc.
 
 	void ellipse(float x, float y, float xRadius, float yRadius);
-		/// Draws an ellipse.
+		/// Draws an ellips.
 
 	void stroke();
 		/// Paints the current path.
@@ -424,7 +422,7 @@ public:
 		/// Returns current dash mode.
 
 	void setDashMode(const PatternVec& pattern, int paramNo, int phase) const;
-		/// Sets the dash mode.
+		/// Sets teh dash mode.
 
 	float getFlatness() const;
 		/// Returns the current flatness.

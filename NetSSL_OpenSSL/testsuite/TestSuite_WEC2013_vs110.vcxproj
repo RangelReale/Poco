@@ -10,8 +10,6 @@
     <ClInclude Include="src\HTTPSClientSessionTest.h"/>
     <ClInclude Include="src\HTTPSClientTestSuite.h"/>
     <ClInclude Include="src\HTTPSStreamFactoryTest.h"/>
-    <ClInclude Include="src\WebSocketTest.h"/>
-    <ClInclude Include="src\WebSocketTestSuite.h"/>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>TestSuite</ProjectName>
@@ -47,8 +45,6 @@
     <ClCompile Include="src\HTTPSClientSessionTest.cpp"/>
     <ClCompile Include="src\HTTPSClientTestSuite.cpp"/>
     <ClCompile Include="src\HTTPSStreamFactoryTest.cpp"/>
-    <ClCompile Include="src\WebSocketTest.cpp"/>
-    <ClCompile Include="src\WebSocketTestSuite.cpp"/>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
   <ImportGroup Label="ExtensionTargets"/>

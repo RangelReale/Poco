@@ -1,8 +1,6 @@
 //
 // NetworkInterface.cpp
 //
-// $Id: //poco/1.4/Net/src/NetworkInterface.cpp#9 $
-//
 // Library: Net
 // Package: NetCore
 // Module:  NetworkInterface
@@ -28,7 +26,6 @@
 #include "Poco/RefCountedObject.h"
 #include "Poco/Format.h"
 #if defined(POCO_OS_FAMILY_WINDOWS)
-	#include "Poco/Platform_WIN32_OSVER.h"
 	#if defined(POCO_WIN32_UTF8)
 		#include "Poco/UnicodeConverter.h"
 	#endif
@@ -245,7 +242,7 @@ void NetworkInterfaceImpl::setPhyParams()
 #if !defined(POCO_OS_FAMILY_WINDOWS) && !defined(POCO_VXWORKS)
 	struct ifreq ifr;
 	std::strncpy(ifr.ifr_name, _name.c_str(), IFNAMSIZ);
-	DatagramSocket ds(SocketAddress::IPv4);
+	DatagramSocket ds;
 
 	ds.impl()->ioctl(SIOCGIFFLAGS, &ifr);
 	setFlags(ifr.ifr_flags);
@@ -799,10 +796,16 @@ bool NetworkInterface::isUp() const
 
 NetworkInterface NetworkInterface::forName(const std::string& name, bool requireIPv6)
 {
-	if (requireIPv6) 
-		return forName(name, IPv6_ONLY);
-	else 
-		return forName(name, IPv4_OR_IPv6);
+	Map map = NetworkInterface::map(false, false);
+	Map::const_iterator it = map.begin();
+	Map::const_iterator end = map.end();
+
+	for (; it != end; ++it)
+	{
+		if (it->second.name() == name && ((requireIPv6 && it->second.supportsIPv6()) || !requireIPv6))
+			return it->second;
+	}
+	throw InterfaceNotFoundException(name);
 }
 
 
@@ -1200,7 +1203,7 @@ NetworkInterface::Map NetworkInterface::map(bool ipOnly, bool upOnly)
 					bool hasBroadcast = (pAddress->IfType == IF_TYPE_ETHERNET_CSMACD) || (pAddress->IfType == IF_TYPE_SOFTWARE_LOOPBACK) || (pAddress->IfType == IF_TYPE_IEEE80211);
 					if (hasBroadcast)
 					{
-						// On Windows, a valid broadcast address will be all 1's (== address | ~subnetMask); additionally, on pre-Vista versions of
+						// On Windows, a valid broadcast address will be all 1's (== address | ~subnetMask); additionaly, on pre-Vista versions of
 						// OS, master address structure does not contain member for prefix length; we go an extra mile here in order to make sure
 						// we reflect the actual values held by system and protect against misconfiguration (e.g. bad DHCP config entry)
 						ULONG prefixLength = 0;

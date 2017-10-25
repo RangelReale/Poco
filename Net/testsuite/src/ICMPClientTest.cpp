@@ -1,8 +1,6 @@
 //
 // ICMPClientTest.cpp
 //
-// $Id: //poco/1.4/Net/testsuite/src/ICMPClientTest.cpp#1 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "ICMPClientTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Net/ICMPSocket.h"
 #include "Poco/Net/ICMPClient.h"
 #include "Poco/Net/ICMPEventArgs.h"
@@ -48,42 +46,15 @@ ICMPClientTest::~ICMPClientTest()
 
 void ICMPClientTest::testPing()
 {
-	assert(ICMPClient::pingIPv4("127.0.0.1") > 0);
+	assert(ICMPClient::pingIPv4("localhost") > 0);
 
-	assert(_icmpClient.ping("127.0.0.1") > 0);
+	assert(_icmpClient.ping("localhost") > 0);
 	assert(_icmpClient.ping("www.appinf.com", 4) > 0);
 
 	// warning: may fail depending on the existence of the addresses at test site
 	// if so, adjust accordingly (i.e. specify non-existent or unreachable IP addresses)
 	assert(0 == _icmpClient.ping("192.168.243.1"));
 	assert(0 == _icmpClient.ping("10.11.12.13"));
-}
-
-
-void ICMPClientTest::testPingNonRaw()
-{
-	try
-	{
-		ICMPClient icmpClient(IPAddress::IPv4, false);
-		icmpClient.pingBegin += Delegate<ICMPClientTest, ICMPEventArgs>(this, &ICMPClientTest::onBegin);
-		icmpClient.pingReply += Delegate<ICMPClientTest, ICMPEventArgs>(this, &ICMPClientTest::onReply);
-		icmpClient.pingError += Delegate<ICMPClientTest, ICMPEventArgs>(this, &ICMPClientTest::onError);
-		icmpClient.pingEnd += Delegate<ICMPClientTest, ICMPEventArgs>(this, &ICMPClientTest::onEnd);
-
-		assert(ICMPClient::pingIPv4("localhost", 1, false) > 0);
-
-		assert(icmpClient.ping("localhost") > 0);
-		assert(icmpClient.ping("www.appinf.com", 4) > 0);
-
-		// warning: may fail depending on the existence of the addresses at test site
-		// if so, adjust accordingly (i.e. specify non-existent or unreachable IP addresses)
-		assert(0 == icmpClient.ping("192.168.243.1"));
-		assert(0 == icmpClient.ping("10.11.12.13"));
-	}
-	catch (Poco::NotImplementedException &)
-	{
-		// ignore if not implemented
-	}
 }
 
 
@@ -154,7 +125,6 @@ CppUnit::Test* ICMPClientTest::suite()
 	CppUnit::TestSuite* pSuite = new CppUnit::TestSuite("ICMPClientTest");
 
 	CppUnit_addTest(pSuite, ICMPClientTest, testPing);
-	CppUnit_addTest(pSuite, ICMPClientTest, testPingNonRaw);
 
 	return pSuite;
 }

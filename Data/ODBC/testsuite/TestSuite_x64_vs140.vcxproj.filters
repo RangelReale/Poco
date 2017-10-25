@@ -2,28 +2,28 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="ODBC">
-      <UniqueIdentifier>{11d927ba-e3cd-42e8-add9-154c55648934}</UniqueIdentifier>
+      <UniqueIdentifier>{de338470-1925-46d1-9e19-fd101b85e072}</UniqueIdentifier>
     </Filter>
     <Filter Include="ODBC\Header Files">
-      <UniqueIdentifier>{b95dfca8-ba65-4965-bc2d-904bd467f629}</UniqueIdentifier>
+      <UniqueIdentifier>{b12f6713-3d93-4ad1-bfe9-1e5c3b24673f}</UniqueIdentifier>
     </Filter>
     <Filter Include="ODBC\Source Files">
-      <UniqueIdentifier>{0832da8d-4895-46be-a23e-e935863dace1}</UniqueIdentifier>
+      <UniqueIdentifier>{881e5e10-d7ce-4222-9d77-27ddac4525d8}</UniqueIdentifier>
     </Filter>
     <Filter Include="_Suite">
-      <UniqueIdentifier>{845598ea-27ce-48d5-b0b2-23a195dcac4b}</UniqueIdentifier>
+      <UniqueIdentifier>{28caa012-9635-4023-a3fe-4c4125ada2c0}</UniqueIdentifier>
     </Filter>
     <Filter Include="_Suite\Header Files">
-      <UniqueIdentifier>{271070e7-20a7-4613-8f8f-df7228136865}</UniqueIdentifier>
+      <UniqueIdentifier>{be5926c1-a22d-4dad-8de7-1d1f9c319511}</UniqueIdentifier>
     </Filter>
     <Filter Include="_Suite\Source Files">
-      <UniqueIdentifier>{88d2acb1-6299-4ee3-95ec-b85fb6e2c6bb}</UniqueIdentifier>
+      <UniqueIdentifier>{eff0300e-a055-40a5-9d6b-6930d14def2e}</UniqueIdentifier>
     </Filter>
     <Filter Include="_Driver">
-      <UniqueIdentifier>{98ad7004-89da-4bc5-a95d-c2171e889cd3}</UniqueIdentifier>
+      <UniqueIdentifier>{ef3a1b04-abf4-45cb-a048-dc783484b392}</UniqueIdentifier>
     </Filter>
     <Filter Include="_Driver\Source Files">
-      <UniqueIdentifier>{1df6c463-bdd8-4ec2-9cd3-8a880d4a09ba}</UniqueIdentifier>
+      <UniqueIdentifier>{f315e50d-a434-4a25-ae82-709c3f3c1f45}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -56,9 +56,6 @@
     </ClInclude>
     <ClInclude Include="src\ODBCTestSuite.h">
       <Filter>_Suite\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ODBCSybaseTest.h">
-      <Filter>ODBC\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -94,9 +91,6 @@
     </ClCompile>
     <ClCompile Include="src\Driver.cpp">
       <Filter>_Driver\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ODBCSybaseTest.cpp">
-      <Filter>ODBC\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

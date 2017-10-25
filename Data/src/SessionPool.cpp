@@ -1,8 +1,6 @@
 //
 // SessionPool.cpp
 //
-// $Id: //poco/Main/Data/src/SessionPool.cpp#3 $
-//
 // Library: Data
 // Package: SessionPooling
 // Module:  SessionPool
@@ -52,12 +50,12 @@ SessionPool::~SessionPool()
 }
 
 
-Session SessionPool::get(const std::string& rName, bool value)
+Session SessionPool::get(const std::string& name, bool value)
 {
 	Session s = get();
 	_addFeatureMap.insert(AddFeatureMap::value_type(s.impl(),
-		std::make_pair(rName, s.getFeature(rName))));
-	s.setFeature(rName, value);
+		std::make_pair(name, s.getFeature(name))));
+	s.setFeature(name, value);
 
 	return s;
 }
@@ -163,7 +161,7 @@ int SessionPool::available() const
 }
 
 
-void SessionPool::setFeature(const std::string& rName, bool state)
+void SessionPool::setFeature(const std::string& name, bool state)
 {
 	Poco::Mutex::ScopedLock lock(_mutex);
 	if (_shutdown) throw InvalidAccessException("Session pool has been shut down.");
@@ -171,23 +169,23 @@ void SessionPool::setFeature(const std::string& rName, bool state)
 	if (_nSessions > 0)
 		throw InvalidAccessException("Features can not be set after the first session was created.");
 
-	_featureMap.insert(FeatureMap::ValueType(rName, state));
+	_featureMap.insert(FeatureMap::ValueType(name, state));
 }
 
 
-bool SessionPool::getFeature(const std::string& rName)
+bool SessionPool::getFeature(const std::string& name)
 {
-	FeatureMap::ConstIterator it = _featureMap.find(rName);
+	FeatureMap::ConstIterator it = _featureMap.find(name);
 	if (_shutdown) throw InvalidAccessException("Session pool has been shut down.");
 
 	if (_featureMap.end() == it)
-		throw NotFoundException("Feature not found:" + rName);
+		throw NotFoundException("Feature not found:" + name);
 
 	return it->second;
 }
 
 
-void SessionPool::setProperty(const std::string& rName, const Poco::Any& value)
+void SessionPool::setProperty(const std::string& name, const Poco::Any& value)
 {
 	Poco::Mutex::ScopedLock lock(_mutex);
 	if (_shutdown) throw InvalidAccessException("Session pool has been shut down.");
@@ -195,16 +193,16 @@ void SessionPool::setProperty(const std::string& rName, const Poco::Any& value)
 	if (_nSessions > 0)
 		throw InvalidAccessException("Properties can not be set after first session was created.");
 
-	_propertyMap.insert(PropertyMap::ValueType(rName, value));
+	_propertyMap.insert(PropertyMap::ValueType(name, value));
 }
 
 
-Poco::Any SessionPool::getProperty(const std::string& rName)
+Poco::Any SessionPool::getProperty(const std::string& name)
 {
-	PropertyMap::ConstIterator it = _propertyMap.find(rName);
+	PropertyMap::ConstIterator it = _propertyMap.find(name);
 
 	if (_propertyMap.end() == it)
-		throw NotFoundException("Property not found:" + rName);
+		throw NotFoundException("Property not found:" + name);
 
 	return it->second;
 }

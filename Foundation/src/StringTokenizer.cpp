@@ -1,8 +1,6 @@
 //
 // StringTokenizer.cpp
 //
-// $Id: //poco/1.4/Foundation/src/StringTokenizer.cpp#1 $
-//
 // Library: Foundation
 // Package: Core
 // Module:	StringTokenizer
@@ -25,13 +23,13 @@ namespace Poco {
 StringTokenizer::StringTokenizer(const std::string& str, const std::string& separators, int options)
 {
 	std::string::const_iterator it = str.begin();
-	std::string::const_iterator itEnd = str.end();
+	std::string::const_iterator end = str.end();
 	std::string token;
 	bool doTrim = ((options & TOK_TRIM) != 0);
 	bool ignoreEmpty = ((options & TOK_IGNORE_EMPTY) != 0);
 	bool lastToken = false;
 
-	for (; it != itEnd; ++it)
+	for (; it != end; ++it)
 	{
 		if (separators.find(*it) != std::string::npos) 
 		{

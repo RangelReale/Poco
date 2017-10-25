@@ -1,8 +1,6 @@
 //
 // SessionImpl.h
 //
-// $Id: //poco/Main/Data/ODBC/include/Poco/Data/ODBC/SessionImpl.h#4 $
-//
 // Library: Data/ODBC
 // Package: ODBC
 // Module:  SessionImpl
@@ -59,7 +57,7 @@ public:
 		bool autoBind = true,
 		bool autoExtract = true);
 		/// Creates the SessionImpl. Opens a connection to the database.
-		/// Throws NotConnectedException if connection was not successful.
+		/// Throws NotConnectedException if connection was not succesful.
 
 	//@ deprecated
 	SessionImpl(const std::string& connect, 
@@ -170,8 +168,6 @@ public:
 private:
 	void setDataTypeInfo(const std::string& rName, const Poco::Any& rValue);
 		/// No-op. Throws InvalidAccessException.
-
-	void init();
 
 	static const int FUNCTIONS = SQL_API_ODBC3_ALL_FUNCTIONS_SIZE;
 

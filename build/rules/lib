@@ -1,6 +1,4 @@
 #
-# $Id: //poco/1.4/build/rules/lib#2 $
-#
 # lib
 #
 # Rule definitions for building libraries
@@ -17,22 +15,22 @@ SHL_EXT = $(SHAREDLIBLINKEXT)
 IMP_EXT = $(IMPLIBLINKEXT)
 endif
 
-LIB_RELEASE_STATIC      = $(LIBPATH)/$(LIBPREFIX)$(target).a
-LIB_DEBUG_STATIC        = $(LIBPATH)/$(LIBPREFIX)$(target)d.a
-LIB_RELEASE_SHARED      = $(LIBPATH)/$(LIBPREFIX)$(target)$(SHL_EXT)
-LIB_DEBUG_SHARED        = $(LIBPATH)/$(LIBPREFIX)$(target)d$(SHL_EXT)
-LIB_RELEASE_SHARED_LINK = $(LIBPATH)/$(LIBPREFIX)$(target)$(SHAREDLIBLINKEXT)
-LIB_DEBUG_SHARED_LINK   = $(LIBPATH)/$(LIBPREFIX)$(target)d$(SHAREDLIBLINKEXT)
+LIB_RELEASE_STATIC      = $(LIBPATH)/$(LIBPREFIX)$(target)$(OSARCH_POSTFIX).a
+LIB_DEBUG_STATIC        = $(LIBPATH)/$(LIBPREFIX)$(target)d$(OSARCH_POSTFIX).a
+LIB_RELEASE_SHARED      = $(LIBPATH)/$(LIBPREFIX)$(target)$(OSARCH_POSTFIX)$(SHL_EXT)
+LIB_DEBUG_SHARED        = $(LIBPATH)/$(LIBPREFIX)$(target)d$(OSARCH_POSTFIX)$(SHL_EXT)
+LIB_RELEASE_SHARED_LINK = $(LIBPATH)/$(LIBPREFIX)$(target)$(OSARCH_POSTFIX)$(SHAREDLIBLINKEXT)
+LIB_DEBUG_SHARED_LINK   = $(LIBPATH)/$(LIBPREFIX)$(target)d$(OSARCH_POSTFIX)$(SHAREDLIBLINKEXT)
 
-ifeq ($(OSNAME), Cygwin)
+ifeq ($(OSNAME), CYGWIN)
 IMP_RELEASE_SHARED      = $(LIBPATH)/$(IMPPREFIX)$(target)$(OSARCH_POSTFIX)$(IMP_EXT)
 IMP_DEBUG_SHARED        = $(LIBPATH)/$(IMPPREFIX)$(target)d$(OSARCH_POSTFIX)$(IMP_EXT)
 IMP_RELEASE_SHARED_LINK = $(LIBPATH)/$(IMPPREFIX)$(target)$(OSARCH_POSTFIX)$(IMPLIBLINKEXT)
 IMP_DEBUG_SHARED_LINK   = $(LIBPATH)/$(IMPPREFIX)$(target)d$(OSARCH_POSTFIX)$(IMPLIBLINKEXT)
 endif
 
-TARGET_LIBS_DEBUG   = $(foreach l,$(target_libs),-l$(l)d)
-TARGET_LIBS_RELEASE = $(foreach l,$(target_libs),-l$(l))
+TARGET_LIBS_DEBUG   = $(foreach l,$(target_libs),-l$(l)d$(OSARCH_POSTFIX))
+TARGET_LIBS_RELEASE = $(foreach l,$(target_libs),-l$(l)$(OSARCH_POSTFIX))
 
 #
 # Include the compile rules
@@ -58,20 +56,20 @@ shared_release: libdirs $(LIB_RELEASE_SHARED)
 
 $(LIB_DEBUG_STATIC): $(foreach o,$(objects),$(OBJPATH_DEBUG_STATIC)/$(o).o)
 	@echo "** Building library (debug)" $@
-	$(LIB) $(LIBFLAGS) $@ $^
+	$(LIB) $@ $^
 	$(RANLIB) $@
 	$(postbuild)
 
 $(LIB_RELEASE_STATIC): $(foreach o,$(objects),$(OBJPATH_RELEASE_STATIC)/$(o).o)
 	@echo "** Building library (release)" $@
-	$(LIB) $(LIBFLAGS) $@ $^
+	$(LIB) $@ $^
 	$(RANLIB) $@
 	$(postbuild)
 
 $(LIB_DEBUG_SHARED): $(foreach o,$(objects),$(OBJPATH_DEBUG_SHARED)/$(o).o)
 	@echo "** Building shared library (debug)" $@
 	$(SHLIB) $(SHLIBFLAGS) $^ $(LIBRARY) $(TARGET_LIBS_DEBUG) $(SYSLIBS)
-ifeq ($(OSNAME), Cygwin)
+ifeq ($(OSNAME), CYGWIN)
 	$(SHLIBLN) $(IMP_DEBUG_SHARED) $(IMP_DEBUG_SHARED_LINK)
 endif
 	$(SHLIBLN) $(LIB_DEBUG_SHARED) $(LIB_DEBUG_SHARED_LINK)
@@ -80,7 +78,7 @@ endif
 $(LIB_RELEASE_SHARED): $(foreach o,$(objects),$(OBJPATH_RELEASE_SHARED)/$(o).o)
 	@echo "** Building shared library (release)" $@
 	$(SHLIB) $(SHLIBFLAGS) $^ $(LIBRARY) $(TARGET_LIBS_RELEASE) $(SYSLIBS)
-ifeq ($(OSNAME), Cygwin)
+ifeq ($(OSNAME), CYGWIN)
 	$(SHLIBLN) $(IMP_RELEASE_SHARED) $(IMP_RELEASE_SHARED_LINK)
 endif
 	$(SHLIBLN) $(LIB_RELEASE_SHARED) $(LIB_RELEASE_SHARED_LINK)

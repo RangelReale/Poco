@@ -1,8 +1,6 @@
 //
 // Extractor.cpp
 //
-// $Id: //poco/Main/Data/ODBC/src/Extractor.cpp#5 $
-//
 // Library: Data/ODBC
 // Package: ODBC
 // Module:  Extractor
@@ -352,37 +350,18 @@ bool Extractor::extractManualImpl<UTF16String>(std::size_t pos, UTF16String& val
 
 
 template<>
-bool Extractor::extractManualImpl<Poco::Data::CLOB>(std::size_t pos,
-	Poco::Data::CLOB& val,
-	SQLSMALLINT cType)
-{
-	return extractManualLOBImpl(pos, val, cType);
-}
-
-
-template<>
-bool Extractor::extractManualImpl<Poco::Data::BLOB>(std::size_t pos,
-	Poco::Data::BLOB& val,
-	SQLSMALLINT cType)
-{
-	return extractManualLOBImpl(pos, val, cType);
-}
-
-
-template<typename T>
-bool Extractor::extractManualLOBImpl(std::size_t pos, 
-	Poco::Data::LOB<T>& val, 
+bool Extractor::extractManualImpl<Poco::Data::CLOB>(std::size_t pos, 
+	Poco::Data::CLOB& val, 
 	SQLSMALLINT cType)
 {
 	std::size_t maxSize = _pPreparator->getMaxFieldSize();
-	const int bufSize = CHUNK_SIZE;
-	std::size_t fetchedSize = bufSize;
+	std::size_t fetchedSize = 0;
 	std::size_t totalSize = 0;
 
 	SQLLEN len;
-	
-	Poco::Buffer<T> apChar(bufSize);
-	T* pChar = apChar.begin();
+	const int bufSize = CHUNK_SIZE;
+	Poco::Buffer<char> apChar(bufSize);
+	char* pChar = apChar.begin();
 	SQLRETURN rc = 0;
 	
 	val.clear();
@@ -390,9 +369,7 @@ bool Extractor::extractManualLOBImpl(std::size_t pos,
 
 	do
 	{
-		// clear out the latest data in the buffer
-		if (fetchedSize > 0)
-			std::memset(pChar, 0, fetchedSize);
+		std::memset(pChar, 0, bufSize);
 		len = 0;
 		rc = SQLGetData(_rStmt, 
 			(SQLUSMALLINT) pos + 1, 
@@ -415,7 +392,7 @@ bool Extractor::extractManualLOBImpl(std::size_t pos,
 		if (SQL_NO_DATA == rc || !len)
 			break;
 
-		fetchedSize = len > bufSize ? bufSize : len;
+		fetchedSize = len > CHUNK_SIZE ? CHUNK_SIZE : len;
 		totalSize += fetchedSize;
 		if (totalSize <= maxSize) 
 			val.appendRaw(pChar, fetchedSize);
@@ -1319,7 +1296,8 @@ bool Extractor::isNull(std::size_t col, std::size_t row)
 			throw RangeException(ex.what()); 
 		}
 	}
-	else return SQL_NULL_DATA == _pPreparator->actualDataSize(col, row);
+	else
+		return SQL_NULL_DATA == _pPreparator->actualDataSize(col, row);
 }
 
 

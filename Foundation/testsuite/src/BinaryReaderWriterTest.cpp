@@ -1,8 +1,6 @@
 //
 // BinaryReaderWriterTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/BinaryReaderWriterTest.cpp#2 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "BinaryReaderWriterTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/BinaryWriter.h"
 #include "Poco/BinaryReader.h"
 #include "Poco/Buffer.h"
@@ -30,7 +28,7 @@ using Poco::Int64;
 using Poco::UInt64;
 
 
-BinaryReaderWriterTest::BinaryReaderWriterTest(const std::string& rName): CppUnit::TestCase(rName)
+BinaryReaderWriterTest::BinaryReaderWriterTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

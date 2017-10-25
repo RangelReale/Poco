@@ -1,8 +1,6 @@
 //
 // ThreadPool.cpp
 //
-// $Id: //poco/1.4/Foundation/src/ThreadPool.cpp#2 $
-//
 // Library: Foundation
 // Package: Threading
 // Module:  ThreadPool
@@ -36,9 +34,9 @@ public:
 	PooledThread(const std::string& name, int stackSize = POCO_THREAD_STACK_SIZE);
 	~PooledThread();
 
-	void start(int cpu = -1);
-	void start(Thread::Priority priority, Runnable& target, int cpu = -1);
-	void start(Thread::Priority priority, Runnable& target, const std::string& name, int cpu = -1);
+	void start();
+	void start(Thread::Priority priority, Runnable& target);
+	void start(Thread::Priority priority, Runnable& target, const std::string& name);
 	bool idle();
 	int idleTime();
 	void join();
@@ -65,10 +63,7 @@ PooledThread::PooledThread(const std::string& name, int stackSize):
 	_pTarget(0), 
 	_name(name), 
 	_thread(name),
-	_targetReady(),
-	_targetCompleted(Event::EVENT_MANUALRESET),
-	_started(),
-	_mutex()
+	_targetCompleted(false)
 {
 	poco_assert_dbg (stackSize >= 0);
 	_thread.setStackSize(stackSize);
@@ -85,18 +80,14 @@ PooledThread::~PooledThread()
 }
 
 
-void PooledThread::start(int cpu)
+void PooledThread::start()
 {
 	_thread.start(*this);
 	_started.wait();
-	if (cpu >= 0) 
-	{
-		_thread.setAffinity(static_cast<unsigned>(cpu));
-	}
 }
 
 
-void PooledThread::start(Thread::Priority priority, Runnable& target, int cpu)
+void PooledThread::start(Thread::Priority priority, Runnable& target)
 {
 	FastMutex::ScopedLock lock(_mutex);
 	
@@ -105,14 +96,10 @@ void PooledThread::start(Thread::Priority priority, Runnable& target, int cpu)
 	_pTarget = &target;
 	_thread.setPriority(priority);
 	_targetReady.set();
-	if (cpu >= 0) 
-	{
-		_thread.setAffinity(static_cast<unsigned>(cpu));
-	}
 }
 
 
-void PooledThread::start(Thread::Priority priority, Runnable& target, const std::string& name, int cpu)
+void PooledThread::start(Thread::Priority priority, Runnable& target, const std::string& name)
 {
 	FastMutex::ScopedLock lock(_mutex);
 
@@ -134,10 +121,6 @@ void PooledThread::start(Thread::Priority priority, Runnable& target, const std:
 
 	_pTarget = &target;
 	_targetReady.set();
-	if (cpu >= 0) 
-	{
-		_thread.setAffinity(static_cast<unsigned>(cpu));
-	}
 }
 
 
@@ -252,66 +235,45 @@ void PooledThread::run()
 ThreadPool::ThreadPool(int minCapacity,
 	int maxCapacity,
 	int idleTime,
-	int stackSize,
-	ThreadAffinityPolicy affinityPolicy):
+	int stackSize): 
 	_minCapacity(minCapacity), 
 	_maxCapacity(maxCapacity), 
 	_idleTime(idleTime),
 	_serial(0),
 	_age(0),
-	_stackSize(stackSize),
-	_affinityPolicy(affinityPolicy),
-	_lastCpu(0)
+	_stackSize(stackSize)
 {
 	poco_assert (minCapacity >= 1 && maxCapacity >= minCapacity && idleTime > 0);
 
-	int cpu = -1;
-	int cpuCount = Poco::Environment::processorCount();
-	
 	for (int i = 0; i < _minCapacity; i++)
 	{
-		if (_affinityPolicy == TAP_UNIFORM_DISTRIBUTION) 
-		{
-			cpu = _lastCpu.value() % cpuCount;
-			_lastCpu++;
-		}
 		PooledThread* pThread = createThread();
 		_threads.push_back(pThread);
-		pThread->start(cpu);
+		pThread->start();
 	}
 }
 
 
-ThreadPool::ThreadPool(const std::string& rName,
+ThreadPool::ThreadPool(const std::string& name,
 	int minCapacity,
 	int maxCapacity,
 	int idleTime,
-	int stackSize,
-	ThreadAffinityPolicy affinityPolicy):
-	_name(rName),
+	int stackSize):
+	_name(name),
 	_minCapacity(minCapacity), 
 	_maxCapacity(maxCapacity), 
 	_idleTime(idleTime),
 	_serial(0),
 	_age(0),
-	_stackSize(stackSize),
-	_affinityPolicy(affinityPolicy),
-	_lastCpu(0)
+	_stackSize(stackSize)
 {
 	poco_assert (minCapacity >= 1 && maxCapacity >= minCapacity && idleTime > 0);
 
-	int cpu = -1;
-	int cpuCount = Poco::Environment::processorCount();
 	for (int i = 0; i < _minCapacity; i++)
 	{
-		if (_affinityPolicy == TAP_UNIFORM_DISTRIBUTION) 
-		{
-			cpu = _lastCpu.value() % cpuCount;
-			_lastCpu++;
-		}
 		PooledThread* pThread = createThread();
 		_threads.push_back(pThread);
-		pThread->start(cpu);
+		pThread->start();
 	}
 }
 
@@ -380,55 +342,27 @@ int ThreadPool::allocated() const
 }
 
 
-int ThreadPool::affinity(int cpu)
+void ThreadPool::start(Runnable& target)
 {
-	switch (static_cast<int>(_affinityPolicy)) 
-	{
-		case TAP_UNIFORM_DISTRIBUTION:
-		{
-			cpu = _lastCpu.value() % Environment::processorCount();
-			_lastCpu++;
-		}
-		break;
-		case TAP_DEFAULT:
-		{
-			cpu = -1;
-		}
-		break;
-		case TAP_CUSTOM:
-		{
-			if ((cpu < -1) || (cpu >= Environment::processorCount())) 
-			{
-				throw InvalidArgumentException("cpu argument is invalid");
-			}
-		}
-		break;
-	}
-	return cpu;
+	getThread()->start(Thread::PRIO_NORMAL, target);
 }
 
 
-void ThreadPool::start(Runnable& target, int cpu)
+void ThreadPool::start(Runnable& target, const std::string& name)
 {
-	getThread()->start(Thread::PRIO_NORMAL, target, affinity(cpu));
+	getThread()->start(Thread::PRIO_NORMAL, target, name);
 }
 
 
-void ThreadPool::start(Runnable& target, const std::string& rName, int cpu)
+void ThreadPool::startWithPriority(Thread::Priority priority, Runnable& target)
 {
-	getThread()->start(Thread::PRIO_NORMAL, target, rName, affinity(cpu));
+	getThread()->start(priority, target);
 }
 
 
-void ThreadPool::startWithPriority(Thread::Priority priority, Runnable& target, int cpu)
+void ThreadPool::startWithPriority(Thread::Priority priority, Runnable& target, const std::string& name)
 {
-	getThread()->start(priority, target, affinity(cpu));
-}
-
-
-void ThreadPool::startWithPriority(Thread::Priority priority, Runnable& target, const std::string& rName, int cpu)
-{
-	getThread()->start(priority, target, rName, affinity(cpu));
+	getThread()->start(priority, target, name);
 }
 
 
@@ -526,14 +460,14 @@ PooledThread* ThreadPool::getThread()
 			{
 				pThread->start();
 				_threads.push_back(pThread);
-			} 
-			catch (...)
+			} catch (...)
 			{
 				delete pThread;
 				throw;
 			}
 		}
-		else throw NoThreadAvailableException();
+		else
+			throw NoThreadAvailableException();
 	}
 	pThread->activate();
 	return pThread;
@@ -542,9 +476,9 @@ PooledThread* ThreadPool::getThread()
 
 PooledThread* ThreadPool::createThread()
 {
-	std::ostringstream threadName;
-	threadName << _name << "[#" << ++_serial << "]";
-	return new PooledThread(threadName.str(), _stackSize);
+	std::ostringstream name;
+	name << _name << "[#" << ++_serial << "]";
+	return new PooledThread(name.str(), _stackSize);
 }
 
 
@@ -555,20 +489,17 @@ public:
 	{
 		_pPool = 0;
 	}
-
 	~ThreadPoolSingletonHolder()
 	{
 		delete _pPool;
 	}
-
-	ThreadPool* pool(ThreadPool::ThreadAffinityPolicy affinityPolicy = ThreadPool::TAP_DEFAULT)
+	ThreadPool* pool()
 	{
 		FastMutex::ScopedLock lock(_mutex);
 		
 		if (!_pPool)
 		{
 			_pPool = new ThreadPool("default");
-			_pPool->setAffinityPolicy(affinityPolicy);
 			if (POCO_THREAD_STACK_SIZE > 0)
 				_pPool->setStackSize(POCO_THREAD_STACK_SIZE);
 		}
@@ -587,9 +518,9 @@ namespace
 }
 
 
-ThreadPool& ThreadPool::defaultPool(ThreadAffinityPolicy affinityPolicy)
+ThreadPool& ThreadPool::defaultPool()
 {
-	return *sh.pool(affinityPolicy);
+	return *sh.pool();
 }
 
 

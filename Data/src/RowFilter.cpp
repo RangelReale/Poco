@@ -1,8 +1,6 @@
 //
 // RowFilter.cpp
 //
-// $Id: //poco/Main/Data/src/RowFilter.cpp#1 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  RowFilter
@@ -29,8 +27,7 @@ RowFilter::RowFilter(RecordSet* pRecordSet): _pRecordSet(pRecordSet), _not(false
 {
 	poco_check_ptr(pRecordSet);
 	init();
-	Ptr pThis(this, true);
-	_pRecordSet->filter(pThis);
+	_pRecordSet->filter(this);
 }
 
 
@@ -40,8 +37,7 @@ RowFilter::RowFilter(Ptr pParent, LogicOperator op): _pRecordSet(0),
 {
 	poco_check_ptr(_pParent.get());
 	init();
-	Ptr pThis(this, true);
-	_pParent->addFilter(pThis, op);
+	_pParent->addFilter(this, op);
 }
 
 
@@ -64,12 +60,7 @@ RowFilter::~RowFilter()
 	try
 	{
 		if (_pRecordSet) _pRecordSet->filter(0);
-		if (_pParent)
-		{
-			Ptr pThis(this, true);
-			if(_pParent->has(pThis))
-				_pParent->removeFilter(pThis);
-		}
+		if (_pParent.get()) _pParent->removeFilter(this);
 	}
 	catch (...)
 	{
@@ -169,7 +160,7 @@ RowFilter::Comparison RowFilter::getComparison(const std::string& comp) const
 }
 
 
-void RowFilter::addFilter(Ptr pFilter, LogicOperator comparison)
+void RowFilter::addFilter(const Ptr& pFilter, LogicOperator comparison)
 {
 	poco_check_ptr (_pRecordSet);
 
@@ -179,14 +170,13 @@ void RowFilter::addFilter(Ptr pFilter, LogicOperator comparison)
 }
 
 
-void RowFilter::removeFilter(Ptr pFilter)
+void RowFilter::removeFilter(const Ptr& pFilter)
 {
 	poco_check_ptr (_pRecordSet);
 
+	pFilter->_pRecordSet = 0;
 	_pRecordSet->moveFirst();
 	_filterMap.erase(pFilter);
-	pFilter->_pRecordSet = 0;
-	pFilter->_pParent = 0;
 }
 
 

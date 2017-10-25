@@ -1,8 +1,6 @@
 //
 // TextBufferIterator.cpp
 //
-// $Id: //poco/1.4/Foundation/src/TextBufferIterator.cpp#1 $
-//
 // Library: Foundation
 // Package: Text
 // Module:  TextBufferIterator
@@ -47,18 +45,18 @@ TextBufferIterator::TextBufferIterator(const char* begin, std::size_t size, cons
 }
 
 
-TextBufferIterator::TextBufferIterator(const char* begin, const char* pEnd, const TextEncoding& encoding):
+TextBufferIterator::TextBufferIterator(const char* begin, const char* end, const TextEncoding& encoding):
 	_pEncoding(&encoding),
 	_it(begin),
-	_end(pEnd)
+	_end(end)
 {
 }
 
 
-TextBufferIterator::TextBufferIterator(const char* pEnd):
+TextBufferIterator::TextBufferIterator(const char* end):
 	_pEncoding(0),
-	_it(pEnd),
-	_end(pEnd)
+	_it(end),
+	_end(end)
 {
 }
 

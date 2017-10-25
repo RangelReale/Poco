@@ -1,8 +1,6 @@
 //
 // EventTest.cpp
 //
-// $Id: //poco/1.4/XML/testsuite/src/EventTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "EventTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/DOM/Event.h"
 #include "Poco/DOM/MutationEvent.h"
 #include "Poco/DOM/EventListener.h"

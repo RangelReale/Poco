@@ -1,8 +1,6 @@
 //
 // RegularExpressionTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/RegularExpressionTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "RegularExpressionTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/RegularExpression.h"
 #include "Poco/Exception.h"
 
@@ -21,7 +19,7 @@ using Poco::RegularExpression;
 using Poco::RegularExpressionException;
 
 
-RegularExpressionTest::RegularExpressionTest(const std::string& rName): CppUnit::TestCase(rName)
+RegularExpressionTest::RegularExpressionTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 
@@ -264,16 +262,6 @@ void RegularExpressionTest::testError()
 	}
 }
 
-void RegularExpressionTest::testGroup()
-{
-	RegularExpression::MatchVec matches;
-	RegularExpression re("(?P<group1>[a-z]+) (?P<group2>[0-9]+)");
-	assert (re.match("abcd 1234", 0, matches) == 3);
-	assert (matches[0].name == "");
-	assert (matches[1].name == "group1");
-	assert (matches[2].name == "group2");
-}
-
 
 void RegularExpressionTest::setUp()
 {
@@ -304,7 +292,6 @@ CppUnit::Test* RegularExpressionTest::suite()
 	CppUnit_addTest(pSuite, RegularExpressionTest, testSubst3);
 	CppUnit_addTest(pSuite, RegularExpressionTest, testSubst4);
 	CppUnit_addTest(pSuite, RegularExpressionTest, testError);
-	CppUnit_addTest(pSuite, RegularExpressionTest, testGroup);
 
 	return pSuite;
 }

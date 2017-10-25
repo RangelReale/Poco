@@ -1,8 +1,6 @@
 //
 // CryptoTest.h
 //
-// $Id: //poco/1.4/Crypto/testsuite/src/CryptoTest.h#2 $
-//
 // Definition of the CryptoTest class.
 //
 // Copyright (c) 2008, Applied Informatics Software Engineering GmbH.
@@ -17,7 +15,7 @@
 
 
 #include "Poco/Crypto/Crypto.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 
 
 class CryptoTest: public CppUnit::TestCase
@@ -33,11 +31,11 @@ public:
 
 	void testEncryptDecrypt();
 	void testEncryptDecryptWithSalt();
-    void testEncryptDecryptWithSaltSha1();
+	void testEncryptDecryptWithSaltSha1();
 	void testEncryptDecryptDESECB();
 	void testStreams();
 	void testPassword();
-    void testPasswordSha1();
+	void testPasswordSha1();
 	void testEncryptInterop();
 	void testDecryptInterop();
 	void testCertificate();

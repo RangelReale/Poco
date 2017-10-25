@@ -1,8 +1,6 @@
 //
 // TuplesTest.h
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/TuplesTest.h#1 $
-//
 // Definition of the TuplesTest class.
 //
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
@@ -17,7 +15,7 @@
 
 
 #include "Poco/Foundation.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 
 
 class TuplesTest: public CppUnit::TestCase

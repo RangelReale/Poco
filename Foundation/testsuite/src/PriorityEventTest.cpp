@@ -1,8 +1,6 @@
 //
 // PriorityEventTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/PriorityEventTest.cpp#2 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -12,8 +10,8 @@
 
 #include "PriorityEventTest.h"
 #include "DummyDelegate.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/PriorityDelegate.h"
 #include "Poco/PriorityExpire.h"
 #include "Poco/Thread.h"
@@ -26,7 +24,7 @@ using namespace Poco;
 #define LARGEINC 100
 
 
-PriorityEventTest::PriorityEventTest(const std::string& rName): CppUnit::TestCase(rName)
+PriorityEventTest::PriorityEventTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

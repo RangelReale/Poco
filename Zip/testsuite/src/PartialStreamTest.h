@@ -1,8 +1,6 @@
 //
 // PartialStreamTest.h
 //
-// $Id: //poco/1.4/Zip/testsuite/src/PartialStreamTest.h#1 $
-//
 // Definition of the PartialStreamTest class.
 //
 // Copyright (c) 2007, Applied Informatics Software Engineering GmbH.
@@ -17,7 +15,7 @@
 
 
 #include "Poco/Zip/Zip.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 
 
 class PartialStreamTest: public CppUnit::TestCase

@@ -1,8 +1,6 @@
 //
 // FileStream.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/FileStream.h#1 $
-//
 // Library: Foundation
 // Package: Streams
 // Module:  FileStream
@@ -124,7 +122,7 @@ class Foundation_API FileOutputStream: public FileIOS, public std::ostream
 {
 public:
 	FileOutputStream();
-		/// Creates an unopened FileOutputStream.
+		/// Creats an unopened FileOutputStream.
 		
 	FileOutputStream(const std::string& path, std::ios::openmode mode = std::ios::out | std::ios::trunc);
 		/// Creates the FileOutputStream for the file given by path, using
@@ -161,7 +159,7 @@ class Foundation_API FileStream: public FileIOS, public std::iostream
 {
 public:
 	FileStream();
-		/// Creates an unopened FileStream.
+		/// Creats an unopened FileStream.
 	
 	FileStream(const std::string& path, std::ios::openmode mode = std::ios::out | std::ios::in);
 		/// Creates the FileStream for the file given by path, using

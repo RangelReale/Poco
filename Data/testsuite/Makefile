@@ -1,8 +1,6 @@
 #
 # Makefile
 #
-# $Id: //poco/Main/Data/testsuite/Makefile#7 $
-#
 # Makefile for Poco Data testsuite
 #
 
@@ -22,6 +20,6 @@ objects = DataTestSuite Driver \
 
 target         = testrunner
 target_version = 1
-target_libs    = PocoData PocoFoundation PocoCppUnit
+target_libs    = PocoData PocoFoundation CppUnit
 
 include $(POCO_BASE)/build/rules/exec

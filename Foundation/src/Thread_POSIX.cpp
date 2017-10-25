@@ -1,8 +1,6 @@
 //
 // Thread_POSIX.cpp
 //
-// $Id: //poco/1.4/Foundation/src/Thread_POSIX.cpp#5 $
-//
 // Library: Foundation
 // Package: Threading
 // Module:  Thread
@@ -28,43 +26,30 @@
 #endif
 #if POCO_OS == POCO_OS_LINUX || POCO_OS == POCO_OS_MAC_OS_X || POCO_OS == POCO_OS_QNX
 #	include <time.h>
-#	include <unistd.h>
 #endif
-#if POCO_OS == POCO_OS_MAC_OS_X
-#   include <mach/mach.h>
-#   include <mach/task.h>
-#   include <mach/thread_policy.h>
-#endif
-#if POCO_OS == POCO_OS_LINUX
-#include <sys/syscall.h>
-#endif
-#include <cstring>
-
 
 //
 // Block SIGPIPE in main thread.
 //
 #if defined(POCO_OS_FAMILY_UNIX) && !defined(POCO_VXWORKS)
-namespace {
-class SignalBlocker
+namespace
 {
-public:
-	SignalBlocker()
+	class SignalBlocker
 	{
-		sigset_t sset;
-		sigemptyset(&sset);
-		sigaddset(&sset, SIGPIPE);
-#if POCO_OS != POCO_OS_EMSCRIPTEN
-		pthread_sigmask(SIG_BLOCK, &sset, 0);
-#endif
-	}
-	~SignalBlocker()
-	{
-	}
-};
+	public:
+		SignalBlocker()
+		{
+			sigset_t sset;
+			sigemptyset(&sset);
+			sigaddset(&sset, SIGPIPE); 
+			pthread_sigmask(SIG_BLOCK, &sset, 0);
+		}
+		~SignalBlocker()
+		{
+		}
+	};
 
-
-static SignalBlocker signalBlocker;
+	static SignalBlocker signalBlocker;
 }
 #endif
 
@@ -90,7 +75,7 @@ void setThreadName(pthread_t thread, const std::string& threadName)
 }
 
 
-#endif // POCO_POSIX_DEBUGGER_THREAD_NAMES
+#endif
 
 
 namespace Poco {
@@ -122,8 +107,7 @@ void ThreadImpl::setPriorityImpl(int prio)
 		_pData->policy = SCHED_OTHER;
 		if (isRunningImpl())
 		{
-			struct sched_param par;
-			struct MyStruct
+			struct sched_param par; struct MyStruct
 			{
 
 			};
@@ -187,100 +171,15 @@ void ThreadImpl::setStackSizeImpl(int size)
 #if defined(POCO_OS_FAMILY_BSD)
 		// we must round up to a multiple of the memory page size
 		const int STACK_PAGE_SIZE = 4096;
-		size = ((size + STACK_PAGE_SIZE - 1) / STACK_PAGE_SIZE) * STACK_PAGE_SIZE;
+		size = ((size + STACK_PAGE_SIZE - 1)/STACK_PAGE_SIZE)*STACK_PAGE_SIZE;
 #endif
 #if !defined(POCO_ANDROID)
-		if (size < PTHREAD_STACK_MIN)
-			size = PTHREAD_STACK_MIN;
+ 		if (size < PTHREAD_STACK_MIN)
+ 			size = PTHREAD_STACK_MIN;
 #endif
 	}
-	_pData->stackSize = size;
+ 	_pData->stackSize = size;
 #endif
-}
-
-
-void ThreadImpl::setAffinityImpl(int cpu)
-{
-#if defined (POCO_OS_FAMILY_UNIX) && POCO_OS != POCO_OS_MAC_OS_X
-#ifdef HAVE_PTHREAD_SETAFFINITY_NP
-	cpu_set_t cpuset;
-	CPU_ZERO(&cpuset);
-	CPU_SET(cpu, &cpuset);
-#ifdef HAVE_THREE_PARAM_SCHED_SETAFFINITY
-	if (pthread_setaffinity_np(_pData->thread, sizeof(cpuset), &cpuset) != 0)
-		throw SystemException("Failed to set affinity");
-#else
-	if (pthread_setaffinity_np(_pData->thread, &cpuset) != 0)
-		throw SystemException("Failed to set affinity");
-#endif
-#endif
-#endif // defined unix & !defined mac os x
-
-#if POCO_OS == POCO_OS_MAC_OS_X
-	kern_return_t ret;
-	thread_affinity_policy policy;
-	policy.affinity_tag = cpu;
-
-	ret = thread_policy_set(pthread_mach_thread_np(_pData->thread),
-				THREAD_AFFINITY_POLICY,
-				(thread_policy_t) &policy,
-				THREAD_AFFINITY_POLICY_COUNT);
-	if (ret != KERN_SUCCESS)
-	{
-		throw SystemException("Failed to set affinity");
-	}
-#endif
-	yieldImpl();
-}
-
-
-int ThreadImpl::getAffinityImpl() const
-{
-	int cpuSet = -1;
-#if defined (POCO_OS_FAMILY_UNIX) && POCO_OS != POCO_OS_MAC_OS_X
-#ifdef HAVE_PTHREAD_SETAFFINITY_NP
-	cpu_set_t cpuset;
-	CPU_ZERO(&cpuset);
-#ifdef HAVE_THREE_PARAM_SCHED_SETAFFINITY
-	if (pthread_getaffinity_np(_pData->thread, sizeof(cpuset), &cpuset) != 0)
-		throw SystemException("Failed to get affinity", errno);
-#else
-	if (pthread_getaffinity_np(_pData->thread, &cpuset) != 0)
-		throw SystemException("Failed to get affinity", errno);
-#endif
-	int cpuCount = Environment::processorCount();
-	for (int i = 0; i < cpuCount; i++)
-	{
-		if (CPU_ISSET(i, &cpuset))
-		{
-			cpuSet = i;
-			break;
-		}
-	}
-#endif
-#endif // defined unix & !defined mac os x
-
-#if POCO_OS == POCO_OS_MAC_OS_X
-	kern_return_t ret;
-	thread_affinity_policy policy;
-	mach_msg_type_number_t count = THREAD_AFFINITY_POLICY_COUNT;
-	boolean_t get_default = false;
-	ret = thread_policy_get(pthread_mach_thread_np(_pData->thread),
-				THREAD_AFFINITY_POLICY,
-				(thread_policy_t)&policy,
-				&count,
-				&get_default);
-	if (ret != KERN_SUCCESS)
-	{
-		throw SystemException("Failed to get affinity", errno);
-	}
-	cpuSet = policy.affinity_tag;
-	int cpuCount = Environment::processorCount();
-	if (cpuSet >= cpuCount)
-		cpuSet = -1;
-
-#endif
-	return cpuSet;
 }
 
 
@@ -308,15 +207,6 @@ void ThreadImpl::startImpl(SharedPtr<Runnable> pTarget)
 		pthread_attr_destroy(&attributes);
 		throw SystemException("cannot start thread");
 	}
-#if POCO_OS == POCO_OS_LINUX
-	// On Linux the TID is acquired from the running thread using syscall
-	_pData->tid = 0;
-#elif POCO_OS == POCO_OS_MAC_OS_X
-	_pData->tid = static_cast<TIDImpl>( pthread_mach_thread_np(_pData->thread) );
-#else
-	_pData->tid = _pData->thread;
-#endif
-
 	_pData->started = true;
 	pthread_attr_destroy(&attributes);
 
@@ -374,35 +264,26 @@ ThreadImpl* ThreadImpl::currentImpl()
 
 ThreadImpl::TIDImpl ThreadImpl::currentTidImpl()
 {
-#if POCO_OS == POCO_OS_LINUX
-#ifndef SYS_gettid
-#define SYS_gettid __NR_gettid
-#endif
-	return static_cast<TIDImpl>( syscall (SYS_gettid) );
-#elif POCO_OS == POCO_OS_MAC_OS_X
-	return static_cast<TIDImpl>( pthread_mach_thread_np(pthread_self()) );
-#else
 	return pthread_self();
-#endif
 }
 
 
 void ThreadImpl::sleepImpl(long milliseconds)
 {
 #if defined(__VMS) || defined(__digital__)
-	// This is specific to DECThreads
-	struct timespec interval;
-	interval.tv_sec  = milliseconds / 1000;
-	interval.tv_nsec = (milliseconds % 1000) * 1000000;
-	pthread_delay_np(&interval);
+		// This is specific to DECThreads
+		struct timespec interval;
+		interval.tv_sec  = milliseconds / 1000;
+		interval.tv_nsec = (milliseconds % 1000)*1000000; 
+		pthread_delay_np(&interval);
 #elif POCO_OS == POCO_OS_LINUX || POCO_OS == POCO_OS_MAC_OS_X || POCO_OS == POCO_OS_QNX || POCO_OS == POCO_OS_VXWORKS
-	Poco::Timespan remainingTime(1000 * Poco::Timespan::TimeDiff(milliseconds));
+	Poco::Timespan remainingTime(1000*Poco::Timespan::TimeDiff(milliseconds));
 	int rc;
 	do
 	{
 		struct timespec ts;
 		ts.tv_sec  = (long) remainingTime.totalSeconds();
-		ts.tv_nsec = (long) remainingTime.useconds() * 1000;
+		ts.tv_nsec = (long) remainingTime.useconds()*1000;
 		Poco::Timestamp start;
 		rc = ::nanosleep(&ts, 0);
 		if (rc < 0 && errno == EINTR)
@@ -417,8 +298,8 @@ void ThreadImpl::sleepImpl(long milliseconds)
 	}
 	while (remainingTime > 0 && rc < 0 && errno == EINTR);
 	if (rc < 0 && remainingTime > 0) throw Poco::SystemException("Thread::sleep(): nanosleep() failed");
-#else
-	Poco::Timespan remainingTime(1000 * Poco::Timespan::TimeDiff(milliseconds));
+#else 
+	Poco::Timespan remainingTime(1000*Poco::Timespan::TimeDiff(milliseconds));
 	int rc;
 	do
 	{
@@ -452,22 +333,15 @@ void* ThreadImpl::runnableEntry(void* pThread)
 	sigemptyset(&sset);
 	sigaddset(&sset, SIGQUIT);
 	sigaddset(&sset, SIGTERM);
-	sigaddset(&sset, SIGPIPE);
-#if POCO_OS != POCO_OS_EMSCRIPTEN
+	sigaddset(&sset, SIGPIPE); 
 	pthread_sigmask(SIG_BLOCK, &sset, 0);
-#endif
 #endif
 
 	ThreadImpl* pThreadImpl = reinterpret_cast<ThreadImpl*>(pThread);
 #if defined(POCO_POSIX_DEBUGGER_THREAD_NAMES)
 	setThreadName(pThreadImpl->_pData->thread, reinterpret_cast<Thread*>(pThread)->getName());
 #endif
-#if POCO_OS == POCO_OS_LINUX
-	pThreadImpl->_pData->tid = static_cast<TIDImpl>( syscall (SYS_gettid) );
-#endif
-
 	AutoPtr<ThreadData> pData = pThreadImpl->_pData;
-
 	try
 	{
 		pData->pRunnableTarget->run();
@@ -501,11 +375,11 @@ int ThreadImpl::mapPrio(int prio, int policy)
 	case PRIO_LOWEST_IMPL:
 		return pmin;
 	case PRIO_LOW_IMPL:
-		return pmin + (pmax - pmin) / 4;
+		return pmin + (pmax - pmin)/4;
 	case PRIO_NORMAL_IMPL:
-		return pmin + (pmax - pmin) / 2;
+		return pmin + (pmax - pmin)/2;
 	case PRIO_HIGH_IMPL:
-		return pmin + 3 * (pmax - pmin) / 4;
+		return pmin + 3*(pmax - pmin)/4;
 	case PRIO_HIGHEST_IMPL:
 		return pmax;
 	default:
@@ -521,7 +395,7 @@ int ThreadImpl::reverseMapPrio(int prio, int policy)
 	{
 		int pmin = getMinOSPriorityImpl(policy);
 		int pmax = getMaxOSPriorityImpl(policy);
-		int normal = pmin + (pmax - pmin) / 2;
+		int normal = pmin + (pmax - pmin)/2;
 		if (prio == pmax)
 			return PRIO_HIGHEST_IMPL;
 		if (prio > normal)

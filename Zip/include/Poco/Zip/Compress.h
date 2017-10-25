@@ -1,18 +1,16 @@
 //
 // Compress.h
 //
-// $Id: //poco/1.4/Zip/include/Poco/Zip/Compress.h#1 $
-//
 // Library: Zip
 // Package: Zip
-// Module:	Compress
+// Module:  Compress
 //
 // Definition of the Compress class.
 //
 // Copyright (c) 2007, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
-// SPDX-License-Identifier: BSL-1.0
+// SPDX-License-Identifier:	BSL-1.0
 //
 
 
@@ -38,11 +36,9 @@ class Zip_API Compress
 public:
 	Poco::FIFOEvent<const ZipLocalFileHeader> EDone;
 
-	Compress(std::ostream& out, bool seekableOut, bool forceZip64 = false);
+	Compress(std::ostream& out, bool seekableOut);
 		/// seekableOut determines how we write the zip, setting it to true is recommended for local files (smaller zip file),
 		/// if you are compressing directly to a network, you MUST set it to false
-		/// If forceZip64 is set true then the file header is allocated with zip64 extension so that it can be updated after the file data is written
-		/// if seekableOut is true in case the compressed or uncompressed size exceeds 32 bits.
 
 	~Compress();
 
@@ -80,10 +76,10 @@ public:
 		/// leads to worse results. Extensions will be converted to lower case.
 		///
 		/// The default extensions are:
-		///	  - gif
-		///	  - jpg
-		///	  - jpeg
-		///	  - png
+		///   - gif
+		///   - jpg
+		///   - jpeg
+		///   - png
 		
 	const std::set<std::string>& getStoreExtensions() const;
 		/// Returns the file extensions for which the CM_STORE compression method
@@ -108,16 +104,14 @@ private:
 		/// copys an already compressed ZipEntry from in
 
 private:
-	std::set<std::string>		  _storeExtensions;
-	std::ostream&				  _out;
-	bool						  _seekableOut;
-	bool						  _forceZip64;
-	ZipArchive::FileHeaders		  _files;
-	ZipArchive::FileInfos		  _infos;
-	ZipArchive::DirectoryInfos	 _dirs;
-	ZipArchive::DirectoryInfos64 _dirs64;
-	Poco::UInt64				 _offset;
-	std::string					 _comment;
+	std::set<std::string>      _storeExtensions;
+	std::ostream&              _out;
+	bool                       _seekableOut;
+	ZipArchive::FileHeaders    _files;
+	ZipArchive::FileInfos      _infos;
+	ZipArchive::DirectoryInfos _dirs;
+	Poco::UInt32               _offset;
+    std::string                _comment;
 
 	friend class Keep;
 	friend class Rename;
@@ -127,8 +121,6 @@ private:
 //
 // inlines
 //
-
-
 inline void Compress::setZipComment(const std::string& comment)
 {
 	_comment = comment;

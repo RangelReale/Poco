@@ -1,8 +1,6 @@
 //
 // Mutex.cpp
 //
-// $Id: //poco/1.4/Foundation/src/Mutex.cpp#2 $
-//
 // Library: Foundation
 // Package: Threading
 // Module:  Mutex
@@ -33,8 +31,7 @@
 namespace Poco {
 
 
-Mutex::Mutex(MutexType type)
-	: MutexImpl((MutexTypeImpl) type)
+Mutex::Mutex()
 {
 }
 

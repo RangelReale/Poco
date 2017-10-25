@@ -1,8 +1,6 @@
 //
 // SharedLibrary_WIN32.cpp
 //
-// $Id: //poco/1.4/Foundation/src/SharedLibrary_WIN32.cpp#2 $
-//
 // Library: Foundation
 // Package: SharedLibrary
 // Module:  SharedLibrary
@@ -84,12 +82,6 @@ void* SharedLibraryImpl::findSymbolImpl(const std::string& name)
 const std::string& SharedLibraryImpl::getPathImpl() const
 {
 	return _path;
-}
-
-
-std::string SharedLibraryImpl::prefixImpl()
-{
-	return "";
 }
 
 

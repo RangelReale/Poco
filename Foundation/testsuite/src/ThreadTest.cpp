@@ -1,8 +1,6 @@
 //
 // ThreadTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/ThreadTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,21 +9,20 @@
 
 
 #include "ThreadTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Thread.h"
 #include "Poco/Runnable.h"
 #include "Poco/ThreadTarget.h"
 #include "Poco/Event.h"
 #include "Poco/Timestamp.h"
 #include "Poco/Timespan.h"
-#include "Poco/Environment.h"
+//#include <iostream>
 #if defined(__sun) && defined(__SVR4) && !defined(__EXTENSIONS__)
 #define __EXTENSIONS__
 #endif
 #include <climits>
-#include <vector>
-#include <sstream>
+
 
 using Poco::Thread;
 using Poco::Runnable;
@@ -39,7 +36,7 @@ public:
 	MyRunnable(): _ran(false)
 	{
 	}
-
+	
 	void run()
 	{
 		Thread* pThread = Thread::current();
@@ -48,22 +45,22 @@ public:
 		_ran = true;
 		_event.wait();
 	}
-
+	
 	bool ran() const
 	{
 		return _ran;
 	}
-
+	
 	const std::string& threadName() const
 	{
 		return _threadName;
 	}
-
+	
 	void notify()
 	{
 		_event.set();
 	}
-
+	
 	static void staticFunc()
 	{
 		++_staticVar;
@@ -99,17 +96,17 @@ public:
 	NonJoinRunnable() : _finished(false)
 	{
 	}
-
+	
 	void run()
 	{
 		_finished = true;
 	}
-
+	
 	bool finished() const
 	{
 		return _finished;
 	}
-
+	
 private:
 	bool _finished;
 };
@@ -148,7 +145,7 @@ private:
 };
 
 
-ThreadTest::ThreadTest(const std::string& rName): CppUnit::TestCase(rName)
+ThreadTest::ThreadTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 
@@ -267,12 +264,12 @@ void ThreadTest::testNotJoin()
 	Thread thread;
 	NonJoinRunnable r;
 	thread.start(r);
-
+	
 	while (!r.finished())
 	{
 		Thread::sleep(10);
 	}
-
+	
 	Thread::sleep(100);
 	assert (!thread.isRunning());
 }
@@ -292,14 +289,12 @@ void ThreadTest::testTrySleep()
 	Thread::sleep(100);
 	assert(r.counter() == 0);
 	assert(r.isSleepy());
-	thread.wakeUp();
-	Thread::sleep(10);
+	thread.wakeUp(); Thread::sleep(10);
 	assert(r.counter() == 1);
 	assert(r.isSleepy());
 	Thread::sleep(100);
 	assert(r.counter() == 1);
-	thread.wakeUp();
-	Thread::sleep(10);
+	thread.wakeUp(); Thread::sleep(10);
 	assert(r.counter() == 2);
 	assert(r.isSleepy());
 	Thread::sleep(200);
@@ -395,10 +390,7 @@ void ThreadTest::testThreadFunctor()
 	assert (!thread2.isRunning());
 
 	MyRunnable::_staticVar = 0;
-	thread.startFunc([] ()
-	{
-		MyRunnable::_staticVar++;
-	});
+	thread.startFunc([] () {MyRunnable::_staticVar++;});
 	thread.join();
 	assert (1 == MyRunnable::_staticVar);
 
@@ -426,11 +418,11 @@ void ThreadTest::testThreadStackSize()
 	thread.setStackSize(stackSize);
 
 #if !defined(POCO_OS_FAMILY_BSD) // on BSD family, stack size is rounded
-#ifdef PTHREAD_STACK_MIN
-	assert (PTHREAD_STACK_MIN == thread.getStackSize());
-#else
-	assert (stackSize >= thread.getStackSize());
-#endif
+	#ifdef PTHREAD_STACK_MIN
+		assert (PTHREAD_STACK_MIN == thread.getStackSize());
+	#else
+		assert (stackSize >= thread.getStackSize());
+	#endif
 #endif
 
 	tmp = MyRunnable::_staticVar;
@@ -453,56 +445,6 @@ void ThreadTest::testSleep()
 	Thread::sleep(200);
 	Poco::Timespan elapsed = start.elapsed();
 	assert (elapsed.totalMilliseconds() >= 190 && elapsed.totalMilliseconds() < 250);
-}
-
-void ThreadTest::testAffinity()
-{
-	std::stringstream ss;
-	unsigned cpuCount = Poco::Environment::processorCount();
-	unsigned usedCpu = 0;
-	std::vector<Thread*> threadList;
-	Thread* thread = NULL;
-	std::vector<MyRunnable*> runnableList;
-	MyRunnable* runbl = NULL;
-
-	for (unsigned i = 0; i < cpuCount; i++)
-	{
-		ss.str("");
-		ss << "Thread" << i;
-		thread = new Thread(ss.str());
-		threadList.push_back(thread);
-		runbl = new MyRunnable();
-		runnableList.push_back(runbl);
-	}
-
-	for (int i = 0; i < cpuCount; i++)
-	{
-		assert (!threadList[i]->isRunning());
-	}
-
-	for (int i = 0; i < cpuCount; i++)
-	{
-		threadList[i]->start(*runnableList[i]);
-		threadList[i]->setAffinity(i);
-		Thread::sleep(100);
-		usedCpu = threadList[i]->getAffinity();
-		assert (usedCpu == i || usedCpu == -1);
-	}
-
-	for (int i = 0; i < cpuCount; i++)
-	{
-		runnableList[i]->notify();
-		threadList[i]->join();
-		delete runnableList[i];
-		delete threadList[i];
-	}
-}
-
-
-void ThreadTest::testJoinNotStarted()
-{
-	Thread thread;
-	thread.join();
 }
 
 
@@ -534,8 +476,6 @@ CppUnit::Test* ThreadTest::suite()
 	CppUnit_addTest(pSuite, ThreadTest, testThreadFunctor);
 	CppUnit_addTest(pSuite, ThreadTest, testThreadStackSize);
 	CppUnit_addTest(pSuite, ThreadTest, testSleep);
-	CppUnit_addTest(pSuite, ThreadTest, testAffinity);
-	CppUnit_addTest(pSuite, ThreadTest, testJoinNotStarted);
 
 	return pSuite;
 }

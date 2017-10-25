@@ -1,8 +1,6 @@
 //
 // Binder.cpp
 //
-// $Id: //poco/Main/Data/SQLite/src/Binder.cpp#5 $
-//
 // Library: Data/SQLite
 // Package: SQLite
 // Module:  Binder
@@ -44,14 +42,14 @@ Binder::~Binder()
 }
 
 
-void Binder::bind(std::size_t pos, const Poco::Int32 &val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Poco::Int32 &val, Direction dir)
 {
 	int rc = sqlite3_bind_int(_pStmt, (int) pos, val);
 	checkReturn(rc);
 }
 
 
-void Binder::bind(std::size_t pos, const Poco::Int64 &val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Poco::Int64 &val, Direction dir)
 {
 	int rc = sqlite3_bind_int64(_pStmt, (int) pos, val);
 	checkReturn(rc);
@@ -59,14 +57,14 @@ void Binder::bind(std::size_t pos, const Poco::Int64 &val, Direction dir, const 
 
 
 #ifndef POCO_LONG_IS_64_BIT
-void Binder::bind(std::size_t pos, const long &val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const long &val, Direction dir)
 {
 	long tmp = static_cast<long>(val);
 	int rc = sqlite3_bind_int(_pStmt, (int) pos, tmp);
 	checkReturn(rc);
 }
 
-void Binder::bind(std::size_t pos, const unsigned long &val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const unsigned long &val, Direction dir)
 {
 	long tmp = static_cast<long>(val);
 	int rc = sqlite3_bind_int(_pStmt, (int) pos, tmp);
@@ -75,45 +73,45 @@ void Binder::bind(std::size_t pos, const unsigned long &val, Direction dir, cons
 #endif
 
 
-void Binder::bind(std::size_t pos, const double &val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const double &val, Direction dir)
 {
 	int rc = sqlite3_bind_double(_pStmt, (int) pos, val);
 	checkReturn(rc);
 }
 
 
-void Binder::bind(std::size_t pos, const std::string& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const std::string& val, Direction dir)
 {
 	int rc = sqlite3_bind_text(_pStmt, (int) pos, val.c_str(), (int) val.size()*sizeof(char), SQLITE_TRANSIENT);
 	checkReturn(rc);
 }
 
 
-void Binder::bind(std::size_t pos, const Date& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Date& val, Direction dir)
 {
 	DateTime dt(val.year(), val.month(), val.day());
 	std::string str(DateTimeFormatter::format(dt, Utility::SQLITE_DATE_FORMAT));
-	bind(pos, str, dir, nullCb);
+	bind(pos, str, dir);
 }
 
 
-void Binder::bind(std::size_t pos, const Time& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const Time& val, Direction dir)
 {
 	DateTime dt;
 	dt.assign(dt.year(), dt.month(), dt.day(), val.hour(), val.minute(), val.second());
 	std::string str(DateTimeFormatter::format(dt, Utility::SQLITE_TIME_FORMAT));
-	bind(pos, str, dir, nullCb);
+	bind(pos, str, dir);
 }
 
 
-void Binder::bind(std::size_t pos, const DateTime& val, Direction dir, const WhenNullCb& nullCb)
+void Binder::bind(std::size_t pos, const DateTime& val, Direction dir)
 {
 	std::string dt(DateTimeFormatter::format(val, DateTimeFormat::ISO8601_FORMAT));
-	bind(pos, dt, dir, nullCb);
+	bind(pos, dt, dir);
 }
 
 
-void Binder::bind(std::size_t pos, const NullData&, Direction, const std::type_info& bindType)
+void Binder::bind(std::size_t pos, const NullData&, Direction)
 {
 	sqlite3_bind_null(_pStmt, pos);
 }

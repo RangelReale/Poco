@@ -1,8 +1,6 @@
 //
 // Time.cpp
 //
-// $Id: //poco/Main/Data/src/Time.cpp#5 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  Time
@@ -35,9 +33,9 @@ Time::Time()
 }
 
 
-Time::Time(int timeHour, int timeMinute, int timeSecond)
+Time::Time(int hour, int minute, int second)
 {
-	assign(timeHour, timeMinute, timeSecond);
+	assign(hour, minute, second);
 }
 
 
@@ -52,35 +50,35 @@ Time::~Time()
 }
 
 
-void Time::assign(int timeHour, int timeMinute, int timeSecond)
+void Time::assign(int hour, int minute, int second)
 {
-	if (timeHour < 0 || timeHour > 23) 
+	if (hour < 0 || hour > 23) 
 		throw InvalidArgumentException("Hour must be between 0 and 23.");
 
-	if (timeMinute < 0 || timeMinute > 59) 
+	if (minute < 0 || minute > 59) 
 		throw InvalidArgumentException("Minute must be between 0 and 59.");
 
-	if (timeSecond < 0 || timeSecond > 59) 
+	if (second < 0 || second > 59) 
 		throw InvalidArgumentException("Second must be between 0 and 59.");
 
-	_hour = timeHour;
-	_minute = timeMinute;
-	_second = timeSecond;
+	_hour = hour;
+	_minute = minute;
+	_second = second;
 }
 
 
 bool Time::operator < (const Time& time) const
 {
-	int timeHour = time.hour();
+	int hour = time.hour();
 
-	if (_hour < timeHour) return true;
-	else if (_hour > timeHour) return false;
+	if (_hour < hour) return true;
+	else if (_hour > hour) return false;
 	else // hours equal
 	{
-		int timeMinute = time.minute();
-		if (_minute < timeMinute) return true;
+		int minute = time.minute();
+		if (_minute < minute) return true;
 		else 
-		if (_minute > timeMinute) return false;
+		if (_minute > minute) return false;
 		else // minutes equal
 		if (_second < time.second()) return true;
 	}

@@ -1,8 +1,6 @@
 //
 // PropertyFileConfigurationTest.cpp
 //
-// $Id: //poco/1.4/Util/testsuite/src/PropertyFileConfigurationTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "PropertyFileConfigurationTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Util/PropertyFileConfiguration.h"
 #include "Poco/AutoPtr.h"
 #include "Poco/Exception.h"
@@ -38,31 +36,6 @@ PropertyFileConfigurationTest::~PropertyFileConfigurationTest()
 
 void PropertyFileConfigurationTest::testLoad()
 {
-	testLoad(false);
-}
-
-
-void PropertyFileConfigurationTest::testLoadEmpty()
-{
-	static const std::string propFile = " ";
-		
-	std::istringstream istr(propFile);
-	AutoPtr<PropertyFileConfiguration> pConf = new PropertyFileConfiguration(istr);
-	
-	AbstractConfiguration::Keys keys;
-	pConf->keys(keys);
-	assert (keys.size() == 0);
-}
-
-
-void PropertyFileConfigurationTest::testLoadWithPreserveComment()
-{
-	testLoad(true);
-}
-
-
-void PropertyFileConfigurationTest::testLoad(bool preserveComment)
-{
 	static const std::string propFile = 
 		"! comment\n"
 		"! comment\n"
@@ -79,7 +52,7 @@ void PropertyFileConfigurationTest::testLoad(bool preserveComment)
 		"prop5:foo";
 		
 	std::istringstream istr(propFile);
-	AutoPtr<PropertyFileConfiguration> pConf = new PropertyFileConfiguration(istr, preserveComment);
+	AutoPtr<PropertyFileConfiguration> pConf = new PropertyFileConfiguration(istr);
 	
 	assert (pConf->getString("prop1") == "value1");
 	assert (pConf->getString("prop2") == "value2");
@@ -131,74 +104,6 @@ void PropertyFileConfigurationTest::testSave()
 	                    "prop3: value\\\\1\\txxx\n");
 }
 
-void PropertyFileConfigurationTest::testLoadSaveWithPreserveComment()
-{
-	std::string propFile = 
-		"! comment #\n"
-		"prop1=value1\n"
-		"# comment #\n"
-		"# comment !\n"
-		"prop2 = value2  \n"
-		"! comment !\n"
-		"prop3:foo\n"
-		"prop4";
-		
-	std::istringstream istr(propFile);
-	AutoPtr<PropertyFileConfiguration> pConf = new PropertyFileConfiguration(istr, true);
-
-	std::ostringstream ostr;
-	pConf->save(ostr);
-	assertEqual ("! comment #\n"
-	             "prop1: value1\n"
-	             "# comment #\n"
-	             "# comment !\n"
-					 "prop2: value2\n"
-					 "! comment !\n"
-					 "prop3: foo\n"
-					 "prop4: \n",
-					 ostr.str());
-
-	pConf->setString("prop4", "value4");
-	ostr.clear();
-	ostr.str("");
-	pConf->save(ostr);
-	assertEqual ("! comment #\n"
-	             "prop1: value1\n"
-	             "# comment #\n"
-	             "# comment !\n"
-					 "prop2: value2\n"
-					 "! comment !\n"
-					 "prop3: foo\n"
-					 "prop4: value4\n",
-					 ostr.str());
-
-	pConf->remove("prop2");
-	ostr.clear();
-	ostr.str("");
-	pConf->save(ostr);
-	assertEqual ("! comment #\n"
-	             "prop1: value1\n"
-	             "# comment #\n"
-	             "# comment !\n"
-					 "! comment !\n"
-					 "prop3: foo\n"
-					 "prop4: value4\n",
-					 ostr.str());
-
-	pConf->setString("prop4", "value5");
-	ostr.clear();
-	ostr.str("");
-	pConf->save(ostr);
-	assertEqual ("! comment #\n"
-	             "prop1: value1\n"
-	             "# comment #\n"
-	             "# comment !\n"
-					 "! comment !\n"
-					 "prop3: foo\n"
-					 "prop4: value5\n",
-					 ostr.str());
-}
-
 
 AbstractConfiguration* PropertyFileConfigurationTest::allocConfiguration() const
 {
@@ -222,10 +127,7 @@ CppUnit::Test* PropertyFileConfigurationTest::suite()
 
 	AbstractConfigurationTest_addTests(pSuite, PropertyFileConfigurationTest);
 	CppUnit_addTest(pSuite, PropertyFileConfigurationTest, testLoad);
-	CppUnit_addTest(pSuite, PropertyFileConfigurationTest, testLoadEmpty);
 	CppUnit_addTest(pSuite, PropertyFileConfigurationTest, testSave);
-	CppUnit_addTest(pSuite, PropertyFileConfigurationTest, testLoadWithPreserveComment);
-	CppUnit_addTest(pSuite, PropertyFileConfigurationTest, testLoadSaveWithPreserveComment);
-	
+
 	return pSuite;
 }

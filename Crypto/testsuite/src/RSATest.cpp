@@ -1,8 +1,6 @@
 //
 // RSATest.cpp
 //
-// $Id: //poco/1.4/Crypto/testsuite/src/RSATest.cpp#1 $
-//
 // Copyright (c) 2008, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "RSATest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Crypto/RSADigestEngine.h"
 #include "Poco/Crypto/CipherFactory.h"
 #include "Poco/Crypto/Cipher.h"

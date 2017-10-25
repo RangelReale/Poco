@@ -1,8 +1,6 @@
 //
 // Unicode.h
 //
-// $Id: //poco/Main/Data/ODBC/include/Poco/Data/ODBC/Unicode_UNIXODBC.h#4 $
-//
 // Library: Data/ODBC
 // Package: ODBC
 // Module:  Unicode
@@ -38,6 +36,13 @@ inline void makeUTF16(SQLCHAR* pSQLChar, SQLSMALLINT length, std::string& target
 
 void makeUTF8(Poco::Buffer<SQLWCHAR>& buffer, SQLINTEGER length, SQLPOINTER pTarget, SQLINTEGER targetLength);
 	/// Utility function for conversion from UTF-16 to UTF-8.
+
+
+inline void makeUTF8(Poco::Buffer<SQLWCHAR>& buffer, int length, SQLPOINTER pTarget, SQLSMALLINT targetLength)
+	/// Utility function for conversion from UTF-16 to UTF-8.
+{
+	makeUTF8(buffer, length, pTarget, (SQLINTEGER) targetLength);
+}
 
 
 } } } // namespace Poco::Data::ODBC

@@ -1,8 +1,6 @@
 //
 // RowFilter.h
 //
-// $Id: //poco/Main/Data/include/Poco/Data/RowFilter.h#1 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  RowFilter
@@ -85,14 +83,11 @@ public:
 	~RowFilter();
 		/// Destroys the RowFilter.
 
-	void addFilter(Ptr pFilter, LogicOperator comparison);
+	void addFilter(const Ptr& pFilter, LogicOperator comparison);
 		/// Appends another filter to this one.
 
-	void removeFilter(Ptr pFilter);
+	void removeFilter(const Ptr& pFilter);
 		/// Removes filter from this filter.
-
-	bool has(Ptr pFilter) const;
-		/// Returns true if this filter is parent of pFilter;
 
 	template <typename T>
 	void add(const std::string& name, Comparison comparison, const T& value, LogicOperator op = OP_OR)
@@ -130,7 +125,7 @@ public:
 		/// Returns the number of comparisons removed.
 
 	void toggleNot();
-		/// Toggles the NOT operator for this filter;
+		/// Togless the NOT operator for this filter;
 
 	bool isNot() const;
 		/// Returns true if filter is NOT-ed, false otherwise.
@@ -186,12 +181,6 @@ private:
 ///
 /// inlines
 ///
-
-
-inline bool RowFilter::has(Ptr pFilter) const
-{
-	return _filterMap.find(pFilter) != _filterMap.end();
-}
 
 
 inline bool RowFilter::isEmpty() const

@@ -40,17 +40,19 @@ if(MSVC)
     else(POCO_MT)
         set(STATIC_POSTFIX "md" CACHE STRING "Set static library postfix" FORCE)
     endif(POCO_MT)
-
+      
     if (ENABLE_MSVC_MP)
       add_definitions(/MP)
     endif()
-
+    
 else(MSVC)
     # Other compilers then MSVC don't have a static STATIC_POSTFIX at the moment
     set(STATIC_POSTFIX "" CACHE STRING "Set static library postfix" FORCE)
     set(CMAKE_C_FLAGS_DEBUG   "${CMAKE_C_FLAGS_DEBUG}   -D_DEBUG")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 endif(MSVC)
+
+
 
 # Add a d postfix to the debug libraries
 if(POCO_STATIC)
@@ -71,7 +73,7 @@ include(CheckTypeSize)
 find_package(Cygwin)
 
 if(WIN32)
-  add_definitions( -DUNICODE -D_UNICODE -D__LCC__)  #__LCC__ define used by MySQL.h
+  add_definitions( -DPOCO_OS_FAMILY_WINDOWS -DUNICODE -D_UNICODE -D__LCC__)  #__LCC__ define used by MySQL.h
 endif(WIN32)
 
 if (CYGWIN)
@@ -79,29 +81,29 @@ if (CYGWIN)
   add_definitions(-D_XOPEN_SOURCE=500 -D__BSD_VISIBLE)
 else (CYGWIN)
 	if (UNIX AND NOT ANDROID )
+	  add_definitions( -DPOCO_OS_FAMILY_UNIX )
 	  # Standard 'must be' defines
 	  if (APPLE)
 	    add_definitions( -DPOCO_HAVE_IPv6 -DPOCO_NO_STAT64)
-	    set(SYSLIBS  dl)
+	    set(SYSLIBS  ${CMAKE_DL_LIBS})
 	  else (APPLE)
 	    add_definitions( -D_REENTRANT -D_THREAD_SAFE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 )
 	    if (QNX)
 	      add_definitions( -DPOCO_HAVE_FD_POLL)
 	      set(SYSLIBS  m socket)
-		elseif(${CMAKE_SYSTEM} MATCHES "AIX")
-		  add_definitions(-D__IBMCPP_TR1__)
-		else ()
+	    else (QNX)
 	      add_definitions( -D_XOPEN_SOURCE=500 -DPOCO_HAVE_FD_EPOLL)
-	      set(SYSLIBS  pthread dl rt)
-		endif ()
+	      set(SYSLIBS  pthread ${CMAKE_DL_LIBS} rt)
+	    endif (QNX)
 	  endif (APPLE)
 	endif(UNIX AND NOT ANDROID )
 endif (CYGWIN)
 
 if (CMAKE_SYSTEM MATCHES "SunOS")
+  add_definitions( -DPOCO_OS_FAMILY_UNIX )
   # Standard 'must be' defines
   add_definitions( -D_XOPEN_SOURCE=500 -D_REENTRANT -D_THREAD_SAFE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 )
-  set(SYSLIBS  pthread socket xnet nsl resolv rt dl)
+  set(SYSLIBS  pthread socket xnet nsl resolv rt ${CMAKE_DL_LIBS})
 endif(CMAKE_SYSTEM MATCHES "SunOS")
 
 if (CMAKE_COMPILER_IS_MINGW)
@@ -123,9 +125,3 @@ endif(IOS)
 if (ANDROID)
   add_definitions( -DPOCO_ANDROID -DPOCO_NO_FPENVIRONMENT -DPOCO_NO_WSTRING -DPOCO_NO_SHAREDMEMORY )
 endif(ANDROID)
-
-# IBM XLC for AIX
-if ((${CMAKE_CXX_COMPILER_ID} MATCHES "XL") AND (${CMAKE_SYSTEM} MATCHES "AIX"))
-  set(WARNINGS_FLAGS "-qsuppress=1540-0198 -qsuppress=1540-1628 -qsuppress=1540-0095 -qsuppress=1500-030")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -qlanglvl=extended0x -qlanglvl=noconstexpr -qlanglvl=newexcp ${WARNINGS_FLAGS}")
-endif()

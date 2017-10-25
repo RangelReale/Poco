@@ -1,8 +1,6 @@
 //
 // TimedNotificationQueueTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/TimedNotificationQueueTest.cpp#1 $
-//
 // Copyright (c) 2009, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,16 +9,18 @@
 
 
 #include "TimedNotificationQueueTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/TimedNotificationQueue.h"
 #include "Poco/Notification.h"
 #include "Poco/Timestamp.h"
-#include <iostream>
+#include "Poco/Clock.h"
+
 
 using Poco::TimedNotificationQueue;
 using Poco::Notification;
 using Poco::Timestamp;
+using Poco::Clock;
 
 
 namespace 
@@ -45,7 +45,7 @@ namespace
 }
 
 
-TimedNotificationQueueTest::TimedNotificationQueueTest(const std::string& rName): CppUnit::TestCase(rName)
+TimedNotificationQueueTest::TimedNotificationQueueTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

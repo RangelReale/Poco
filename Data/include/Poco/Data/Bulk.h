@@ -1,8 +1,6 @@
 //
 // BulkExtraction.h
 //
-// $Id: //poco/Main/Data/include/Poco/Data/Bulk.h#9 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  Bulk
@@ -41,10 +39,10 @@ public:
 		/// Destroys the bulk.
 
 	const Limit& limit() const;
-		/// Returns the limit associated with this bulk object.
+		/// Returns the limit asociated with this bulk object.
 
 	Poco::UInt32 size() const;
-		/// Returns the value of the limit associated with 
+		/// Returns the value of the limit asociated with 
 		/// this bulk object.
 	
 private:

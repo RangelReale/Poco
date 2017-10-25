@@ -1,8 +1,6 @@
 //
 // FoundationTestSuite.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/FoundationTestSuite.cpp#3 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -30,7 +28,6 @@
 #include "EventTestSuite.h"
 #include "CacheTestSuite.h"
 #include "HashingTestSuite.h"
-#include "FIFOBufferTestSuite.h"
 
 
 CppUnit::Test* FoundationTestSuite::suite()
@@ -40,7 +37,6 @@ CppUnit::Test* FoundationTestSuite::suite()
 	pSuite->addTest(CoreTestSuite::suite());
 	pSuite->addTest(DateTimeTestSuite::suite());
 	pSuite->addTest(StreamsTestSuite::suite());
-	pSuite->addTest(FIFOBufferTestSuite::suite());
 	pSuite->addTest(CryptTestSuite::suite());
 	pSuite->addTest(NotificationsTestSuite::suite());
 	pSuite->addTest(ThreadingTestSuite::suite());

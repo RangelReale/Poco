@@ -1,8 +1,6 @@
 //
 // RowFormatter.cpp
 //
-// $Id: //poco/Main/Data/src/RowFormatter.cpp#1 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  RowFormatter
@@ -23,11 +21,11 @@ namespace Poco {
 namespace Data {
 
 
-RowFormatter::RowFormatter(const std::string& rPrefix,
-	const std::string& rPostfix,
+RowFormatter::RowFormatter(const std::string& prefix,
+	const std::string& postfix,
 	Mode mode):
-	_prefix(rPrefix), 
-	_postfix(rPostfix),
+	_prefix(prefix), 
+	_postfix(postfix),
 	_mode(mode),
 	_totalRowCount(0)
 {

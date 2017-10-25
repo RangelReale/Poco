@@ -1,8 +1,6 @@
 //
 // BufferedStreamBuf.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/BufferedStreamBuf.h#1 $
-//
 // Library: Foundation
 // Package: Streams
 // Module:  StreamBuf
@@ -67,13 +65,7 @@ public:
 
 	~BasicBufferedStreamBuf()
 	{
-		try 
-		{
-			Allocator::deallocate(_pBuffer, _bufsize);
-		} catch (...)
-		{
-			poco_unexpected();
-		}
+		Allocator::deallocate(_pBuffer, _bufsize);
 	}
 
 	virtual int_type overflow(int_type c)

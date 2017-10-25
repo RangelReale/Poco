@@ -1,31 +1,25 @@
 //
 // SharedMemoryTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/SharedMemoryTest.cpp#1 $
-//
 // Copyright (c) 2007, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
 // SPDX-License-Identifier:	BSL-1.0
 //
 
-
 #include "SharedMemoryTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/SharedMemory.h"
 #include "Poco/Path.h"
 #include "Poco/File.h"
 #include "Poco/Exception.h"
-#include "Poco/Environment.h"
-#include <sstream>
-#include <iostream>
 
 
 using Poco::SharedMemory;
 
 
-SharedMemoryTest::SharedMemoryTest(const std::string& rName): CppUnit::TestCase(rName)
+SharedMemoryTest::SharedMemoryTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 
@@ -38,7 +32,7 @@ SharedMemoryTest::~SharedMemoryTest()
 void SharedMemoryTest::testCreate()
 {
 	SharedMemory mem("hi", 4096, SharedMemory::AM_WRITE);
-	assert (mem.end()-mem.begin() == 4096);
+	assert (mem.end()- mem.begin() == 4096);
 	mem.begin()[0] = 'A';
 	mem.end()[-1] = 'Z';
 }
@@ -46,7 +40,7 @@ void SharedMemoryTest::testCreate()
 
 void SharedMemoryTest::testCreateFromFile()
 {
-	Poco::Path p = findDataFile("data", "testdata.txt");
+	Poco::Path p = findDataFile("testdata.txt");
 	Poco::File f(p);
 	assert (f.exists() && f.isFile());
 	SharedMemory mem(f, SharedMemory::AM_READ);
@@ -57,28 +51,24 @@ void SharedMemoryTest::testCreateFromFile()
 }
 
 
-Poco::Path SharedMemoryTest::findDataFile(const std::string& directory, const std::string& file)
+Poco::Path SharedMemoryTest::findDataFile(const std::string& afile)
 {
-	std::ostringstream ostr;
-	ostr << directory << '/' << file;
-	std::string validDir(ostr.str());
-	Poco::Path pathPattern(validDir);
-	if (Poco::File(pathPattern).exists())
+	Poco::Path root;
+	root.makeAbsolute();
+	Poco::Path result;
+	while (!Poco::Path::find(root.toString(), "data", result))
 	{
-		return pathPattern;
+		root.makeParent();
+		if (root.toString().empty() || root.toString() == "/" || root.toString() == "\\")
+			throw Poco::FileNotFoundException("Didn't find data subdir");
 	}
-
-	ostr.str("");
-	ostr << "/Foundation/testsuite/" << directory << '/' << file;
-	validDir = Poco::Environment::get("POCO_BASE") + ostr.str();
-	pathPattern = validDir;
-
-	if (!Poco::File(pathPattern).exists())
-	{
-		std::cout << "Can't find " << validDir << std::endl;
-		throw Poco::NotFoundException("cannot locate directory containing valid Zip test files");
-	}
-	return pathPattern;
+	result.makeDirectory();
+	result.setFileName(afile);
+	Poco::File aFile(result.toString());
+	if (!aFile.exists() || (aFile.exists() && !aFile.isFile()))
+		throw Poco::FileNotFoundException("Didn't find file " + afile);
+	
+	return result;
 }
 
 

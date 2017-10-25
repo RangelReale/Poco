@@ -1,8 +1,6 @@
 //
 // Document.h
 //
-// $Id: //poco/Main/PDF/include/Poco/PDF/Document.h#4 $
-//
 // Library: PDF
 // Package: PDFCore
 // Module:  Document
@@ -293,7 +291,7 @@ public:
 		/// Sets the document info.
  
 	void setInfo(Info info, const LocalDateTime& dt);
-		/// Sets the document creation or modification date.
+		/// Sets the document creation or moidification date.
 
 	std::string getInfo(Info info);
 		/// Returns the document info.

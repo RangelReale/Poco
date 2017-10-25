@@ -1,8 +1,6 @@
 //
 // LogFile.cpp
 //
-// $Id: //poco/1.4/Foundation/src/LogFile.cpp#1 $
-//
 // Library: Foundation
 // Package: Logging
 // Module:  LogFile
@@ -31,7 +29,7 @@
 namespace Poco {
 
 
-LogFile::LogFile(const std::string& rPath): LogFileImpl(rPath)
+LogFile::LogFile(const std::string& path): LogFileImpl(path)
 {
 }
 

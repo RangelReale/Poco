@@ -1,8 +1,6 @@
 //
 // CountingStream.cpp
 //
-// $Id: //poco/1.4/Foundation/src/CountingStream.cpp#1 $
-//
 // Library: Foundation
 // Package: Streams
 // Module:  CountingStream
@@ -96,21 +94,21 @@ void CountingStreamBuf::setCurrentLineNumber(int line)
 }
 
 
-void CountingStreamBuf::addChars(int charsToAdd)
+void CountingStreamBuf::addChars(int chars)
 {
-	_chars += charsToAdd;
+	_chars += chars;
 }
 
 		
-void CountingStreamBuf::addLines(int linesToAdd)
+void CountingStreamBuf::addLines(int lines)
 {
-	_lines += linesToAdd;
+	_lines += lines;
 }
 
 		
-void CountingStreamBuf::addPos(int posToAdd)
+void CountingStreamBuf::addPos(int pos)
 {
-	_pos += posToAdd;
+	_pos += pos;
 }
 
 
@@ -149,21 +147,21 @@ void CountingIOS::setCurrentLineNumber(int line)
 }
 
 
-void CountingIOS::addChars(int charsToAdd)
+void CountingIOS::addChars(int chars)
 {
-	_buf.addChars(charsToAdd);
+	_buf.addChars(chars);
 }
 
 		
-void CountingIOS::addLines(int linesToAdd)
+void CountingIOS::addLines(int lines)
 {
-	_buf.addLines(linesToAdd);
+	_buf.addLines(lines);
 }
 
 		
-void CountingIOS::addPos(int posToAdd)
+void CountingIOS::addPos(int pos)
 {
-	_buf.addPos(posToAdd);
+	_buf.addPos(pos);
 }
 
 

@@ -1,8 +1,6 @@
 //
 // ICMPClient.cpp
 //
-// $Id: //poco/1.4/Net/src/ICMPClient.cpp#1 $
-//
 // Library: Net
 // Package: ICMP
 // Module:  ICMPClient
@@ -16,18 +14,16 @@
 
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/Net/ICMPClient.h"
-#include "Poco/Net/ICMPClientRaw.h"
+#include "Poco/Net/ICMPSocket.h"
 #include "Poco/Net/NetException.h"
+#include "Poco/Channel.h"
+#include "Poco/Message.h"
 #include "Poco/Exception.h"
-#include <Poco/Delegate.h>
+#include <sstream>
 
 
-#if defined(POCO_OS_FAMILY_WINDOWS)
-#include "Poco/Net/ICMPClientUser_WIN32.h"
-#include "ICMPClientUser_WIN32.cpp"
-#endif
-
-
+using Poco::Channel;
+using Poco::Message;
 using Poco::InvalidArgumentException;
 using Poco::NotImplementedException;
 using Poco::TimeoutException;
@@ -38,29 +34,14 @@ namespace Poco {
 namespace Net {
 
 
-ICMPClient::ICMPClient(IPAddress::Family family, bool useRawSocket)
+ICMPClient::ICMPClient(IPAddress::Family family): 
+	_family(family)
 {
-	if (!useRawSocket)
-	{
-#if defined(POCO_OS_FAMILY_WINDOWS)
-		_impl = new ICMPClientUserImpl(family);
-#else
-		throw Poco::NotImplementedException("Non-raw socket not implemented for this platform");
-#endif
-	}
-	else
-		_impl = new ICMPClientRaw(family);
-
-	_impl->pingBegin += Poco::delegate(this, &ICMPClient::tpbegin);
-	_impl->pingReply += Poco::delegate(this, &ICMPClient::tpreply);
-	_impl->pingError += Poco::delegate(this, &ICMPClient::tperror);
-	_impl->pingEnd += Poco::delegate(this, &ICMPClient::tpend);
 }
 
 
 ICMPClient::~ICMPClient()
 {
-	if (_impl) delete _impl;
 }
 
 
@@ -68,7 +49,8 @@ int ICMPClient::ping(const std::string& address, int repeat) const
 {
 	if (repeat <= 0) return 0;
 
-	return _impl->ping(address, repeat);
+	SocketAddress addr(address, 0);
+	return ping(addr, repeat);
 }
 
 
@@ -76,49 +58,86 @@ int ICMPClient::ping(SocketAddress& address, int repeat) const
 {
 	if (repeat <= 0) return 0;
 
-	return _impl->ping(address, repeat);
+	ICMPSocket icmpSocket(_family);
+	SocketAddress returnAddress;
+
+	ICMPEventArgs eventArgs(address, repeat, icmpSocket.dataSize(), icmpSocket.ttl());
+	pingBegin.notify(this, eventArgs);
+
+	for (int i = 0; i < repeat; ++i)
+	{
+		icmpSocket.sendTo(address);
+		++eventArgs;
+
+		try
+		{
+			int t = icmpSocket.receiveFrom(returnAddress);
+			eventArgs.setReplyTime(i, t);
+			pingReply.notify(this, eventArgs);
+		}
+		catch (TimeoutException&)
+		{
+			std::ostringstream os;
+			os << address.host().toString() << ": Request timed out.";
+			eventArgs.setError(i, os.str());
+			pingError.notify(this, eventArgs);
+			continue;
+		}
+		catch (ICMPException& ex)
+		{
+			std::ostringstream os;
+			os << address.host().toString() << ": " << ex.what();
+			eventArgs.setError(i, os.str());
+			pingError.notify(this, eventArgs);
+			continue;
+		}
+		catch (Exception& ex)
+		{
+			std::ostringstream os;
+			os << ex.displayText();
+			eventArgs.setError(i, os.str());
+			pingError.notify(this, eventArgs);
+			continue;
+		}
+	}
+	pingEnd.notify(this, eventArgs);
+	return eventArgs.received();
 }
 
 
-int ICMPClient::pingIPv4(const std::string& address, int repeat, bool useRawSocket)
+int ICMPClient::pingIPv4(const std::string& address, int repeat)
 {
 	if (repeat <= 0) return 0;
 
 	SocketAddress a(address, 0);
-	return ping(a, IPAddress::IPv4, repeat, useRawSocket);
+	return ping(a, IPAddress::IPv4, repeat);
 }
 
 
-int ICMPClient::ping(SocketAddress& address, IPAddress::Family family, int repeat, bool useRawSocket)
+int ICMPClient::ping(SocketAddress& address, IPAddress::Family family, int repeat)
 {
 	if (repeat <= 0) return 0;
 
-	ICMPClient icmpClient(family, useRawSocket);
-	return icmpClient.ping(address, repeat);
-}
+	ICMPSocket icmpSocket(family);
+	SocketAddress returnAddress;
+	int received = 0;
 
-
-void ICMPClient::tpbegin(const void *sender, Poco::Net::ICMPEventArgs &args)
-{
-	pingBegin.notify(this, args);
-}
-
-
-void ICMPClient::tpreply(const void *sender, Poco::Net::ICMPEventArgs &args)
-{
-	pingReply.notify(this, args);
-}
-
-
-void ICMPClient::tperror(const void *sender, Poco::Net::ICMPEventArgs &args)
-{
-	pingError.notify(this, args);
-}
-
-
-void ICMPClient::tpend(const void *sender, Poco::Net::ICMPEventArgs &args)
-{
-	pingEnd.notify(this, args);
+	for (int i = 0; i < repeat; ++i)
+	{
+		icmpSocket.sendTo(address);
+		try
+		{
+			icmpSocket.receiveFrom(returnAddress);
+			++received;
+		}
+		catch (TimeoutException&)
+		{
+		}
+		catch (ICMPException&)
+		{
+		}
+	}
+	return received;
 }
 
 

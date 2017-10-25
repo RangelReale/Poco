@@ -1,8 +1,6 @@
 //
 // Checksum.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/Checksum.h#1 $
-//
 // Library: Foundation
 // Package: Core
 // Module:  Checksum
@@ -69,7 +67,7 @@ public:
 		/// Returns the calculated checksum.
 
 	Type type() const;
-		/// Which type of checksum are we calculating.
+		/// Which type of checksum are we calulcating
 
 private:
 	Type         _type;

@@ -1,8 +1,6 @@
 //
 // ODBCTest.cpp
 //
-// $Id: //poco/Main/Data/ODBC/testsuite/src/ODBCTest.cpp#5 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "ODBCTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/String.h"
 #include "Poco/Format.h"
 #include "Poco/Any.h"
@@ -22,7 +20,6 @@
 #include "Poco/Exception.h"
 #include "Poco/Data/LOB.h"
 #include "Poco/Data/StatementImpl.h"
-#include "Poco/Data/RecordSet.h"
 #include "Poco/Data/ODBC/Connector.h"
 #include "Poco/Data/ODBC/Utility.h"
 #include "Poco/Data/ODBC/Diagnostics.h"
@@ -42,7 +39,6 @@ using Poco::Data::ODBC::ODBCException;
 using Poco::Data::ODBC::ConnectionException;
 using Poco::Data::ODBC::StatementException;
 using Poco::Data::ODBC::StatementDiagnostics;
-using Poco::Data::Statement;
 using Poco::format;
 using Poco::Tuple;
 using Poco::Any;
@@ -960,7 +956,7 @@ void ODBCTest::testInternalExtraction()
 		recreateVectorsTable();
 		_pSession->setFeature("autoBind", bindValue(i));
 		_pSession->setFeature("autoExtract", bindValue(i+1));
-		_pExecutor->internalExtraction(0);
+		_pExecutor->internalExtraction();
 		i += 2;
 	}
 }
@@ -1031,7 +1027,7 @@ void ODBCTest::testNull()
 		recreateNullsTable();
 		_pSession->setFeature("autoBind", bindValue(i));
 		_pSession->setFeature("autoExtract", bindValue(i+1));
-		_pExecutor->nulls(emptyStringIsSpace());
+		_pExecutor->nulls();
 		i += 2;
 	}
 }
@@ -1129,20 +1125,6 @@ void ODBCTest::testMultipleResults()
 	}
 }
 
-void ODBCTest::testMultipleResultsNoProj()
-{
-	if (! &session()) fail("Test not available.");
-	session().setFeature("autoBind", true); // DB2 fails without that
-	for (int autoE = 0; autoE < 2; ++autoE)
-	{
-		recreatePersonTable();
-		_pSession->setFeature("autoExtract", autoE != 0);
-		_pExecutor->multipleResultsNoProj("SELECT * FROM " + ExecUtil::person() + " WHERE Age = ?; "
-		  "SELECT Age FROM " + ExecUtil::person() + " WHERE FirstName = ?; "
-		  "SELECT * FROM " + ExecUtil::person() + " WHERE Age = ? OR Age = ? ORDER BY Age;");
-	}
-}
-
 
 void ODBCTest::testSQLChannel()
 {
@@ -1236,19 +1218,6 @@ void ODBCTest::testNullable()
 }
 
 
-void ODBCTest::testInsertStatReuse()
-{
-	for (int i = 0; i < 8; i += 2)
-	{
-		recreatePersonTable();
-		session().setFeature("autoBind", bindValue(i));
-		session().setFeature("autoExtract", bindValue(i + 1));
-
-		_pExecutor->insertStatReuse();
-	}
-}
-
-
 void ODBCTest::testUnicode()
 {
 #if defined (POCO_ODBC_UNICODE)
@@ -1285,28 +1254,6 @@ void ODBCTest::testReconnect()
 }
 
 
-void ODBCTest::testSyntaxError()
-{
-	try {
-		session() << "select fro oops", now;
-		fail("Expected syntax error exception");
-	}
-	catch (const StatementException&)
-	{
-	}
-
-	try {
-		Statement stat(session());
-		stat << "select fro oops";
-		stat.execute();
-		fail("Expected syntax error exception");
-	}
-	catch (const StatementException&)
-	{
-	}
-}
-
-
 bool ODBCTest::canConnect(const std::string& driver,
 	std::string& dsn,
 	std::string& uid,
@@ -1325,7 +1272,7 @@ bool ODBCTest::canConnect(const std::string& driver,
 		}
 	}
 
-	if ((_drivers.end() == itDrv) && (driver.length() != 0) && (driver[0] != '/')) 
+	if (_drivers.end() == itDrv) 
 	{
 		dsn = "";
 		uid = "";
@@ -1386,7 +1333,7 @@ ODBCTest::SessionPtr ODBCTest::init(const std::string& driver,
 	
 	try
 	{
-		std::cout << "Connecting to [" << dbConnString << ']' << std::endl;
+		std::cout << "Conecting to [" << dbConnString << ']' << std::endl;
 		return new Session(Poco::Data::ODBC::Connector::KEY, dbConnString, 5);
 	}catch (ConnectionFailedException& ex)
 	{

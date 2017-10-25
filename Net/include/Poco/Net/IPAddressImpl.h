@@ -1,8 +1,6 @@
 //
 // IPAddressImpl.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/IPAddressImpl.h#2 $
-//
 // Library: Net
 // Package: NetCore
 // Module:  IPAddressImpl
@@ -39,7 +37,14 @@ class IPAddressImpl
 #endif
 {
 public:
-	typedef AddressFamily::Family Family;
+	enum Family
+		/// Possible address families for IP addresses.
+	{
+		IPv4
+#ifdef POCO_HAVE_IPv6
+		,IPv6
+#endif
+	};
 	
 	virtual ~IPAddressImpl();
 
@@ -124,9 +129,6 @@ private:
 };
 
 
-#if defined(POCO_HAVE_IPv6)
-
-
 //
 // IPv6AddressImpl
 //
@@ -175,9 +177,6 @@ private:
 	struct in6_addr _addr;
 	unsigned int    _scope;
 };
-
-
-#endif // POCO_HAVE_IPv6
 
 
 } } } // namespace Poco::Net::Impl

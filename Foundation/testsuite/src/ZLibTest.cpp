@@ -1,8 +1,6 @@
 //
 // ZLibTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/ZLibTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "ZLibTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/InflatingStream.h"
 #include "Poco/DeflatingStream.h"
 #include "Poco/MemoryStream.h"
@@ -30,7 +28,7 @@ using Poco::DeflatingStreamBuf;
 using Poco::StreamCopier;
 
 
-ZLibTest::ZLibTest(const std::string& rName): CppUnit::TestCase(rName)
+ZLibTest::ZLibTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

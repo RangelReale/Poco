@@ -1,8 +1,6 @@
 //
 // PartialStream.cpp
 //
-// $Id: //poco/1.4/Zip/src/PartialStream.cpp#1 $
-//
 // Library: Zip
 // Package: Zip
 // Module:  PartialStream
@@ -194,7 +192,7 @@ int PartialStreamBuf::writeToDevice(const char* buffer, std::streamsize length)
 
 void PartialStreamBuf::close()
 {
-	// DON'T write data from _buffer!
+	// DONT write data from _buffer!
 }
 
 

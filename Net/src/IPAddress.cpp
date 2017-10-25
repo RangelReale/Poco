@@ -1,8 +1,6 @@
 //
 // IPAddress.cpp
 //
-// $Id: //poco/1.4/Net/src/IPAddress.cpp#5 $
-//
 // Library: Net
 // Package: NetCore
 // Module:  IPAddress
@@ -35,23 +33,11 @@ using Poco::UInt16;
 using Poco::UInt32;
 using Poco::Net::Impl::IPAddressImpl;
 using Poco::Net::Impl::IPv4AddressImpl;
-#if defined(POCO_HAVE_IPv6)
 using Poco::Net::Impl::IPv6AddressImpl;
-#endif
 
 
 namespace Poco {
 namespace Net {
-
-
-#if !defined(_MSC_VER) || defined(__STDC__)
-// Go home MSVC, you're drunk...
-// See http://stackoverflow.com/questions/5899857/multiple-definition-error-for-static-const-class-members
-const IPAddress::Family IPAddress::IPv4;
-#if defined(POCO_HAVE_IPv6)
-const IPAddress::Family IPAddress::IPv6;
-#endif
-#endif
 
 
 IPAddress::IPAddress()
@@ -64,10 +50,8 @@ IPAddress::IPAddress(const IPAddress& addr)
 {
 	if (addr.family() == IPv4)
 		newIPv4(addr.addr());
-#if defined(POCO_HAVE_IPv6)
 	else
 		newIPv6(addr.addr(), addr.scope());
-#endif
 }
 
 
@@ -79,7 +63,8 @@ IPAddress::IPAddress(Family family)
 	else if (family == IPv6)
 		newIPv6();
 #endif
-	else throw Poco::InvalidArgumentException("Invalid or unsupported address family passed to IPAddress()");
+	else
+		throw Poco::InvalidArgumentException("Invalid or unsupported address family passed to IPAddress()");
 }
 
 
@@ -234,12 +219,8 @@ IPAddress& IPAddress::operator = (const IPAddress& addr)
 		destruct();
 		if (addr.family() == IPAddress::IPv4)
 			newIPv4(addr.addr());
-#if defined(POCO_HAVE_IPv6)
-		else if (addr.family() == IPAddress::IPv6)
+		else
 			newIPv6(addr.addr(), addr.scope());
-#endif
-		else 
-			throw Poco::InvalidArgumentException("Invalid or unsupported address family");
 	}
 	return *this;
 }
@@ -247,7 +228,7 @@ IPAddress& IPAddress::operator = (const IPAddress& addr)
 
 IPAddress::Family IPAddress::family() const
 {
-	return pImpl()->family();
+	return static_cast<IPAddress::Family>(pImpl()->family());
 }
 
 
@@ -580,30 +561,19 @@ IPAddress IPAddress::broadcast()
 }
 
 
-} } // namespace Poco::Net
-
-
-Poco::BinaryWriter& operator << (Poco::BinaryWriter& writer, const Poco::Net::IPAddress& value)
+BinaryWriter& operator << (BinaryWriter& writer, const IPAddress& value)
 {
-	writer << static_cast<Poco::UInt8>(value.length());
-	writer.writeRaw(reinterpret_cast<const char*>(value.addr()), value.length());
+	writer.stream().write((const char*) value.addr(), value.length());
 	return writer;
 }
 
-
-Poco::BinaryReader& operator >> (Poco::BinaryReader& reader, Poco::Net::IPAddress& value)
+BinaryReader& operator >> (BinaryReader& reader, IPAddress& value)
 {
 	char buf[sizeof(struct in6_addr)];
-	Poco::UInt8 length;
-	reader >> length;
-	reader.readRaw(buf, length);
-	value = Poco::Net::IPAddress(buf, length);
+	reader.stream().read(buf, value.length());
+	value = IPAddress(buf, value.length());
 	return reader;
 }
 
 
-std::ostream& operator << (std::ostream& ostr, const Poco::Net::IPAddress& addr)
-{
-	ostr << addr.toString();
-	return ostr;
-}
+} } // namespace Poco::Net

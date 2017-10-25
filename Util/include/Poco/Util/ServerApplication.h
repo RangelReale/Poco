@@ -1,8 +1,6 @@
 //
 // ServerApplication.h
 //
-// $Id: //poco/1.4/Util/include/Poco/Util/ServerApplication.h#3 $
-//
 // Library: Util
 // Package: Application
 // Module:  ServerApplication
@@ -163,19 +161,9 @@ public:
 		
 protected:
 	int run();
-	virtual void waitForTerminationRequest();
+	void waitForTerminationRequest();
 #if !defined(_WIN32_WCE)
 	void defineOptions(OptionSet& options);
-#endif
-
-#if defined(POCO_OS_FAMILY_WINDOWS) && !defined(_WIN32_WCE)
-	static HDEVNOTIFY registerServiceDeviceNotification(LPVOID filter, DWORD flags);
-		/// Registers the ServerApplication to receive SERVICE_CONTROL_DEVICEEVENT
-		/// events via handleDeviceEvent().
-
-	virtual DWORD handleDeviceEvent(DWORD event_type, LPVOID event_data);
-		/// Handles the SERVICE_CONTROL_DEVICEEVENT event. The default
-		/// implementation does nothing and returns ERROR_CALL_NOT_IMPLEMENTED.
 #endif
 
 private:
@@ -187,7 +175,7 @@ private:
 	void handlePidFile(const std::string& name, const std::string& value);
 	bool isDaemon(int argc, char** argv);
 	void beDaemon();
-#if defined(POCO_ANDROID) || defined(__NACL__) || defined(__EMSCRIPTEN__)
+#if defined(POCO_ANDROID)
 	static Poco::Event _terminate;
 #endif
 #elif defined(POCO_OS_FAMILY_WINDOWS)
@@ -199,7 +187,7 @@ private:
 		SRV_UNREGISTER
 	};
 	static BOOL __stdcall ConsoleCtrlHandler(DWORD ctrlType);
-	static DWORD __stdcall ServiceControlHandler(DWORD control, DWORD event_type, LPVOID event_data, LPVOID context);
+	static void __stdcall ServiceControlHandler(DWORD control);
 #if defined(POCO_WIN32_UTF8) && !defined(POCO_NO_WSTRING)
 	static void __stdcall ServiceMain(DWORD argc, LPWSTR* argv);
 #else

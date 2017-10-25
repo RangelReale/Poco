@@ -125,7 +125,7 @@
       <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;Foundation_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
@@ -136,7 +136,6 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -169,7 +168,6 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat/>
       <CompileAs>Default</CompileAs>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -202,7 +200,6 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Lib>
       <OutputFile>..\lib64\PocoFoundationmtd.lib</OutputFile>
@@ -220,7 +217,6 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <MinimalRebuild>false</MinimalRebuild>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -228,7 +224,6 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat/>
       <CompileAs>Default</CompileAs>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Lib>
       <OutputFile>..\lib64\PocoFoundationmt.lib</OutputFile>
@@ -240,7 +235,7 @@
       <AdditionalIncludeDirectories>.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;POCO_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
@@ -252,7 +247,6 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Lib>
       <OutputFile>..\lib64\PocoFoundationmdd.lib</OutputFile>
@@ -277,7 +271,6 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat/>
       <CompileAs>Default</CompileAs>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Lib>
       <OutputFile>..\lib64\PocoFoundationmd.lib</OutputFile>
@@ -552,9 +545,6 @@
     <ClCompile Include="src\Random.cpp"/>
     <ClCompile Include="src\RandomStream.cpp"/>
     <ClCompile Include="src\SHA1Engine.cpp"/>
-    <ClCompile Include="src\SHA2Engine.cpp"/>
-    <ClCompile Include="src\SHA3Engine.cpp"/>
-    <ClCompile Include="src\BLAKE2Engine.cpp"/>
     <ClCompile Include="src\Manifest.cpp"/>
     <ClCompile Include="src\SharedLibrary.cpp"/>
     <ClCompile Include="src\SharedLibrary_HPUX.cpp">
@@ -1152,9 +1142,6 @@
     <ClInclude Include="include\Poco\Random.h"/>
     <ClInclude Include="include\Poco\RandomStream.h"/>
     <ClInclude Include="include\Poco\SHA1Engine.h"/>
-    <ClInclude Include="include\Poco\SHA2Engine.h"/>
-    <ClInclude Include="include\Poco\SHA3Engine.h"/>
-    <ClInclude Include="include\Poco\BLAKE2Engine.h"/>
     <ClInclude Include="include\Poco\ClassLibrary.h"/>
     <ClInclude Include="include\Poco\ClassLoader.h"/>
     <ClInclude Include="include\Poco\Manifest.h"/>

@@ -1,8 +1,6 @@
 //
 // ConfigurationTestSuite.h
 //
-// $Id: //poco/1.4/Util/testsuite/src/ConfigurationTestSuite.h#1 $
-//
 // Definition of the ConfigurationTestSuite class.
 //
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
@@ -16,7 +14,7 @@
 #define ConfigurationTestSuite_INCLUDED
 
 
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestSuite.h"
 
 
 class ConfigurationTestSuite

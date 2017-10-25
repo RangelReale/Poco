@@ -22,8 +22,6 @@
 # 5/ run the Foundation tests: build/script/runtests.sh Foundation
 #
 
-TESTRUNNER=./testrunner
-
 if [ "$POCO_BASE" = "" ] ; then
 	POCO_BASE=`pwd`
 fi
@@ -31,6 +29,8 @@ fi
 if [ "$POCO_BUILD" = "" ] ; then
 	POCO_BUILD=$POCO_BASE
 fi
+
+TESTRUNNER=./testrunner
 
 if [ "$1" = "" ] ; then
    components=`cat $POCO_BASE/components`
@@ -52,7 +52,7 @@ if [ "$OSNAME" = "" ] ; then
 	OSNAME=`uname`
         case $OSNAME in
         CYGWIN*)
-                OSNAME=Cygwin 
+                OSNAME=CYGWIN 
                 TESTRUNNER=$TESTRUNNER.exe
                 PATH=$POCO_BUILD/lib/$OSNAME/$OSARCH:$PATH
                 ;;

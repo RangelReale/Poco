@@ -1,8 +1,6 @@
 //
 // SAXParserTest.cpp
 //
-// $Id: //poco/1.4/XML/testsuite/src/SAXParserTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "SAXParserTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/SAX/SAXParser.h"
 #include "Poco/SAX/InputSource.h"
 #include "Poco/SAX/EntityResolver.h"

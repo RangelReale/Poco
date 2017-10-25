@@ -1,8 +1,6 @@
 //
 // Process_WIN32.cpp
 //
-// $Id: //poco/1.4/Foundation/src/Process_WIN32.cpp#4 $
-//
 // Library: Foundation
 // Package: Processes
 // Module:  Process
@@ -163,7 +161,7 @@ static std::string escapeArg(const std::string& arg)
 
 ProcessHandleImpl* ProcessImpl::launchImpl(const std::string& command, const ArgsImpl& args, const std::string& initialDirectory, Pipe* inPipe, Pipe* outPipe, Pipe* errPipe, const EnvImpl& env)
 {
-	std::string commandLine = escapeArg(command);
+	std::string commandLine = command;
 	for (ArgsImpl::const_iterator it = args.begin(); it != args.end(); ++it)
 	{
 		commandLine.append(" ");
@@ -202,12 +200,12 @@ ProcessHandleImpl* ProcessImpl::launchImpl(const std::string& command, const Arg
 	{
 		DuplicateHandle(hProc, outPipe->writeHandle(), hProc, &startupInfo.hStdOutput, 0, TRUE, DUPLICATE_SAME_ACCESS);
 		mustInheritHandles = true;
-	}
+	} 
 	else if (GetStdHandle(STD_OUTPUT_HANDLE))
 	{
 		DuplicateHandle(hProc, GetStdHandle(STD_OUTPUT_HANDLE), hProc, &startupInfo.hStdOutput, 0, TRUE, DUPLICATE_SAME_ACCESS);
 		mustInheritHandles = true;
-	}
+	} 
 	else
 	{
 		startupInfo.hStdOutput = 0;
@@ -216,12 +214,12 @@ ProcessHandleImpl* ProcessImpl::launchImpl(const std::string& command, const Arg
 	{
 		DuplicateHandle(hProc, errPipe->writeHandle(), hProc, &startupInfo.hStdError, 0, TRUE, DUPLICATE_SAME_ACCESS);
 		mustInheritHandles = true;
-	}
+	} 
 	else if (GetStdHandle(STD_ERROR_HANDLE))
 	{
 		DuplicateHandle(hProc, GetStdHandle(STD_ERROR_HANDLE), hProc, &startupInfo.hStdError, 0, TRUE, DUPLICATE_SAME_ACCESS);
 		mustInheritHandles = true;
-	}
+	} 
 	else
 	{
 		startupInfo.hStdError = 0;
@@ -301,6 +299,8 @@ void ProcessImpl::killImpl(PIDImpl pid)
 		{
 		case ERROR_ACCESS_DENIED:
 			throw NoPermissionException("cannot kill process");
+		case ERROR_NOT_FOUND: 
+			throw NotFoundException("cannot kill process");
 		case ERROR_INVALID_PARAMETER:
 			throw NotFoundException("cannot kill process");
 		default:

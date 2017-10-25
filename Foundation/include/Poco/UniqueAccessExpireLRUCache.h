@@ -1,8 +1,6 @@
 //
 // UniqueAccessExpireLRUCache.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/UniqueAccessExpireLRUCache.h#1 $
-//
 // Library: Foundation
 // Package: Cache
 // Module:  UniqueAccessExpireLRUCache
@@ -37,7 +35,7 @@ template <
 >
 class UniqueAccessExpireLRUCache: public AbstractCache<TKey, TValue, StrategyCollection<TKey, TValue>, TMutex, TEventMutex>
 	/// A UniqueAccessExpireLRUCache combines LRU caching and time based per entry expire caching.
-	/// One can define for each cache entry a separate timepoint
+	/// One can define for each cache entry a seperate timepoint
 	/// but also limit the size of the cache (per default: 1024).
 	/// Each TValue object must thus offer the following method:
 	///    

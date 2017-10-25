@@ -1,6 +1,4 @@
 #
-# $Id: //poco/1.4/build/config/Linux#2 $
-#
 # Linux
 #
 # Make settings for Linux 2.6/gcc 3.3
@@ -15,22 +13,14 @@ LINKMODE ?= SHARED
 #
 # Define Tools
 #
-ifeq ($(origin CROSS_COMPILE), undefined)
-	CC	?=gcc
-	CXX	?=g++
-	LIB     = ar -cr
-	RANLIB  = ranlib
-	STRIP   = strip
-else
-	CC      = ${CROSS_COMPILE}gcc
-	CXX     = ${CROSS_COMPILE}g++
-	LIB     = ${CROSS_COMPILE}ar -cr
-	RANLIB  = ${CROSS_COMPILE}ranlib
-	STRIP   = ${CROSS_COMPILE}strip
-endif
+CC      = ${CROSS_COMPILE}gcc
+CXX     = ${CROSS_COMPILE}g++
 LINK    = $(CXX)
+LIB     = ${CROSS_COMPILE}ar -cr
+RANLIB  = ${CROSS_COMPILE}ranlib
 SHLIB   = $(CXX) -shared -Wl,-soname,$(notdir $@) -o $@
 SHLIBLN = $(POCO_BASE)/build/script/shlibln
+STRIP   = ${CROSS_COMPILE}strip
 DEP     = $(POCO_BASE)/build/script/makedepend.gcc 
 SHELL   = sh
 RM      = rm -rf
@@ -46,21 +36,15 @@ SHAREDLIBLINKEXT = .so
 #
 # Compiler and Linker Flags
 #
-CFLAGS          = 
-CFLAGS32        = 
-CFLAGS64        = 
+CFLAGS          = -std=c99
+CFLAGS32        =
+CFLAGS64        =
 CXXFLAGS        = -Wall -Wno-sign-compare
-CXXFLAGS32      = 
-CXXFLAGS64      = 
-SHLIBFLAGS      = 
-SHLIBFLAGS32    = 
-SHLIBFLAGS64    = 
-LIBFLAGS        = 
-LIBFLAGS32      =
-LIBFLAGS64      =
+CXXFLAGS32      =
+CXXFLAGS64      =
 LINKFLAGS       =
-LINKFLAGS32     = 
-LINKFLAGS64     = 
+LINKFLAGS32     =
+LINKFLAGS64     =
 STATICOPT_CC    =
 STATICOPT_CXX   =
 STATICOPT_LINK  = -static
@@ -77,21 +61,9 @@ RELEASEOPT_LINK = -O2
 #
 # System Specific Flags
 #
-SYSFLAGS = -D_XOPEN_SOURCE=600 -D_REENTRANT -D_THREAD_SAFE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -DPOCO_HAVE_FD_EPOLL -DPOCO_HAVE_ADDRINFO -DPOCO_HAVE_LIBRESOLV
+SYSFLAGS = -D_XOPEN_SOURCE=600 -D_REENTRANT -D_THREAD_SAFE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -DPOCO_HAVE_FD_EPOLL
 
 #
 # System Specific Libraries
 #
 SYSLIBS  = -lpthread -ldl -lrt
-
-#
-# Auto-detect architecture if not specified
-#
-ifndef OSARCH_64BITS
-  LBITS := $(shell getconf LONG_BIT)
-  ifeq ($(LBITS),64)
-    OSARCH_64BITS = 1
-  else
-    OSARCH_64BITS = 0
-  endif
-endif

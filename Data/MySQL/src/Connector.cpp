@@ -1,8 +1,6 @@
 //
 // MySQLException.cpp
 //
-// $Id: //poco/1.4/Data/MySQL/src/Connector.cpp#1 $
-//
 // Library: Data/MySQL
 // Package: MySQL
 // Module:  Connector
@@ -21,16 +19,12 @@
 #include <mysql.h>
 
 
-const MySQLConnectorRegistrator pocoMySQLConnectorRegistrator;
-
-
 namespace Poco {
 namespace Data {
 namespace MySQL {
 
 
-std::string Connector::KEY(POCO_DATA_MYSQL_CONNECTOR_NAME);
-Poco::FastMutex Connector::_mutex;
+std::string Connector::KEY("mysql");
 
 
 Connector::Connector()
@@ -42,41 +36,34 @@ Connector::~Connector()
 {
 }
 
+
 const std::string& Connector::name() const
 {
-	static const std::string n(POCO_DATA_MYSQL_CONNECTOR_NAME);
-	return n;
+	return KEY;
 }
+
 
 Poco::AutoPtr<Poco::Data::SessionImpl> Connector::createSession(const std::string& connectionString,
 	std::size_t timeout)
 {
-	static bool initDone = false;
-	{
-		Poco::FastMutex::ScopedLock l(_mutex);
-		if (!initDone)
-		{
-			if (mysql_library_init(0, 0, 0) != 0)
-			{
-				throw Exception("mysql_library_init error");
-			}
-			initDone = true;
-		}
-	}
-
 	return Poco::AutoPtr<Poco::Data::SessionImpl>(new SessionImpl(connectionString, timeout));	
 }
 
 
 void Connector::registerConnector()
 {
+	if (mysql_library_init(0, 0, 0) != 0)
+	{
+		throw Exception("mysql_library_init error");
+	}
+
 	Poco::Data::SessionFactory::instance().add(new Connector());
 }
 
 
 void Connector::unregisterConnector()
 {
-	Poco::Data::SessionFactory::instance().remove(POCO_DATA_MYSQL_CONNECTOR_NAME);
+	Poco::Data::SessionFactory::instance().remove(KEY);
 	mysql_library_end();
 }
 

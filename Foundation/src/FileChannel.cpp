@@ -1,8 +1,6 @@
 //
 // FileChannel.cpp
 //
-// $Id: //poco/1.4/Foundation/src/FileChannel.cpp#3 $
-//
 // Library: Foundation
 // Package: Logging
 // Module:  FileChannel
@@ -54,8 +52,8 @@ FileChannel::FileChannel():
 }
 
 
-FileChannel::FileChannel(const std::string& rPath):
-	_path(rPath),
+FileChannel::FileChannel(const std::string& path):
+	_path(path),
 	_times("utc"),
 	_compress(false),
 	_flush(true),

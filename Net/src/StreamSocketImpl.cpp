@@ -1,8 +1,6 @@
 //
 // StreamSocketImpl.cpp
 //
-// $Id: //poco/1.4/Net/src/StreamSocketImpl.cpp#1 $
-//
 // Library: Net
 // Package: Sockets
 // Module:  StreamSocketImpl
@@ -28,17 +26,13 @@ StreamSocketImpl::StreamSocketImpl()
 }
 
 
-StreamSocketImpl::StreamSocketImpl(SocketAddress::Family family)
+StreamSocketImpl::StreamSocketImpl(IPAddress::Family family)
 {
-	if (family == SocketAddress::IPv4)
+	if (family == IPAddress::IPv4)
 		init(AF_INET);
 #if defined(POCO_HAVE_IPv6)
-	else if (family == SocketAddress::IPv6)
+	else if (family == IPAddress::IPv6)
 		init(AF_INET6);
-#endif
-#if defined(POCO_OS_FAMILY_UNIX)
-	else if (family == SocketAddress::UNIX_LOCAL)
-		init(AF_UNIX);
 #endif
 	else throw Poco::InvalidArgumentException("Invalid or unsupported address family passed to StreamSocketImpl");
 }

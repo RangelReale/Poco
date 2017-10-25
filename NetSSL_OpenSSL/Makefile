@@ -1,10 +1,9 @@
 #
 # Makefile
 #
-# $Id: //poco/Main/template/library.make#2 $
-#
 # Makefile for Poco NetSSL_OpenSSL
 #
+
 include $(POCO_BASE)/build/rules/global
 
 SYSLIBS += -lssl -lcrypto

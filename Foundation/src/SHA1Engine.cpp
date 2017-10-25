@@ -1,8 +1,6 @@
 //
 // SHA1Engine.cpp
 //
-// $Id: //poco/1.4/Foundation/src/SHA1Engine.cpp#1 $
-//
 // Library: Foundation
 // Package: Crypt
 // Module:  SHA1Engine
@@ -18,7 +16,6 @@
 
 
 #include "Poco/SHA1Engine.h"
-#include "Poco/ByteOrder.h"
 #include <cstring>
 
 
@@ -51,12 +48,13 @@ inline void SHA1Engine::byteReverse(UInt32* buffer, int byteCount)
 	byteCount /= sizeof(UInt32);
 	for(int count = 0; count < byteCount; count++)
 	{
-		buffer[count] = Poco::ByteOrder::toBigEndian(buffer[ count ]);
+		UInt32 value = (buffer[ count ] << 16) | (buffer[ count ] >> 16);
+		buffer[count] = ((value & 0xFF00FF00L) >> 8) | ((value & 0x00FF00FFL) << 8);
 	}
 #endif // POCO_ARCH_LITTLE_ENDIAN
 }
 
-
+	
 void SHA1Engine::updateImpl(const void* buffer_, std::size_t count)
 {
 	const BYTE* buffer = (const BYTE*) buffer_;

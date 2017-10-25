@@ -1,8 +1,6 @@
 //
 // PositionExtraction.h
 //
-// $Id: //poco/Main/Data/include/Poco/Data/Position.h#9 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  Position
@@ -32,28 +30,26 @@ class Data_API Position
 	/// indicate the recordset position in batch SQL statements.
 {
 public:
-	typedef Poco::UInt32 Type;
-
-	Position(Type value);
+	Position(Poco::UInt32 value);
 		/// Creates the Position.
 
 	~Position();
 		/// Destroys the Position.
 
-	Type value() const;
+	Poco::UInt32 value() const;
 		/// Returns the position value.
 	
 private:
 	Position();
 
-	Type _value;
+	Poco::UInt32 _value;
 };
 
 
 ///
 /// inlines
 ///
-inline Position::Type Position::value() const
+inline Poco::UInt32 Position::value() const 
 { 
 	return _value; 
 }

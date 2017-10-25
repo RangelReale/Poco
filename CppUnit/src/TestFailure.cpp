@@ -1,12 +1,10 @@
 //
 // TestFailure.cpp
 //
-// $Id: //poco/1.4/CppUnit/src/TestFailure.cpp#1 $
-//
 
 
-#include "Poco/CppUnit/TestFailure.h"
-#include "Poco/CppUnit/Test.h"
+#include "CppUnit/TestFailure.h"
+#include "CppUnit/Test.h"
 
 
 namespace CppUnit {

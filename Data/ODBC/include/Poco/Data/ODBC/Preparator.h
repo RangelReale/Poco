@@ -1,8 +1,6 @@
 //
 // Preparator.h
 //
-// $Id: //poco/Main/Data/ODBC/include/Poco/Data/ODBC/Preparator.h#5 $
-//
 // Library: Data/ODBC
 // Package: ODBC
 // Module:  Preparator
@@ -101,9 +99,7 @@ public:
 	Preparator(const StatementHandle& rStmt, 
 		const std::string& statement, 
 		std::size_t maxFieldSize,
-		DataExtraction dataExtraction,
-		bool isPostgres
-		);
+		DataExtraction dataExtraction = DE_BOUND);
 		/// Creates the Preparator.
 
 	Preparator(const Preparator& other);

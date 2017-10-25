@@ -1,8 +1,6 @@
 //
 // RSATest.h
 //
-// $Id: //poco/1.4/Crypto/testsuite/src/RSATest.h#1 $
-//
 // Definition of the RSATest class.
 //
 // Copyright (c) 2008, Applied Informatics Software Engineering GmbH.
@@ -17,7 +15,7 @@
 
 
 #include "Poco/Crypto/Crypto.h"
-#include "Poco/CppUnit/TestCase.h"
+#include "CppUnit/TestCase.h"
 
 
 class RSATest: public CppUnit::TestCase

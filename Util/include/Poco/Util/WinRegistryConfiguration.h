@@ -1,8 +1,6 @@
 //
 // WinRegistryConfiguration.h
 //
-// $Id: //poco/1.4/Util/include/Poco/Util/WinRegistryConfiguration.h#2 $
-//
 // Library: Util
 // Package: Windows
 // Module:  WinRegistryConfiguration
@@ -23,7 +21,6 @@
 #include "Poco/Util/Util.h"
 #include "Poco/Util/AbstractConfiguration.h"
 #include "Poco/String.h"
-#include "Poco/UnWindows.h"
 
 
 namespace Poco {

@@ -1,11 +1,9 @@
 //
 // TestDecorator.cpp
 //
-// $Id: //poco/1.4/CppUnit/src/TestDecorator.cpp#1 $
-//
 
 
-#include "Poco/CppUnit/TestDecorator.h"
+#include "CppUnit/TestDecorator.h"
 
 
 namespace CppUnit {

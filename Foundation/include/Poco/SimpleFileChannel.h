@@ -1,8 +1,6 @@
 //
 // SimpleFileChannel.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/SimpleFileChannel.h#1 $
-//
 // Library: Foundation
 // Package: Logging
 // Module:  SimpleFileChannel
@@ -75,7 +73,7 @@ class Foundation_API SimpleFileChannel: public Channel
 	//  or whether it's allowed to stay in the system's file buffer for some time.
 	/// Valid values are:
 	///
-	///   * true:   Every message is immediately flushed to the log file (default).
+	///   * true:   Every essages is immediately flushed to the log file (default).
 	///   * false:  Messages are not immediately flushed to the log file.
 	///
 {

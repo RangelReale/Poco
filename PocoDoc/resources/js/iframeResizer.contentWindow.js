@@ -187,7 +187,7 @@
 					resetIFrame('parentIFrame.size');
 				},
 				scrollTo: function scrollToF(x,y){
-					sendMsg(y,x,'scrollTo'); // X&Y reversed at sendMsg uses height/width
+					sendMsg(y,x,'scrollTo'); // X&Y reversed at sendMsg uses hieght/width
 				},
 				sendMessage: function sendMessageF(msg,targetOrigin){
 					sendMsg(0,0,'message',msg,targetOrigin);
@@ -379,11 +379,11 @@
 	}
 
 	var getHeight = {
-		offset                : getBodyOffsetHeight, //Backward compatibility
+		offset                : getBodyOffsetHeight, //Backward compatability
 		bodyOffset            : getBodyOffsetHeight,
 		bodyScroll            : getBodyScrollHeight,
 		documentElementOffset : getDEOffsetHeight,
-		scroll                : getDEScrollHeight, //Backward compatibility
+		scroll                : getDEScrollHeight, //Backward compatability
 		documentElementScroll : getDEScrollHeight,
 		max                   : getMaxHeight,
 		min                   : getMinHeight,

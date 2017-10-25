@@ -1,8 +1,6 @@
 //
 // IniFileConfiguration.cpp
 //
-// $Id: //poco/1.4/Util/src/IniFileConfiguration.cpp#1 $
-//
 // Library: Util
 // Package: Configuration
 // Module:  IniFileConfiguration
@@ -100,7 +98,7 @@ void IniFileConfiguration::setRaw(const std::string& key, const std::string& val
 
 void IniFileConfiguration::enumerate(const std::string& key, Keys& range) const
 {
-	std::set<std::string> keySet;
+	std::set<std::string> keys;
 	std::string prefix = key;
 	if (!prefix.empty()) prefix += '.';
 	std::string::size_type psize = prefix.size();
@@ -114,10 +112,10 @@ void IniFileConfiguration::enumerate(const std::string& key, Keys& range) const
 				subKey = it->first.substr(psize);
 			else
 				subKey = it->first.substr(psize, end - psize);
-			if (keySet.find(subKey) == keySet.end())
+			if (keys.find(subKey) == keys.end())
 			{
 				range.push_back(subKey);
-				keySet.insert(subKey);
+				keys.insert(subKey);
 			}
 		}
 	}

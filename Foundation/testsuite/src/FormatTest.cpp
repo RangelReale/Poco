@@ -1,8 +1,6 @@
 //
 // FormatTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/FormatTest.cpp#2 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // All rights reserved.
 //
@@ -11,8 +9,8 @@
 
 
 #include "FormatTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/Any.h"
 #include "Poco/Format.h"
 #include "Poco/Exception.h"
@@ -24,7 +22,7 @@ using Poco::Int64;
 using Poco::UInt64;
 
 
-FormatTest::FormatTest(const std::string& rName): CppUnit::TestCase(rName)
+FormatTest::FormatTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 

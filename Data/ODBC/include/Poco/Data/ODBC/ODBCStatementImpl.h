@@ -1,8 +1,6 @@
 //
 // ODBCStatementImpl.h
 //
-// $Id: //poco/Main/Data/ODBC/include/Poco/Data/ODBC/ODBCStatementImpl.h#5 $
-//
 // Library: Data/ODBC
 // Package: ODBC
 // Module:  ODBCStatementImpl
@@ -60,7 +58,7 @@ protected:
 		/// Returns the number of affected rows.
 		/// Used to find out the number of rows affected by insert or update.
 
-	const MetaColumn& metaColumn(std::size_t pos, size_t dataSet) const;
+	const MetaColumn& metaColumn(std::size_t pos) const;
 		/// Returns column meta data.
 
 	bool hasNext();
@@ -92,10 +90,6 @@ protected:
 
 	std::string nativeSQL();
 		/// Returns the SQL string as modified by the driver.
-
-protected:
-
-	virtual void insertHint();
 
 private:
 	typedef Poco::Data::AbstractBindingVec    Bindings;
@@ -144,10 +138,9 @@ private:
 
 	void getData();
 
-	bool addPreparator(bool addAlways = true);
-	void fillColumns(size_t dataSetPos);
+	void addPreparator();
+	void fillColumns();
 	void checkError(SQLRETURN rc, const std::string& msg="");
-	bool nextResultSet();
 
 	const SQLHDBC&        _rConnection;
 	const StatementHandle _stmt;
@@ -160,8 +153,6 @@ private:
 	bool                  _prepared;
 	mutable std::size_t   _affectedRowCount;
 	bool                  _canCompile;
-	bool                  _isPostgres;
-	bool                  _insertHint;
 };
 
 

@@ -1,8 +1,6 @@
 //
 // HashTableTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/HashTableTest.cpp#1 $
-//
 // Copyright (c) 2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "HashTableTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/HashTable.h"
 #include "Poco/NumberFormatter.h"
 
@@ -20,7 +18,7 @@
 using namespace Poco;
 
 
-HashTableTest::HashTableTest(const std::string& rName): CppUnit::TestCase(rName)
+HashTableTest::HashTableTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 
@@ -104,9 +102,9 @@ void HashTableTest::testSize()
 {
 	HashTable<std::string, int> hashTable(13);
 	assert (hashTable.size() == 0);
-	Poco::UInt32 h1 = hashTable.insert("1", 1);
+	Poco::UInt32 POCO_UNUSED h1 = hashTable.insert("1", 1);
 	assert (hashTable.size() == 1);
-	Poco::UInt32 h2 = hashTable.update("2", 2);
+	Poco::UInt32 POCO_UNUSED h2 = hashTable.update("2", 2);
 	assert (hashTable.size() == 2);
 	hashTable.remove("1");
 	assert (hashTable.size() == 1);

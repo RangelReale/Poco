@@ -1,8 +1,6 @@
 //
 // LoggingFactoryTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/LoggingFactoryTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "LoggingFactoryTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/LoggingFactory.h"
 #include "Poco/Instantiator.h"
 #include "Poco/Channel.h"
@@ -61,7 +59,7 @@ namespace
 }
 
 
-LoggingFactoryTest::LoggingFactoryTest(const std::string& rName): CppUnit::TestCase(rName)
+LoggingFactoryTest::LoggingFactoryTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 
@@ -113,8 +111,12 @@ void LoggingFactoryTest::testBuiltins()
 
 void LoggingFactoryTest::testCustom()
 {
+#ifndef POCO_ENABLE_CPP11
 	std::auto_ptr<LoggingFactory> fact(new LoggingFactory);
-	
+#else
+	std::unique_ptr<LoggingFactory> fact(new LoggingFactory);
+#endif // POCO_ENABLE_CPP11
+
 	fact->registerChannelClass("CustomChannel", new Instantiator<CustomChannel, Channel>);
 	fact->registerFormatterClass("CustomFormatter", new Instantiator<CustomFormatter, Formatter>);
 

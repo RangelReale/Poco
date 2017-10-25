@@ -1,8 +1,6 @@
 //
 // Diagnostics.h
 //
-// $Id: //poco/Main/Data/ODBC/include/Poco/Data/ODBC/Diagnostics.h#4 $
-//
 // Library: Data/ODBC
 // Package: ODBC
 // Module:  Diagnostics
@@ -59,12 +57,12 @@ public:
 	typedef std::vector<DiagnosticFields> FieldVec;
 	typedef typename FieldVec::const_iterator Iterator;
 
-	explicit Diagnostics(const H& handle)
+	explicit Diagnostics(const H& handle): _handle(handle)
 		/// Creates and initializes the Diagnostics.
 	{
 		std::memset(_connectionName, 0, sizeof(_connectionName));
 		std::memset(_serverName, 0, sizeof(_serverName));
-		diagnostics(handle);
+		diagnostics();
 	}
 
 	~Diagnostics()
@@ -138,7 +136,7 @@ public:
 		return _fields.end();
 	}
 
-	const Diagnostics& diagnostics(const H& handle)
+	const Diagnostics& diagnostics()
 	{
 		DiagnosticFields df;
 		SQLSMALLINT count = 1;
@@ -149,7 +147,7 @@ public:
 		reset();
 
 		while (!Utility::isError(SQLGetDiagRec(handleType, 
-			handle, 
+			_handle, 
 			count, 
 			df._sqlState, 
 			&df._nativeError, 
@@ -163,7 +161,7 @@ public:
 				// (they fail if connection has not been established yet
 				//  or return empty string if not applicable for the context)
 				if (Utility::isError(SQLGetDiagField(handleType, 
-					handle, 
+					_handle, 
 					count, 
 					SQL_DIAG_CONNECTION_NAME, 
 					_connectionName, 
@@ -182,7 +180,7 @@ public:
 				}
 				
 				if (Utility::isError(SQLGetDiagField(handleType, 
-					handle, 
+					_handle, 
 					count, 
 					SQL_DIAG_SERVER_NAME, 
 					_serverName, 
@@ -223,6 +221,9 @@ private:
 
 	/// Diagnostics container
 	FieldVec _fields;
+
+	/// Context handle
+	const H& _handle;
 };
 
 

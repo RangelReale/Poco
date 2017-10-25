@@ -1,14 +1,12 @@
 //
 // TextTestResult.cpp
 //
-// $Id: //poco/1.4/CppUnit/src/TextTestResult.cpp#1 $
-//
 
 
-#include "Poco/CppUnit/TextTestResult.h"
-#include "Poco/CppUnit/CppUnitException.h"
-#include "Poco/CppUnit/Test.h"
-#include "Poco/CppUnit/estring.h"
+#include "CppUnit/TextTestResult.h"
+#include "CppUnit/CppUnitException.h"
+#include "CppUnit/Test.h"
+#include "CppUnit/estring.h"
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
@@ -43,10 +41,9 @@ void TextTestResult::setup()
 		std::string::const_iterator end = ignored.end();
 		while (it != end)
 		{
-			while (it != end && (std::isspace(*it) || *it == '"' || *it == '\'')) ++it;
+			while (it != end && std::isspace(*it)) ++it;
 			std::string test;
-			while (it != end && *it != ',' && *it != '"' && *it != '\'') test += *it++;
-			if (it != end && (*it == ',' || *it == '"' || *it == '\'')) ++it;
+			while (it != end && !std::isspace(*it)) test += *it++;
 			if (!test.empty()) _ignored.insert(test);
 		}
 	}

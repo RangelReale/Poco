@@ -1,8 +1,6 @@
 //
 // Extractor.h
 //
-// $Id: //poco/Main/Data/ODBC/include/Poco/Data/ODBC/Extractor.h#5 $
-//
 // Library: Data/ODBC
 // Package: ODBC
 // Module:  Extractor
@@ -490,9 +488,6 @@ private:
 
 		return true;
 	}
-
-	template<typename T>
-	bool extractManualLOBImpl(std::size_t pos, Poco::Data::LOB<T>& val, SQLSMALLINT cType);
 
 	template <typename T, typename NT>
 	bool extAny(std::size_t pos, T& val)

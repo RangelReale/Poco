@@ -1,15 +1,13 @@
 //
 // ProgressBar.h
 //
-// $Id: //poco/1.4/CppUnit/WinTestRunner/src/ProgressBar.h#1 $
-//
 
 
 #ifndef ProgressBar_INCLUDED
 #define ProgressBar_INCLUDED
 
 
-#include "Poco/CppUnit/CppUnit.h"
+#include "CppUnit/CppUnit.h"
 #include <afxwin.h>
 
 

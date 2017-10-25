@@ -1,8 +1,6 @@
 //
 // PatternFormatterTest.cpp
 //
-// $Id: //poco/1.4/Foundation/testsuite/src/PatternFormatterTest.cpp#1 $
-//
 // Copyright (c) 2004-2006, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
@@ -11,8 +9,8 @@
 
 
 #include "PatternFormatterTest.h"
-#include "Poco/CppUnit/TestCaller.h"
-#include "Poco/CppUnit/TestSuite.h"
+#include "CppUnit/TestCaller.h"
+#include "CppUnit/TestSuite.h"
 #include "Poco/PatternFormatter.h"
 #include "Poco/Message.h"
 #include "Poco/DateTime.h"
@@ -23,7 +21,7 @@ using Poco::Message;
 using Poco::DateTime;
 
 
-PatternFormatterTest::PatternFormatterTest(const std::string& rName): CppUnit::TestCase(rName)
+PatternFormatterTest::PatternFormatterTest(const std::string& name): CppUnit::TestCase(name)
 {
 }
 
@@ -93,21 +91,6 @@ void PatternFormatterTest::testPatternFormatter()
 	fmt.setProperty("pattern", "start %v[8] end");
 	fmt.format(msg, result);
 	assert (result == "start stSource end");
-	
-	result.clear();
-	fmt.setProperty("pattern", "%p");
-	fmt.setProperty("priorityNames", "FAT, CRI, ERR, WRN, NTC, INF, DBG, TRC");
-	fmt.format(msg, result);
-	assert (result == "ERR");
-	
-	try
-	{
-		fmt.setProperty("priorityNames", "FAT, CRI,");
-		fail("invalid value, must throw");
-	}
-	catch (Poco::SyntaxException&)
-	{
-	}
 }
 
 

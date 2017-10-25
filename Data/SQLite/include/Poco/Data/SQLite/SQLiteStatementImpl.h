@@ -1,8 +1,6 @@
 //
 // SQLiteStatementImpl.h
 //
-// $Id: //poco/Main/Data/SQLite/include/Poco/Data/SQLite/SQLiteStatementImpl.h#4 $
-//
 // Library: Data/SQLite
 // Package: SQLite
 // Module:  SQLiteStatementImpl
@@ -60,7 +58,7 @@ protected:
 		/// All changes are counted, even if they are later undone by a ROLLBACK or ABORT. 
 		/// Changes associated with creating and dropping tables are not counted.
 
-	const MetaColumn& metaColumn(std::size_t pos, std::size_t dataSet) const;
+	const MetaColumn& metaColumn(std::size_t pos) const;
 		/// Returns column meta data.
 
 	bool hasNext();
@@ -78,8 +76,8 @@ protected:
 
 	void compileImpl();
 		/// Compiles the statement, doesn't bind yet.
-		/// Returns true if the statement was successfully compiled.
-		/// The way SQLite handles batches of statements is by compiling
+		/// Returns true if the statement was succesfully compiled.
+		/// The way SQLite handles batches of statmeents is by compiling
 		/// one at a time and returning a pointer to the next one.
 		/// The remainder of the statement is kept in a string
 		/// buffer pointed to by _pLeftover member.

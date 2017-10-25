@@ -1,16 +1,14 @@
 //
 // ZipArchive.cpp
 //
-// $Id: //poco/1.4/Zip/src/ZipArchive.cpp#1 $
-//
 // Library: Zip
 // Package: Zip
-// Module:	ZipArchive
+// Module:  ZipArchive
 //
 // Copyright (c) 2007, Applied Informatics Software Engineering GmbH.
 // and Contributors.
 //
-// SPDX-License-Identifier: BSL-1.0
+// SPDX-License-Identifier:	BSL-1.0
 //
 
 
@@ -30,8 +28,7 @@ const std::string ZipArchive::EMPTY_COMMENT;
 ZipArchive::ZipArchive(std::istream& in):
 	_entries(),
 	_infos(),
-	_disks(),
-	_disks64()
+	_disks()
 {
 	poco_assert_dbg (in);
 	SkipCallback skip;
@@ -39,11 +36,10 @@ ZipArchive::ZipArchive(std::istream& in):
 }
 
 
-ZipArchive::ZipArchive(const FileHeaders& entries, const FileInfos& infos, const DirectoryInfos& dirs, const DirectoryInfos64& dirs64):
+ZipArchive::ZipArchive(const FileHeaders& entries, const FileInfos& infos, const DirectoryInfos& dirs):
 	_entries(entries),
 	_infos(infos),
-	_disks(dirs),
-	_disks64(dirs64)
+	_disks(dirs)
 {
 }
 
@@ -51,8 +47,7 @@ ZipArchive::ZipArchive(const FileHeaders& entries, const FileInfos& infos, const
 ZipArchive::ZipArchive(std::istream& in, ParseCallback& pc):
 	_entries(),
 	_infos(),
-	_disks(),
-	_disks64()
+	_disks()
 {
 	poco_assert_dbg (in);
 	parse(in, pc);
@@ -84,7 +79,7 @@ void ZipArchive::parse(std::istream& in, ParseCallback& pc)
 			FileHeaders::iterator it = _entries.find(info.getFileName());
 			if (it != _entries.end())
 			{
-				it->second.setStartPos(info.getOffset());
+				it->second.setStartPos(info.getRelativeOffsetOfLocalHeader());
 			}
 			poco_assert (_infos.insert(std::make_pair(info.getFileName(), info)).second);
 		}
@@ -93,14 +88,9 @@ void ZipArchive::parse(std::istream& in, ParseCallback& pc)
 			ZipArchiveInfo nfo(in, true);
 			poco_assert (_disks.insert(std::make_pair(nfo.getDiskNumber(), nfo)).second);
 		}
-		else if (std::memcmp(header, ZipArchiveInfo64::HEADER, ZipCommon::HEADER_SIZE) == 0)
-		{
-			ZipArchiveInfo64 nfo(in, true);
-			poco_assert (_disks64.insert(std::make_pair(nfo.getDiskNumber(), nfo)).second);
-		}
 		else
 		{
-			if (_disks.empty() && _disks64.empty())
+			if (_disks.empty())
 				throw Poco::IllegalStateException("Illegal header in zip file");
 			else
 				throw Poco::IllegalStateException("Garbage after directory header");
@@ -114,17 +104,9 @@ const std::string& ZipArchive::getZipComment() const
 	// It seems that only the "first" disk is populated (look at Compress::close()), so getting the first ZipArchiveInfo
 	DirectoryInfos::const_iterator it = _disks.begin();
 	if (it != _disks.end())
-	{
 		return it->second.getZipComment();
-	}
 	else
-	{
-		DirectoryInfos64::const_iterator it64 = _disks64.begin();
-		if (it64 != _disks64.end())
-			return it->second.getZipComment();
-		else
-			return EMPTY_COMMENT;
-	}
+		 return EMPTY_COMMENT;
 }
 
 

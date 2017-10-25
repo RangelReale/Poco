@@ -1,8 +1,6 @@
 //
 // Timestamp.h
 //
-// $Id: //poco/1.4/Foundation/include/Poco/Timestamp.h#1 $
-//
 // Library: Foundation
 // Package: DateTime
 // Module:  Timestamp
@@ -26,7 +24,6 @@
 
 namespace Poco {
 
-
 class Timespan;
 
 
@@ -34,7 +31,7 @@ class Foundation_API Timestamp
 	/// A Timestamp stores a monotonic* time value
 	/// with (theoretical) microseconds resolution.
 	/// Timestamps can be compared with each other
-	/// and simple arithmetic is supported.
+	/// and simple arithmetics are supported.
 	///
 	/// [*] Note that Timestamp values are only monotonic as
 	/// long as the systems's clock is monotonic as well

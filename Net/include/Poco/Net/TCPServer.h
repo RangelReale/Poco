@@ -1,8 +1,6 @@
 //
 // TCPServer.h
 //
-// $Id: //poco/1.4/Net/include/Poco/Net/TCPServer.h#1 $
-//
 // Library: Net
 // Package: TCPServer
 // Module:  TCPServer
@@ -24,8 +22,6 @@
 #include "Poco/Net/ServerSocket.h"
 #include "Poco/Net/TCPServerConnectionFactory.h"
 #include "Poco/Net/TCPServerParams.h"
-#include "Poco/RefCountedObject.h"
-#include "Poco/AutoPtr.h"
 #include "Poco/Runnable.h"
 #include "Poco/Thread.h"
 #include "Poco/ThreadPool.h"
@@ -36,35 +32,6 @@ namespace Net {
 
 
 class TCPServerDispatcher;
-class StreamSocket;
-
-
-class Net_API TCPServerConnectionFilter: public Poco::RefCountedObject
-	/// A TCPServerConnectionFilter can be used to reject incoming connections
-	/// before passing them on to the TCPServerDispatcher and
-	/// starting a thread to handle them.
-	///
-	/// An example use case is white-list or black-list IP address filtering.
-	///
-	/// Subclasses must override the accept() method.
-{
-public:
-	typedef Poco::AutoPtr<TCPServerConnectionFilter> Ptr;
-	
-	virtual bool accept(const StreamSocket& socket) = 0;
-		/// Returns true if the given StreamSocket connection should
-		/// be handled, and passed on to the TCPServerDispatcher.
-		///
-		/// Returns false if the socket should be closed immediately.
-		///
-		/// The socket can be prevented from being closed immediately
-		/// if false is returned by creating a copy of the socket.
-		/// This can be used to handle certain socket connections in
-		/// a special way, outside the TCPServer framework.
-
-protected:
-	virtual ~TCPServerConnectionFilter();
-};
 
 
 class Net_API TCPServer: public Poco::Runnable
@@ -196,19 +163,6 @@ public:
 
 	Poco::UInt16 port() const;
 		/// Returns the port the server socket listens on.
-		
-	void setConnectionFilter(const TCPServerConnectionFilter::Ptr& pFilter);
-		/// Sets a TCPServerConnectionFilter. Can also be used to remove
-		/// a filter by passing a null pointer.
-		///
-		/// To avoid a potential race condition, the filter must
-		/// be set before the TCPServer is started. Trying to set
-		/// the filter after start() has been called will trigger
-		/// an assertion.
-		
-	TCPServerConnectionFilter::Ptr getConnectionFilter() const;
-		/// Returns the TCPServerConnectionFilter set with setConnectionFilter(), 
-		/// or null pointer if no filter has been set.
 
 protected:
 	void run();
@@ -225,11 +179,10 @@ private:
 	TCPServer(const TCPServer&);
 	TCPServer& operator = (const TCPServer&);
 	
-	ServerSocket _socket;
+	ServerSocket         _socket;
 	TCPServerDispatcher* _pDispatcher;
-	TCPServerConnectionFilter::Ptr _pConnectionFilter;
-	Poco::Thread _thread;
-	bool _stopped;
+	Poco::Thread         _thread;
+	bool                 _stopped;
 };
 
 
@@ -245,12 +198,6 @@ inline const ServerSocket& TCPServer::socket() const
 inline Poco::UInt16 TCPServer::port() const
 {
 	return _socket.address().port();
-}
-
-
-inline TCPServerConnectionFilter::Ptr TCPServer::getConnectionFilter() const
-{
-	return _pConnectionFilter;
 }
 
 

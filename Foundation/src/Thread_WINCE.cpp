@@ -1,8 +1,6 @@
 //
 // Thread_WINCE.h
 //
-// $Id: //poco/1.4/Foundation/src/Thread_WINCE.cpp#1 $
-//
 // Library: Foundation
 // Package: Threading
 // Module:  Thread
@@ -34,7 +32,7 @@ ThreadImpl::ThreadImpl():
 {
 }
 
-
+			
 ThreadImpl::~ThreadImpl()
 {
 	if (_thread) CloseHandle(_thread);
@@ -141,7 +139,7 @@ ThreadImpl* ThreadImpl::currentImpl()
 
 ThreadImpl::TIDImpl ThreadImpl::currentTidImpl()
 {
-	return GetCurrentThreadId();
+    return GetCurrentThreadId();
 }
 
 

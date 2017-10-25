@@ -1,8 +1,6 @@
 //
 // MySQLException.cpp
 //
-// $Id: //poco/1.4/Data/MySQL/src/MySQLStatementImpl.cpp#1 $
-//
 // Library: Data/MySQL
 // Package: MySQL
 // Module:  MySQLStatementImpl
@@ -48,10 +46,8 @@ int MySQLStatementImpl::affectedRowCount() const
 }
 
 	
-const MetaColumn& MySQLStatementImpl::metaColumn(std::size_t pos, std::size_t dataSet) const
+const MetaColumn& MySQLStatementImpl::metaColumn(std::size_t pos) const
 {
-	// mysql doesn't support multiple result sets
-	poco_assert_dbg(dataSet == 0);
 	return _metadata.metaColumn(pos);
 }
 

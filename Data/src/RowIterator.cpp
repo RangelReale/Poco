@@ -1,8 +1,6 @@
 //
 // RowIterator.cpp
 //
-// $Id: //poco/Main/Data/src/RowIterator.cpp#1 $
-//
 // Library: Data
 // Package: DataCore
 // Module:  RowIterator
@@ -69,7 +67,7 @@ void RowIterator::increment() const
 	if (POSITION_END == _position)
 		throw RangeException("End of iterator reached.");
 
-	if (_position < _pRecordSet->storageRowCount() - 1)
+	if (_position < _pRecordSet->subTotalRowCount() - 1)
 		++_position;
 	else
 		_position = POSITION_END;
@@ -90,7 +88,7 @@ void RowIterator::decrement() const
 	if (0 == _position)
 		throw RangeException("Beginning of iterator reached.");
 	else if (POSITION_END == _position)
-		_position = _pRecordSet->storageRowCount() - 1;
+		_position = _pRecordSet->subTotalRowCount() - 1;
 	else
 		--_position;
 
@@ -126,15 +124,15 @@ void RowIterator::setPosition(std::size_t pos) const
 			std::size_t end = pos - _position;
 			for (; start < end; ++start)
 			{
-				if (_pRecordSet->storageRowCount() != pos) ++pos;
+				if (_pRecordSet->subTotalRowCount() != pos) ++pos;
 				else throw RangeException("Invalid position argument.");
 			}
 		}
 	}
 
-	if (pos < _pRecordSet->storageRowCount())
+	if (pos < _pRecordSet->subTotalRowCount())
 		_position = pos;
-	else if (pos == _pRecordSet->storageRowCount())
+	else if (pos == _pRecordSet->subTotalRowCount())
 		_position = POSITION_END;
 	else
 		throw RangeException("Invalid position argument.");
