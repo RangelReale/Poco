@@ -936,6 +936,15 @@
     <ClCompile Include="src\VarIterator.cpp">
       <Filter>Dynamic\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ASN1.cpp" />
+    <ClCompile Include="src\ASN1Codec.cpp" />
+    <ClCompile Include="src\ASN1FactoryDefault.cpp" />
+    <ClCompile Include="src\ASN1Types.cpp" />
+    <ClCompile Include="src\ByteRateCounter.cpp" />
+    <ClCompile Include="src\ByteRateLimiter.cpp" />
+    <ClCompile Include="src\ByteRateLimiterStream.cpp" />
+    <ClCompile Include="src\NumericSizeFormat.cpp" />
+    <ClCompile Include="src\NumericSizeFormatter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Poco\Any.h">
@@ -1916,6 +1925,15 @@
     <ClInclude Include="include\Poco\Dynamic\VarIterator.h">
       <Filter>Dynamic\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Poco\ASN1.h" />
+    <ClInclude Include="include\Poco\ASN1Codec.h" />
+    <ClInclude Include="include\Poco\ASN1FactoryDefault.h" />
+    <ClInclude Include="include\Poco\ASN1Types.h" />
+    <ClInclude Include="include\Poco\ByteRateCounter.h" />
+    <ClInclude Include="include\Poco\ByteRateLimiter.h" />
+    <ClInclude Include="include\Poco\ByteRateLimiterStream.h" />
+    <ClInclude Include="include\Poco\NumericSizeFormat.h" />
+    <ClInclude Include="include\Poco\NumericSizeFormatter.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\pocomsg.rc">
