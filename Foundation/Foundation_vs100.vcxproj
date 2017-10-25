@@ -548,9 +548,6 @@
     <ClCompile Include="src\Random.cpp"/>
     <ClCompile Include="src\RandomStream.cpp"/>
     <ClCompile Include="src\SHA1Engine.cpp"/>
-    <ClCompile Include="src\SHA2Engine.cpp"/>
-    <ClCompile Include="src\SHA3Engine.cpp"/>
-    <ClCompile Include="src\BLAKE2Engine.cpp"/>
     <ClCompile Include="src\Manifest.cpp"/>
     <ClCompile Include="src\SharedLibrary.cpp"/>
     <ClCompile Include="src\SharedLibrary_HPUX.cpp">
