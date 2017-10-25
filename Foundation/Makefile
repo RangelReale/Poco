@@ -30,7 +30,8 @@ objects = ArchiveStrategy Ascii ASCIIEncoding AsyncChannel \
 	FileStreamFactory URIStreamFactory URIStreamOpener UTF32Encoding UTF16Encoding UTF8Encoding UTF8String \
 	Unicode UnicodeConverter Windows1250Encoding Windows1251Encoding Windows1252Encoding \
 	UUID UUIDGenerator Void Var VarHolder VarIterator Format Pipe PipeImpl PipeStream SharedMemory \
-	MemoryStream FileStream AtomicCounter 
+	MemoryStream FileStream AtomicCounter ASN1 ASN1Codec ASN1FactoryDefault ASN1Types \
+	ByteRateCounter ByteRateLimiter ByteRateLimiterStream NumericSizeFormat NumericSizeFormatter
 
 zlib_objects = adler32 compress crc32 deflate \
 	infback inffast inflate inftrees trees zutil
@@ -53,6 +54,10 @@ ifeq ($(findstring MinGW, $(POCO_CONFIG)), MinGW)
 	objects += EventLogChannel WindowsConsoleChannel
 else
 	objects += SyslogChannel
+endif
+
+ifeq ($(findstring Android, $(POCO_CONFIG)), Android)
+	objects += AndroidLogChannel
 endif
 
 target         = PocoFoundation
