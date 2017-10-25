@@ -19,6 +19,9 @@
 
 
 #include "Poco/Foundation.h"
+#ifdef POCO_OS_FAMILY_WINDOWS
+#include "Poco/Unwindows.h"
+#endif
 
 
 namespace Poco {

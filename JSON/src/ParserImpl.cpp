@@ -26,8 +26,9 @@
 #include <limits>
 #include <clocale>
 #include <istream>
+extern "C" {
 #include "pd_json.h"
-
+}
 
 namespace Poco {
 namespace JSON {
