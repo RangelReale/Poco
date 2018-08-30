@@ -34,7 +34,7 @@
 				ExecutionBucket="7"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\include;..\Foundation\include"
-				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;$(ProjectName)_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;JSON_EXPORTS;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;$(ProjectName)_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;JSON_EXPORTS"
 				StringPooling="true"
 				MinimalRebuild="false"
 				RuntimeLibrary="3"
@@ -114,7 +114,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories=".\include;..\Foundation\include"
-				PreprocessorDefinitions="NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;$(ProjectName)_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;JSON_EXPORTS;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="NDEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;WINCE;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;$(ProjectName)_EXPORTS;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;JSON_EXPORTS"
 				StringPooling="true"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
@@ -198,7 +198,7 @@
 				BufferSecurityCheck="true"
 				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="..\lib\$(PlatformName)\PocoJSONmtd.pdb"
+				ProgramDataBaseFileName="..\lib\$(PlatformName)\PocoJSONMTd.pdb"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 				CompileAs="0"
@@ -214,7 +214,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\$(PlatformName)\PocoJSONmtd.lib"/>
+				OutputFile="..\lib\$(PlatformName)\PocoJSONMTd.lib"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -280,7 +280,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\$(PlatformName)\PocoJSONmt.lib"/>
+				OutputFile="..\lib\$(PlatformName)\PocoJSONMT.lib"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -329,7 +329,7 @@
 				BufferSecurityCheck="true"
 				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="..\lib\$(PlatformName)\PocoJSONmdd.pdb"
+				ProgramDataBaseFileName="..\lib\$(PlatformName)\PocoJSONMDd.pdb"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 				CompileAs="0"
@@ -345,7 +345,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\$(PlatformName)\PocoJSONmdd.lib"/>
+				OutputFile="..\lib\$(PlatformName)\PocoJSONMDd.lib"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -411,7 +411,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib\$(PlatformName)\PocoJSONmd.lib"/>
+				OutputFile="..\lib\$(PlatformName)\PocoJSONMD.lib"/>
 			<Tool
 				Name="VCALinkTool"/>
 			<Tool
@@ -451,7 +451,7 @@
 			<File
 				RelativePath=".\src\ParserImpl.cpp"/>
 			<File
-				RelativePath=".\src\pd_json.c">
+				RelativePath=".\src\pdjson.c">
 				<FileConfiguration
 					Name="debug_shared|Digi JumpStart (ARMV4I)">
 					<Tool
@@ -525,9 +525,7 @@
 			<File
 				RelativePath=".\include\Poco\JSON\ParserImpl.h"/>
 			<File
-				RelativePath=".\include\pd_json.h"/>
-			<File
-				RelativePath=".\include\pd_json_private.h"/>
+				RelativePath=".\src\pdjson.h"/>
 			<File
 				RelativePath=".\include\Poco\JSON\PrintHandler.h"/>
 			<File

@@ -32,7 +32,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\include;..\Foundation\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;JSON_EXPORTS;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;JSON_EXPORTS"
 				StringPooling="true"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -106,7 +106,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				AdditionalIncludeDirectories=".\include;..\Foundation\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;JSON_EXPORTS;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;JSON_EXPORTS"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
@@ -186,7 +186,7 @@
 				ForceConformanceInForLoopScope="true"
 				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="..\lib64\PocoJSONmtd.pdb"
+				ProgramDataBaseFileName="..\lib64\PocoJSONMTd.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -201,7 +201,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib64\PocoJSONmtd.lib"
+				OutputFile="..\lib64\PocoJSONMTd.lib"
 				TargetMachine="17"/>
 			<Tool
 				Name="VCALinkTool"/>
@@ -260,7 +260,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib64\PocoJSONmt.lib"
+				OutputFile="..\lib64\PocoJSONMT.lib"
 				TargetMachine="17"/>
 			<Tool
 				Name="VCALinkTool"/>
@@ -303,7 +303,7 @@
 				ForceConformanceInForLoopScope="true"
 				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="..\lib64\PocoJSONmdd.pdb"
+				ProgramDataBaseFileName="..\lib64\PocoJSONMDd.pdb"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -318,7 +318,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib64\PocoJSONmdd.lib"
+				OutputFile="..\lib64\PocoJSONMDd.lib"
 				TargetMachine="17"/>
 			<Tool
 				Name="VCALinkTool"/>
@@ -377,7 +377,7 @@
 				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="..\lib64\PocoJSONmd.lib"
+				OutputFile="..\lib64\PocoJSONMD.lib"
 				TargetMachine="17"/>
 			<Tool
 				Name="VCALinkTool"/>
@@ -410,7 +410,7 @@
 			<File
 				RelativePath=".\src\ParserImpl.cpp"/>
 			<File
-				RelativePath=".\src\pd_json.c">
+				RelativePath=".\src\pdjson.c">
 				<FileConfiguration
 					Name="debug_shared|x64">
 					<Tool
@@ -484,9 +484,7 @@
 			<File
 				RelativePath=".\include\Poco\JSON\ParserImpl.h"/>
 			<File
-				RelativePath=".\include\pd_json.h"/>
-			<File
-				RelativePath=".\include\pd_json_private.h"/>
+				RelativePath=".\src\pdjson.h"/>
 			<File
 				RelativePath=".\include\Poco\JSON\PrintHandler.h"/>
 			<File

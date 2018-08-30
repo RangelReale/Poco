@@ -85,13 +85,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros"/>
   <PropertyGroup>
-    <_ProjectFileVersion>12.0.21005.1</_ProjectFileVersion>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'">PocoNetSSL64d</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_md|x64'">PocoNetSSLmdd</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|x64'">PocoNetSSLmtd</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_md|x64'">PocoNetSSLMDd</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|x64'">PocoNetSSLMTd</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='release_shared|x64'">PocoNetSSL64</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'">PocoNetSSLmd</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='release_static_mt|x64'">PocoNetSSLmt</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'">PocoNetSSLMD</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='release_static_mt|x64'">PocoNetSSLMT</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'">
     <OutDir>..\bin64\</OutDir>
@@ -122,7 +122,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\include;..\openssl\VS_120\include;..\Foundation\include;..\Net\include;..\Util\include;..\Crypto\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\openssl\build\include;..\Foundation\include;..\Net\include;..\Util\include;..\Crypto\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NetSSL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
@@ -156,7 +156,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>.\include;..\openssl\VS_120\include;..\Foundation\include;..\Net\include;..\Util\include;..\Crypto\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\openssl\build\include;..\Foundation\include;..\Net\include;..\Util\include;..\Crypto\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NetSSL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -185,7 +185,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\include;..\openssl\VS_120\include;..\Foundation\include;..\Net\include;..\Util\include;..\Crypto\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\openssl\build\include;..\Foundation\include;..\Net\include;..\Util\include;..\Crypto\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;POCO_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
@@ -202,7 +202,8 @@
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Lib>
-      <OutputFile>..\lib64\PocoNetSSLmtd.lib</OutputFile>
+      <OutputFile>..\lib64\PocoNetSSLMTd.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release_static_mt|x64'">
@@ -212,7 +213,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>.\include;..\openssl\VS_120\include;..\Foundation\include;..\Net\include;..\Util\include;..\Crypto\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\openssl\build\include;..\Foundation\include;..\Net\include;..\Util\include;..\Crypto\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;POCO_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -226,13 +227,14 @@
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Lib>
-      <OutputFile>..\lib64\PocoNetSSLmt.lib</OutputFile>
+      <OutputFile>..\lib64\PocoNetSSLMT.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug_static_md|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\include;..\openssl\VS_120\include;..\Foundation\include;..\Net\include;..\Util\include;..\Crypto\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\openssl\build\include;..\Foundation\include;..\Net\include;..\Util\include;..\Crypto\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;POCO_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
@@ -243,13 +245,14 @@
       <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader/>
-      <ProgramDataBaseFileName>..\lib64\PocoNetSSLmdd.pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>..\lib64\PocoNetSSLMDd.pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Lib>
-      <OutputFile>..\lib64\PocoNetSSLmdd.lib</OutputFile>
+      <OutputFile>..\lib64\PocoNetSSLMDd.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'">
@@ -259,7 +262,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>.\include;..\openssl\VS_120\include;..\Foundation\include;..\Net\include;..\Util\include;..\Crypto\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\openssl\build\include;..\Foundation\include;..\Net\include;..\Util\include;..\Crypto\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;POCO_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -273,7 +276,8 @@
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Lib>
-      <OutputFile>..\lib64\PocoNetSSLmd.lib</OutputFile>
+      <OutputFile>..\lib64\PocoNetSSLMD.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -282,6 +286,9 @@
     <ClInclude Include="include\Poco\Net\CertificateHandlerFactoryMgr.h"/>
     <ClInclude Include="include\Poco\Net\ConsoleCertificateHandler.h"/>
     <ClInclude Include="include\Poco\Net\Context.h"/>
+    <ClInclude Include="include\Poco\Net\HTTPSClientSession.h"/>
+    <ClInclude Include="include\Poco\Net\HTTPSSessionInstantiator.h"/>
+    <ClInclude Include="include\Poco\Net\HTTPSStreamFactory.h"/>
     <ClInclude Include="include\Poco\Net\InvalidCertificateHandler.h"/>
     <ClInclude Include="include\Poco\Net\KeyConsoleHandler.h"/>
     <ClInclude Include="include\Poco\Net\KeyFileHandler.h"/>
@@ -290,21 +297,18 @@
     <ClInclude Include="include\Poco\Net\PrivateKeyFactoryMgr.h"/>
     <ClInclude Include="include\Poco\Net\PrivateKeyPassphraseHandler.h"/>
     <ClInclude Include="include\Poco\Net\RejectCertificateHandler.h"/>
+    <ClInclude Include="include\Poco\Net\SecureServerSocket.h"/>
+    <ClInclude Include="include\Poco\Net\SecureServerSocketImpl.h"/>
+    <ClInclude Include="include\Poco\Net\SecureSMTPClientSession.h"/>
+    <ClInclude Include="include\Poco\Net\SecureSocketImpl.h"/>
+    <ClInclude Include="include\Poco\Net\SecureStreamSocket.h"/>
+    <ClInclude Include="include\Poco\Net\SecureStreamSocketImpl.h"/>
     <ClInclude Include="include\Poco\Net\Session.h"/>
     <ClInclude Include="include\Poco\Net\SSLException.h"/>
     <ClInclude Include="include\Poco\Net\SSLManager.h"/>
     <ClInclude Include="include\Poco\Net\Utility.h"/>
     <ClInclude Include="include\Poco\Net\VerificationErrorArgs.h"/>
     <ClInclude Include="include\Poco\Net\X509Certificate.h"/>
-    <ClInclude Include="include\Poco\Net\HTTPSClientSession.h"/>
-    <ClInclude Include="include\Poco\Net\HTTPSSessionInstantiator.h"/>
-    <ClInclude Include="include\Poco\Net\HTTPSStreamFactory.h"/>
-    <ClInclude Include="include\Poco\Net\SecureServerSocket.h"/>
-    <ClInclude Include="include\Poco\Net\SecureServerSocketImpl.h"/>
-    <ClInclude Include="include\Poco\Net\SecureSocketImpl.h"/>
-    <ClInclude Include="include\Poco\Net\SecureStreamSocket.h"/>
-    <ClInclude Include="include\Poco\Net\SecureStreamSocketImpl.h"/>
-    <ClInclude Include="include\Poco\Net\SecureSMTPClientSession.h"/>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AcceptCertificateHandler.cpp"/>
@@ -312,6 +316,9 @@
     <ClCompile Include="src\CertificateHandlerFactoryMgr.cpp"/>
     <ClCompile Include="src\ConsoleCertificateHandler.cpp"/>
     <ClCompile Include="src\Context.cpp"/>
+    <ClCompile Include="src\HTTPSClientSession.cpp"/>
+    <ClCompile Include="src\HTTPSSessionInstantiator.cpp"/>
+    <ClCompile Include="src\HTTPSStreamFactory.cpp"/>
     <ClCompile Include="src\InvalidCertificateHandler.cpp"/>
     <ClCompile Include="src\KeyConsoleHandler.cpp"/>
     <ClCompile Include="src\KeyFileHandler.cpp"/>
@@ -319,21 +326,18 @@
     <ClCompile Include="src\PrivateKeyFactoryMgr.cpp"/>
     <ClCompile Include="src\PrivateKeyPassphraseHandler.cpp"/>
     <ClCompile Include="src\RejectCertificateHandler.cpp"/>
+    <ClCompile Include="src\SecureServerSocket.cpp"/>
+    <ClCompile Include="src\SecureServerSocketImpl.cpp"/>
+    <ClCompile Include="src\SecureSMTPClientSession.cpp"/>
+    <ClCompile Include="src\SecureSocketImpl.cpp"/>
+    <ClCompile Include="src\SecureStreamSocket.cpp"/>
+    <ClCompile Include="src\SecureStreamSocketImpl.cpp"/>
     <ClCompile Include="src\Session.cpp"/>
     <ClCompile Include="src\SSLException.cpp"/>
     <ClCompile Include="src\SSLManager.cpp"/>
     <ClCompile Include="src\Utility.cpp"/>
     <ClCompile Include="src\VerificationErrorArgs.cpp"/>
     <ClCompile Include="src\X509Certificate.cpp"/>
-    <ClCompile Include="src\HTTPSClientSession.cpp"/>
-    <ClCompile Include="src\HTTPSSessionInstantiator.cpp"/>
-    <ClCompile Include="src\HTTPSStreamFactory.cpp"/>
-    <ClCompile Include="src\SecureServerSocket.cpp"/>
-    <ClCompile Include="src\SecureServerSocketImpl.cpp"/>
-    <ClCompile Include="src\SecureSocketImpl.cpp"/>
-    <ClCompile Include="src\SecureStreamSocket.cpp"/>
-    <ClCompile Include="src\SecureStreamSocketImpl.cpp"/>
-    <ClCompile Include="src\SecureSMTPClientSession.cpp"/>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\DLLVersion.rc">

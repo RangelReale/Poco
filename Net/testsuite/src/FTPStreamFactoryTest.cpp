@@ -75,7 +75,7 @@ void FTPStreamFactoryTest::testDownload()
 
 	URI uri;
 	uri.setScheme("ftp");
-	uri.setHost("localhost");
+	uri.setHost("127.0.0.1");
 	uri.setPort(server.port());
 	uri.setPath("/test.txt;type=a");
 	FTPStreamFactory sf;
@@ -90,7 +90,7 @@ void FTPStreamFactoryTest::testDownload()
 	pStr.reset();
 		
 	std::string s(dataStr.str());
-	assert (s == "line1\r\nline2\r\n");
+	assertTrue (s == "line1\r\nline2\r\n");
 }
 
 
@@ -116,7 +116,7 @@ void FTPStreamFactoryTest::testList()
 
 	URI uri;
 	uri.setScheme("ftp");
-	uri.setHost("localhost");
+	uri.setHost("127.0.0.1");
 	uri.setPort(server.port());
 	uri.setPath("/usr/guest/data;type=d");
 	FTPStreamFactory sf;
@@ -132,7 +132,7 @@ void FTPStreamFactoryTest::testList()
 	pStr.reset();
 		
 	std::string s(dataStr.str());
-	assert (s == "file1\r\nfile2\r\n");
+	assertTrue (s == "file1\r\nfile2\r\n");
 }
 
 
@@ -157,7 +157,7 @@ void FTPStreamFactoryTest::testUserInfo()
 
 	URI uri;
 	uri.setScheme("ftp");
-	uri.setHost("localhost");
+	uri.setHost("127.0.0.1");
 	uri.setPort(server.port());
 	uri.setPath("/test.txt;type=a");
 	uri.setUserInfo("user:secret");
@@ -174,7 +174,7 @@ void FTPStreamFactoryTest::testUserInfo()
 	pStr.reset();
 		
 	std::string s(dataStr.str());
-	assert (s == "line1\r\nline2\r\n");
+	assertTrue (s == "line1\r\nline2\r\n");
 }
 
 
@@ -200,7 +200,7 @@ void FTPStreamFactoryTest::testPasswordProvider()
 
 	URI uri;
 	uri.setScheme("ftp");
-	uri.setHost("localhost");
+	uri.setHost("127.0.0.1");
 	uri.setPort(server.port());
 	uri.setPath("/test.txt;type=a");
 	uri.setUserInfo("user");
@@ -217,7 +217,7 @@ void FTPStreamFactoryTest::testPasswordProvider()
 	pStr.reset();
 		
 	std::string s(dataStr.str());
-	assert (s == "line1\r\nline2\r\n");
+	assertTrue (s == "line1\r\nline2\r\n");
 }
 
 
@@ -231,7 +231,7 @@ void FTPStreamFactoryTest::testMissingPasswordProvider()
 
 	URI uri;
 	uri.setScheme("ftp");
-	uri.setHost("localhost");
+	uri.setHost("127.0.0.1");
 	uri.setPort(server.port());
 	uri.setPath("/test.txt;type=a");
 	uri.setUserInfo("user");

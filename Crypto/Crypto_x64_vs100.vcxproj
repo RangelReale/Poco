@@ -95,22 +95,22 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'">..\lib64\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'">obj64\Crypto\$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'">PocoCrypto64d</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_md|x64'">PocoCryptomdd</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|x64'">PocoCryptomtd</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_md|x64'">PocoCryptoMDd</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|x64'">PocoCryptoMTd</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='release_shared|x64'">PocoCrypto64</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'">PocoCryptomd</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='release_static_mt|x64'">PocoCryptomt</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'">PocoCryptoMD</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='release_static_mt|x64'">PocoCryptoMT</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'">
     <PreBuildEvent>
-      <Command>xcopy /y ..\openssl\VS_120\win64\bin\debug\*.dll ..\bin64\* 1&gt;nul
-xcopy /y ..\openssl\VS_120\win64\bin\debug\*.lib ..\lib64\* 1&gt;nul
-xcopy /y ..\openssl\VS_120\win64\bin\debug\*.pdb ..\lib64\* 1&gt;nul
+      <Command>xcopy /y ..\openssl\build\win64\bin\debug\*.dll ..\bin64\* 1&gt;nul
+xcopy /y ..\openssl\build\win64\bin\debug\*.lib ..\lib64\* 1&gt;nul
+xcopy /y ..\openssl\build\win64\bin\debug\*.pdb ..\lib64\* 1&gt;nul
 exit 0</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\include;..\openssl\VS_120\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\openssl\build\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;Crypto_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
@@ -142,8 +142,8 @@ exit 0</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release_shared|x64'">
     <PreBuildEvent>
-      <Command>xcopy /y ..\openssl\VS_120\win64\bin\release\*.dll ..\bin64\* 1&gt;nul
-xcopy /y ..\openssl\VS_120\win64\bin\release\*.lib ..\lib64\* 1&gt;nul
+      <Command>xcopy /y ..\openssl\build\win64\bin\release\*.dll ..\bin64\* 1&gt;nul
+xcopy /y ..\openssl\build\win64\bin\release\*.lib ..\lib64\* 1&gt;nul
 exit 0</Command>
     </PreBuildEvent>
     <ClCompile>
@@ -152,7 +152,7 @@ exit 0</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>.\include;..\openssl\VS_120\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\openssl\build\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;Crypto_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -183,13 +183,13 @@ exit 0</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|x64'">
     <PreBuildEvent>
-      <Command>xcopy /y ..\openssl\VS_120\win64\lib\debug\*.lib ..\lib64\* 1&gt;nul
-xcopy /y ..\openssl\VS_120\win64\lib\debug\*.pdb ..\lib64\* 1&gt;nul
+      <Command>xcopy /y ..\openssl\build\win64\lib\debug\*.lib ..\lib64\* 1&gt;nul
+xcopy /y ..\openssl\build\win64\lib\debug\*.pdb ..\lib64\* 1&gt;nul
 exit 0</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\include;..\openssl\VS_120\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\openssl\build\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;POCO_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
@@ -208,12 +208,14 @@ exit 0</Command>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Lib>
-      <OutputFile>..\lib64\PocoCryptomtd.lib</OutputFile>
+      <AdditionalDependencies>ws2_32.lib;iphlpapi.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\lib64\PocoCryptoMTd.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release_static_mt|x64'">
     <PreBuildEvent>
-      <Command>xcopy /y ..\openssl\VS_120\win64\lib\release\*.lib ..\lib64\* 1&gt;nul
+      <Command>xcopy /y ..\openssl\build\win64\lib\release\*.lib ..\lib64\* 1&gt;nul
 exit 0</Command>
     </PreBuildEvent>
     <ClCompile>
@@ -222,7 +224,7 @@ exit 0</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>.\include;..\openssl\VS_120\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\openssl\build\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;POCO_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -238,19 +240,21 @@ exit 0</Command>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Lib>
-      <OutputFile>..\lib64\PocoCryptomt.lib</OutputFile>
+      <AdditionalDependencies>ws2_32.lib;iphlpapi.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\lib64\PocoCryptoMT.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug_static_md|x64'">
     <PreBuildEvent>
-      <Command>xcopy /y ..\openssl\VS_120\win64\bin\debug\*.dll ..\bin64\* 1&gt;nul
-xcopy /y ..\openssl\VS_120\win64\bin\debug\*.lib ..\lib64\* 1&gt;nul
-xcopy /y ..\openssl\VS_120\win64\bin\debug\*.pdb ..\lib64\* 1&gt;nul
+      <Command>xcopy /y ..\openssl\build\win64\bin\debug\*.dll ..\bin64\* 1&gt;nul
+xcopy /y ..\openssl\build\win64\bin\debug\*.lib ..\lib64\* 1&gt;nul
+xcopy /y ..\openssl\build\win64\bin\debug\*.pdb ..\lib64\* 1&gt;nul
 exit 0</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\include;..\openssl\VS_120\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\openssl\build\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;POCO_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
@@ -261,7 +265,7 @@ exit 0</Command>
       <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader/>
-      <ProgramDataBaseFileName>..\lib64\PocoCryptomdd.pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>..\lib64\PocoCryptoMDd.pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
@@ -269,13 +273,15 @@ exit 0</Command>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Lib>
-      <OutputFile>..\lib64\PocoCryptomdd.lib</OutputFile>
+      <AdditionalDependencies>ws2_32.lib;iphlpapi.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\lib64\PocoCryptoMDd.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'">
     <PreBuildEvent>
-      <Command>xcopy /y ..\openssl\VS_120\win64\bin\release\*.dll ..\bin64\* 1&gt;nul
-xcopy /y ..\openssl\VS_120\win64\bin\release\*.lib ..\lib64\* 1&gt;nul
+      <Command>xcopy /y ..\openssl\build\win64\bin\release\*.dll ..\bin64\* 1&gt;nul
+xcopy /y ..\openssl\build\win64\bin\release\*.lib ..\lib64\* 1&gt;nul
 exit 0</Command>
     </PreBuildEvent>
     <ClCompile>
@@ -284,7 +290,7 @@ exit 0</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>.\include;..\openssl\VS_120\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\openssl\build\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;POCO_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -300,7 +306,9 @@ exit 0</Command>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Lib>
-      <OutputFile>..\lib64\PocoCryptomd.lib</OutputFile>
+      <AdditionalDependencies>ws2_32.lib;iphlpapi.lib;Crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>..\lib64\PocoCryptoMD.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>

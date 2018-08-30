@@ -87,11 +87,11 @@
   <PropertyGroup>
     <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'">PocoJSON64d</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_md|x64'">PocoJSONmdd</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|x64'">PocoJSONmtd</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_md|x64'">PocoJSONMDd</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='debug_static_mt|x64'">PocoJSONMTd</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='release_shared|x64'">PocoJSON64</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'">PocoJSONmd</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='release_static_mt|x64'">PocoJSONmt</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'">PocoJSONMD</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='release_static_mt|x64'">PocoJSONMT</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'">
     <OutDir>..\bin64\</OutDir>
@@ -123,7 +123,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>.\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;JSON_EXPORTS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;JSON_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -156,7 +156,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <AdditionalIncludeDirectories>.\include;..\Foundation\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;JSON_EXPORTS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;JSON_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -200,7 +200,8 @@
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Lib>
-      <OutputFile>..\lib64\PocoJSONmtd.lib</OutputFile>
+      <OutputFile>..\lib64\PocoJSONMTd.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release_static_mt|x64'">
@@ -224,7 +225,8 @@
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Lib>
-      <OutputFile>..\lib64\PocoJSONmt.lib</OutputFile>
+      <OutputFile>..\lib64\PocoJSONMT.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='debug_static_md|x64'">
@@ -241,13 +243,14 @@
       <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader/>
-      <ProgramDataBaseFileName>..\lib64\PocoJSONmdd.pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>..\lib64\PocoJSONMDd.pdb</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Lib>
-      <OutputFile>..\lib64\PocoJSONmdd.lib</OutputFile>
+      <OutputFile>..\lib64\PocoJSONMDd.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='release_static_md|x64'">
@@ -271,7 +274,8 @@
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Lib>
-      <OutputFile>..\lib64\PocoJSONmd.lib</OutputFile>
+      <OutputFile>..\lib64\PocoJSONMD.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -282,7 +286,7 @@
     <ClCompile Include="src\ParseHandler.cpp"/>
     <ClCompile Include="src\Parser.cpp"/>
     <ClCompile Include="src\ParserImpl.cpp"/>
-    <ClCompile Include="src\pd_json.c">
+    <ClCompile Include="src\pdjson.c">
       <ForceConformanceInForLoopScope Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'">true</ForceConformanceInForLoopScope>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='debug_shared|x64'">CompileAsCpp</CompileAs>
       <ForceConformanceInForLoopScope Condition="'$(Configuration)|$(Platform)'=='debug_static_md|x64'">true</ForceConformanceInForLoopScope>
@@ -311,8 +315,7 @@
     <ClInclude Include="include\Poco\JSON\ParseHandler.h"/>
     <ClInclude Include="include\Poco\JSON\Parser.h"/>
     <ClInclude Include="include\Poco\JSON\ParserImpl.h"/>
-    <ClInclude Include="include\pd_json.h"/>
-    <ClInclude Include="include\pd_json_private.h"/>
+    <ClInclude Include="src\pdjson.h"/>
     <ClInclude Include="include\Poco\JSON\PrintHandler.h"/>
     <ClInclude Include="include\Poco\JSON\Query.h"/>
     <ClInclude Include="include\Poco\JSON\Stringifier.h"/>

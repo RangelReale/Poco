@@ -45,7 +45,7 @@ public:
 		/// Creates a stream socket and connects it to
 		/// the socket specified by address.
 
-	explicit StreamSocket(IPAddress::Family family);
+	explicit StreamSocket(SocketAddress::Family family);
 		/// Creates an unconnected stream socket
 		/// for the given address family.
 		///
@@ -107,6 +107,13 @@ public:
 		/// Certain socket implementations may also return a negative
 		/// value denoting a certain condition.
 
+	int sendBytes(const SocketBufVec& buffer, int flags = 0);
+		/// Sends the contents of the given buffers through
+		/// the socket.
+		///
+		/// Returns the number of bytes sent, which may be
+		/// less than the number of bytes specified.
+
 	int sendBytes(Poco::FIFOBuffer& buffer);
 		/// Sends the contents of the given buffer through
 		/// the socket. FIFOBuffer has writable/readable transition
@@ -131,6 +138,16 @@ public:
 		/// Throws a TimeoutException if a receive timeout has
 		/// been set and nothing is received within that interval.
 		/// Throws a NetException (or a subclass) in case of other errors.
+
+	int receiveBytes(SocketBufVec& buffer, int flags = 0);
+		/// Receives data from the socket and stores it in buffers.
+		///
+		/// Returns the number of bytes received.
+
+	int receiveBytes(Poco::Buffer<char>& buffer, int flags = 0, const Poco::Timespan& timeout = 100000);
+		/// Receives data from the socket and stores it in buffers.
+		///
+		/// Returns the number of bytes received.
 
 	int receiveBytes(Poco::FIFOBuffer& buffer);
 		/// Receives data from the socket and stores it
@@ -158,7 +175,7 @@ public:
 
 	StreamSocket(SocketImpl* pImpl);
 		/// Creates the Socket and attaches the given SocketImpl.
-		/// The socket takes owership of the SocketImpl.
+		/// The socket takes ownership of the SocketImpl.
 		///
 		/// The SocketImpl must be a StreamSocketImpl, otherwise
 		/// an InvalidArgumentException will be thrown.

@@ -33,7 +33,8 @@ objects = \
 	SNMPClientTypes SNMPEventArgs SNMPRawEventArgs \
 	RemoteSyslogChannel RemoteSyslogListener SMTPChannel \
 	WebSocket WebSocketImpl \
-	OAuth10Credentials OAuth20Credentials
+	OAuth10Credentials OAuth20Credentials \
+	PollSet UDPClient UDPServerParams
 
 target         = PocoNet
 target_version = $(LIBVERSION)

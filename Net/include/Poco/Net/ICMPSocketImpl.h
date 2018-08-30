@@ -32,7 +32,7 @@ class Net_API ICMPSocketImpl: public RawSocketImpl
 	/// This class implements an ICMP socket.
 {
 public:
-	ICMPSocketImpl(IPAddress::Family family, int dataSize, int ttl, int timeout);
+	ICMPSocketImpl(SocketAddress::Family family, int dataSize, int ttl, int timeout);
 		/// Creates an unconnected ICMP socket.
 		///
 		/// The socket will be created for the given address family.
@@ -51,6 +51,9 @@ public:
 	int dataSize() const;
 		/// Returns the data size in bytes.
 
+	int packetSize() const;
+		/// Returns the packet size in bytes.
+
 	int ttl() const;
 		/// Returns the Time-To-Live value.
 
@@ -61,6 +64,8 @@ protected:
 	~ICMPSocketImpl();
 
 private:
+	void checkFragmentation(const std::string& err, int type, int code);
+
 	ICMPPacket _icmpPacket;
 	int _ttl;
 	int _timeout;
@@ -70,6 +75,12 @@ private:
 //
 // inlines
 //
+
+inline int ICMPSocketImpl::packetSize() const
+{
+	return _icmpPacket.packetSize();
+}
+
 inline int ICMPSocketImpl::dataSize() const
 {
 	return _icmpPacket.getDataSize();

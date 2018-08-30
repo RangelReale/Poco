@@ -80,11 +80,18 @@ bool Decompress::handleZipEntry(std::istream& zipStream, const ZipLocalFileHeade
 		{
 			std::string dirName = hdr.getFileName();
 			if (!ZipCommon::isValidPath(dirName))
-				throw ZipException("Illegal entry name " + dirName + " containing parent directory reference");
+				throw ZipException("Illegal entry name", dirName);
 			Poco::Path dir(_outDir, dirName);
 			dir.makeDirectory();
 			Poco::File aFile(dir);
 			aFile.createDirectories();
+		}
+		if (hdr.getCompressionMethod() == ZipCommon::CM_DEFLATE)
+		{
+			// If directory is stored with deflate method, two extra bytes
+			// (the result of deflating a zero-length sequence) must be read.
+			char buffer[2];
+			zipStream.read(buffer, 2);
 		}
 		return true;
 	}
@@ -100,7 +107,7 @@ bool Decompress::handleZipEntry(std::istream& zipStream, const ZipLocalFileHeade
 		}
 
 		if (!ZipCommon::isValidPath(fileName))
-			throw ZipException("Illegal entry name " + fileName + " containing parent directory reference");
+			throw ZipException("Illegal entry name", fileName);
 
 		Poco::Path file(fileName);
 		file.makeFile();

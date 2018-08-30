@@ -113,6 +113,8 @@ class SharedPtr
 	/// is required.
 {
 public:
+	typedef C Type;
+
 	SharedPtr(): _pCounter(new RC), _ptr(0)
 	{
 	}
@@ -180,6 +182,27 @@ public:
 			swap(tmp);
 		}
 		return *this;
+	}
+
+	void reset()
+	{
+		assign(0);
+	}
+
+	void reset(C* ptr)
+	{
+		assign(ptr);
+	}
+
+	void reset(const SharedPtr& ptr)
+	{
+		assign(ptr);
+	}
+
+	template <class Other, class OtherRP>
+	void reset(const SharedPtr<Other, RC, OtherRP>& ptr)
+	{
+		assign<Other, OtherRP>(ptr);
 	}
 
 	SharedPtr& operator = (C* ptr)

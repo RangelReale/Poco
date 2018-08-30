@@ -1,8 +1,6 @@
 //
 // Parser.cpp
 //
-// $Id$
-//
 // Library: JSON
 // Package: JSON
 // Module:  Parser
@@ -39,6 +37,12 @@ Parser::Parser(const Handler::Ptr& pHandler, std::size_t bufSize):
 
 Parser::~Parser()
 {
+}
+
+
+void Parser::setHandler(const Handler::Ptr& pHandler)
+{
+	setHandlerImpl(pHandler);
 }
 
 

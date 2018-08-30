@@ -1,8 +1,6 @@
 //
 // Parser.h
 //
-// $Id$
-//
 // Library: JSON
 // Package: JSON
 // Module:  Parser
@@ -160,12 +158,6 @@ inline void Parser::setDepth(std::size_t depth)
 inline std::size_t Parser::getDepth() const
 {
 	return getDepthImpl();
-}
-
-
-inline void Parser::setHandler(const Handler::Ptr& pHandler)
-{
-	setHandlerImpl(pHandler);
 }
 
 

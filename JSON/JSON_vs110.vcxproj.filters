@@ -2,10 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{69634a2a-5bfa-411b-b554-6f4916cc19a4}</UniqueIdentifier>
+      <UniqueIdentifier>{9fb84316-2944-400f-8b15-cdc6a25655fa}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{61eb6c4b-fed2-45cb-9178-753e60fd8592}</UniqueIdentifier>
+      <UniqueIdentifier>{17c93b09-ae67-42a6-9465-4d007ccf3053}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -30,7 +30,7 @@
     <ClCompile Include="src\ParserImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\pd_json.c">
+    <ClCompile Include="src\pdjson.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\PrintHandler.cpp">
@@ -74,10 +74,7 @@
     <ClInclude Include="include\Poco\JSON\ParserImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\pd_json.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\pd_json_private.h">
+    <ClInclude Include="src\pdjson.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Poco\JSON\PrintHandler.h">

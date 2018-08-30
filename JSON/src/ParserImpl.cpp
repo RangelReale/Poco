@@ -1,8 +1,6 @@
 //
 // Parser.cpp
 //
-// $Id$
-//
 // Library: JSON
 // Package: JSON
 // Module:  Parser
@@ -29,6 +27,9 @@
 extern "C" {
 #include "pd_json.h"
 }
+
+typedef struct json_stream json_stream;
+
 
 namespace Poco {
 namespace JSON {
