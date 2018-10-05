@@ -276,6 +276,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Ascii.cpp"/>
+    <ClCompile Include="src\ASN1.cpp"/>
+    <ClCompile Include="src\ASN1Codec.cpp"/>
+    <ClCompile Include="src\ASN1FactoryDefault.cpp"/>
+    <ClCompile Include="src\ASN1Types.cpp"/>
     <ClCompile Include="src\AtomicCounter.cpp"/>
     <ClCompile Include="src\Bugcheck.cpp"/>
     <ClCompile Include="src\ByteOrder.cpp">
@@ -286,6 +290,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_md|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release_static_mt|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\ByteRateCounter.cpp"/>
+    <ClCompile Include="src\ByteRateLimiter.cpp"/>
+    <ClCompile Include="src\ByteRateLimiterStream.cpp"/>
     <ClCompile Include="src\Checksum.cpp"/>
     <ClCompile Include="src\Debugger.cpp"/>
     <ClCompile Include="src\DirectoryIteratorStrategy.cpp"/>
@@ -363,6 +370,8 @@
     <ClCompile Include="src\NestedDiagnosticContext.cpp"/>
     <ClCompile Include="src\NumberFormatter.cpp"/>
     <ClCompile Include="src\NumberParser.cpp"/>
+    <ClCompile Include="src\NumericSizeFormat.cpp"/>
+    <ClCompile Include="src\NumericSizeFormatter.cpp"/>
     <ClCompile Include="src\NumericString.cpp"/>
     <ClCompile Include="src\RefCountedObject.cpp"/>
     <ClCompile Include="src\SortedDirectoryIterator.cpp"/>
@@ -917,12 +926,19 @@
   <ItemGroup>
     <ClInclude Include="include\Poco\Any.h"/>
     <ClInclude Include="include\Poco\Ascii.h"/>
+    <ClInclude Include="include\Poco\ASN1.h"/>
+    <ClInclude Include="include\Poco\ASN1Codec.h"/>
+    <ClInclude Include="include\Poco\ASN1FactoryDefault.h"/>
+    <ClInclude Include="include\Poco\ASN1Types.h"/>
     <ClInclude Include="include\Poco\AtomicCounter.h"/>
     <ClInclude Include="include\Poco\AutoPtr.h"/>
     <ClInclude Include="include\Poco\AutoReleasePool.h"/>
     <ClInclude Include="include\Poco\Buffer.h"/>
     <ClInclude Include="include\Poco\Bugcheck.h"/>
     <ClInclude Include="include\Poco\ByteOrder.h"/>
+    <ClInclude Include="include\Poco\ByteRateCounter.h"/>
+    <ClInclude Include="include\Poco\ByteRateLimiter.h"/>
+    <ClInclude Include="include\Poco\ByteRateLimiterStream.h"/>
     <ClInclude Include="include\Poco\Checksum.h"/>
     <ClInclude Include="include\Poco\Config.h"/>
     <ClInclude Include="include\Poco\Debugger.h"/>
@@ -953,6 +969,8 @@
     <ClInclude Include="include\Poco\Nullable.h"/>
     <ClInclude Include="include\Poco\NumberFormatter.h"/>
     <ClInclude Include="include\Poco\NumberParser.h"/>
+    <ClInclude Include="include\Poco\NumericSizeFormat.h"/>
+    <ClInclude Include="include\Poco\NumericSizeFormatter.h"/>
     <ClInclude Include="include\Poco\NumericString.h"/>
     <ClInclude Include="include\Poco\ObjectPool.h"/>
     <ClInclude Include="include\Poco\Optional.h"/>
