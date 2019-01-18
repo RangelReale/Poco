@@ -23,6 +23,7 @@
 #include "Poco/Foundation.h"
 #include "Poco/Stopwatch.h"
 
+#include <iostream>
 
 namespace Poco {
 

@@ -9,17 +9,20 @@
 #
 LINKMODE           ?= STATIC
 ANDROID_ABI        ?= armeabi-v7a
+ANDROID_API_TARGET ?= 16
 POCO_TARGET_OSNAME  = Android
 POCO_TARGET_OSARCH  = $(ANDROID_ABI)
+TOOL_CORE	    = llvm
 
 ifeq ($(ANDROID_ABI),armeabi)
 TOOL      = arm-linux-androideabi
 ARCHFLAGS = -mthumb
 else
 ifeq ($(ANDROID_ABI),armeabi-v7a)
-TOOL      = arm-linux-androideabi
-ARCHFLAGS = -march=armv7-a -mfloat-abi=softfp
-LINKFLAGS = -Wl,--fix-cortex-a8
+TOOL	  = armv7a-linux-androideabi$(ANDROID_API_TARGET)
+#ARCHFLAGS = -march=armv7-a
+ARCHFLAGS  =
+#LINKFLAGS = -Wl,--fix-cortex-a8
 else
 ifeq ($(ANDROID_ABI),x86)
 TOOL      = i686-linux-android
@@ -36,12 +39,12 @@ endif
 CC      = $(TOOL)-clang
 CXX     = $(TOOL)-clang++
 LINK    = $(CXX)
-STRIP   = $(TOOL)-strip
-LIB     = $(TOOL)-ar -cr
-RANLIB  = $(TOOL)-ranlib
+STRIP   = $(TOOL_CORE)-strip
+LIB     = $(TOOL_CORE)-ar -cr
+RANLIB  = ranlib
 SHLIB   = $(CXX) -shared -Wl,-soname,$(notdir $@) -o $@
 SHLIBLN = $(POCO_BASE)/build/script/shlibln
-DEP     = $(POCO_BASE)/build/script/makedepend.gcc
+DEP     = $(POCO_BASE)/build/script/makedepend.clang
 SHELL   = sh
 RM      = rm -rf
 CP      = cp

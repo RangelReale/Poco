@@ -23,6 +23,7 @@
 #include "Poco/Foundation.h"
 #include "Poco/NumericSizeFormat.h"
 
+#include <iostream>
 
 namespace Poco {
 
