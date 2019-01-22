@@ -13,20 +13,27 @@ ANDROID_API_TARGET ?= 16
 POCO_TARGET_OSNAME  = Android
 POCO_TARGET_OSARCH  = $(ANDROID_ABI)
 TOOL_CORE	    = llvm
+ARCHFLAGS  =
 
 ifeq ($(ANDROID_ABI),armeabi)
 TOOL      = arm-linux-androideabi
-ARCHFLAGS = -mthumb
+#ARCHFLAGS = -mthumb
 else
 ifeq ($(ANDROID_ABI),armeabi-v7a)
 TOOL	  = armv7a-linux-androideabi$(ANDROID_API_TARGET)
-#ARCHFLAGS = -march=armv7-a
-ARCHFLAGS  =
-#LINKFLAGS = -Wl,--fix-cortex-a8
+ARCHFLAGS = -march=armv7-a -mthumb
+LINKFLAGS = -march=armv7-a -Wl,--fix-cortex-a8
+else
+ifeq ($(ANDROID_ABI),arm64-v8a)
+TOOL	  = aarch64-linux-android$(ANDROID_API_TARGET)
 else
 ifeq ($(ANDROID_ABI),x86)
 TOOL      = i686-linux-android
-ARCHFLAGS = -march=i686 -msse3 -mstackrealign -mfpmath=sse
+#ARCHFLAGS = -march=i686 -msse3 -mstackrealign -mfpmath=sse
+else
+ifeq ($(ANDROID_ABI),x86_64)
+TOOL      = x86_64-linux-android$(ANDROID_API_TARGET)
+#ARCHFLAGS = -march=i686 -msse3 -mstackrealign -mfpmath=sse
 else
 $(error Invalid ABI specified in ANDROID_ABI)
 endif
