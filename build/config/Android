@@ -39,6 +39,8 @@ $(error Invalid ABI specified in ANDROID_ABI)
 endif
 endif
 endif
+endif
+endif
 
 #
 # Define Tools
@@ -51,7 +53,7 @@ LIB     = $(TOOL_CORE)-ar -cr
 RANLIB  = ranlib
 SHLIB   = $(CXX) -shared -Wl,-soname,$(notdir $@) -o $@
 SHLIBLN = $(POCO_BASE)/build/script/shlibln
-DEP     = $(POCO_BASE)/build/script/makedepend.clang
+DEP     = $(POCO_BASE)/build/script/makedepend.clang.android
 SHELL   = sh
 RM      = rm -rf
 CP      = cp
