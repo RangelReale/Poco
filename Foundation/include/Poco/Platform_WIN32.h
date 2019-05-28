@@ -91,7 +91,7 @@
 
 
 // Enable C++11 support for VS 2010 and newer
-#if defined(_MSC_VER) && (_MSC_VER >= 1700) && !defined(POCO_ENABLE_CPP11)
+#if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(POCO_ENABLE_CPP11)
 	#define POCO_ENABLE_CPP11
 #endif
 
