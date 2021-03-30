@@ -302,6 +302,9 @@
     <ClInclude Include="include\Poco\Net\HTTPHeaderStream.h"/>
     <ClInclude Include="include\Poco\Net\HTTPIOStream.h"/>
     <ClInclude Include="include\Poco\Net\HTTPMessage.h"/>
+    <ClInclude Include="include\Poco\Net\HTTPNTLMCredentials.h"/>
+    <ClInclude Include="include\Poco\Net\NTLMCredentials.h"/>
+    <ClInclude Include="include\Poco\Net\SSPINTLMCredentials.h"/>
     <ClInclude Include="include\Poco\Net\HTTPRequest.h"/>
     <ClInclude Include="include\Poco\Net\HTTPRequestHandler.h"/>
     <ClInclude Include="include\Poco\Net\HTTPRequestHandlerFactory.h"/>
@@ -426,6 +429,9 @@
     <ClCompile Include="src\HTTPHeaderStream.cpp"/>
     <ClCompile Include="src\HTTPIOStream.cpp"/>
     <ClCompile Include="src\HTTPMessage.cpp"/>
+    <ClCompile Include="src\HTTPNTLMCredentials.cpp"/>
+    <ClCompile Include="src\NTLMCredentials.cpp"/>
+    <ClCompile Include="src\SSPINTLMCredentials.cpp"/>
     <ClCompile Include="src\HTTPRequest.cpp"/>
     <ClCompile Include="src\HTTPRequestHandler.cpp"/>
     <ClCompile Include="src\HTTPRequestHandlerFactory.cpp"/>
